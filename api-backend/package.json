@@ -1,0 +1,28 @@
+{
+  "name": "intelliq",
+  "version": "1.0.0",
+  "description": "Questionnaire App",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ntua/SoftEng22-01.git"
+  },
+  "author": "George Kapetanakis, Dimitris Georgousis, Ioannis Liolitsas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ntua/SoftEng22-01/issues"
+  },
+  "homepage": "https://github.com/ntua/SoftEng22-01#readme",
+  "devDependencies": {
+    "dotenv": "^16.0.3",
+    "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^6.8.0",
+    "pug": "^3.0.2"
+  }
+}
