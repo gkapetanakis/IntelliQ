@@ -9,6 +9,7 @@ if (process.env.NODE_ENV !== "production") {
 
 // import my modules
 const functionalityRouter = require("./routes/functional");
+const adminRouter = require("./routes/admin");
 
 // import other modules
 const express = require("express");
@@ -17,6 +18,7 @@ const mongoose = require("mongoose");
 // configure the express app
 const app = express();
 app.use(process.env.BASE_URL, functionalityRouter);
+app.use(process.env.BASE_URL + "/admin", adminRouter);
 
 // connect to the database
 mongoose
