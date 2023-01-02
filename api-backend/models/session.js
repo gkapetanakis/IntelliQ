@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 
 const sessionSchema = new mongoose.Schema({
-	_id: {type: String, required: true, unique: true,},
+	// _id exists by default
 	questionnaireId: {type: String, required: true,},
 	answers: [{
-		_id: {type: String, required: true, unique: true},
+		// _id exists by default
 		questionId: {type: String, required: true,},
 		optionId: {type: String, required: true,},
 	}],
