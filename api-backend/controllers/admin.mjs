@@ -6,7 +6,14 @@ import { StatusCodes } from "http-status-codes";
 
 // check database connectivity
 function getHealthcheck(req, res) {
-    // TODO
+    const statusCode = StatusCodes.OK;
+    const db = mongoose.connection;
+    // reasyState is equal to 1 if connection to database is healthy
+    const response = {
+        status: db.readyState === 1 ? "OK" : "failed",
+        dbconnection: `mongodb://${db.host}:${db.port}/${db.name}`
+    };
+    res.status(statusCode).json(response);
 }
 
 // upload a questionnaire to the database
