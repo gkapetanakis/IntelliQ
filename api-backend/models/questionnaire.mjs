@@ -9,7 +9,7 @@ const optionSchema = new mongoose.Schema({
 const questionSchema = new mongoose.Schema({
     qID: { type: String, required: true },
     qtext: { type: String, required: true },
-    required: { type: String, enum: ["true", "false", "TRUE", "FALSE"], default: "false" },
+    required: { type: String, enum: ["true", "false"], lowercase: true, default: "false" },
     type: { type: String, required: true, enum: ["question", "profile"] },
     options: [{ type: optionSchema, required: true }]
 });
