@@ -4,6 +4,4 @@ const app = new App({
     target: document.getElementById("app")
 });
 
-console.log(import.meta.env);
-
 export default app;

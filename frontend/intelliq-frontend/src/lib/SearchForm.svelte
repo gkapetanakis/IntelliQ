@@ -2,59 +2,37 @@
     import Button from "./Button.svelte";
     import Card from "./Card.svelte";
 
-    let text = "";
-    let minChars = 1;
-    let btnDisabled = true;
-    let message;
+    const minChars = 1;
+    let inputText = ""; 
 
-    function handleInput() {
-        if (text.trim().length >= minChars) {
-            message = null;
-            btnDisabled = false;
-        }
-    }
-
-    async function searchQuestionnaire() {
-        if (text.trim().length < minChars) return;
-
-        const questionnaireID = text;
+    async function searchQuestionnaire(ID) {
         try {
-            let endpoint = `http://${import.meta.env.VITE_APP_HOST}` +
-            `:${import.meta.env.VITE_APP_PORT}` +
-            `${import.meta.env.VITE_APP_BASE_URL}/` +
-            `questionnaire/${questionnaireID}`;
-            //let endpoint = "http://127.0.0.1:9103/intelliq_api/questionnaire/QQ000"
+            let url = ""
+            + `http://${import.meta.env.VITE_APP_HOST}`
+            + `:${import.meta.env.VITE_APP_PORT}`
+            + `${import.meta.env.VITE_APP_BASE_URL}/`
+            + `questionnaire/${ID}`;
 
-            console.log(endpoint);
+            const response = await fetch(url);
 
-            const response = await fetch(endpoint);
-            const data = await response.json();
-
-            console.log(data);
-
-
+            const {questionnaireID, questionnaireTitle, questions} = await response.json();
+            const questionnaire = {questionnaireID, questionnaireTitle, questions};
+            console.log(questionnaire);
         } catch (e) {
             console.log(e.message);
         }
-
     }
-
 </script>
 
 <Card>
     <header>
-        <h2>Enter a Questionnaire ID</h2>
+        <h1>Welcome to intelliQ</h1>
     </header>
-    <form on:submit|preventDefault={searchQuestionnaire}>
+    <form on:submit|preventDefault={() => searchQuestionnaire(inputText)}>
         <div class="questionnaire-input">
-            <input type="text" on:input={handleInput} bind:value={text} placeholder="Enter a Questionnaire ID">
-            <Button disabled={btnDisabled}></Button>
+            <input type="text" bind:value={inputText} placeholder="Enter a Questionnaire ID">
+            <Button disabled={inputText.trim().length < minChars}></Button>
         </div>
-        {#if message}
-        <div class="message">
-            {message}
-        </div>
-        {/if}
+
     </form>
 </Card>
-
