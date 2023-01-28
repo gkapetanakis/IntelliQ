@@ -39,7 +39,7 @@ function createDocument(json, model) {
         console.debug("A document was successfully created");
     } catch (error) {
         err = error;
-        console.debug("An error occured while creatig a document");
+        console.debug("An error occured while creating a document");
     }
     return { doc, err };
 }
