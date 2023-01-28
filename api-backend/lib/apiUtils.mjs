@@ -12,24 +12,24 @@ import { removePrivateFields } from "./jsonUtils.mjs";
 //     null if not needed
 // the function returns { status, response } which is what will be sent to the user
 // if err is not null the response will contain info about the error that occured
-function handleQueryResponse(res, err, transform) {
-    let status = null;
-    let response = null;
+function handleQueryResponse({ res, err }, transform) {
+    let status = undefined;
+    let response = undefined;
 
     if (err) { // some error occured
         status = StatusCodes.INTERNAL_SERVER_ERROR;
         response = { err }; // TODO: error handling
         console.debug("Handled error that occured during query");
-    } else if (doc instanceof Number) { // query was a delete
+    } else if (res instanceof Number) { // query was a delete
         status = StatusCodes.NO_CONTENT;
         console.debug("Handled response of 'delete' query");
-    } else if (!doc || doc.length === 0) { // query was a find but no document was found
+    } else if (!res || res.length === 0) { // query was a find but no document was found
         status = StatusCodes.NOT_FOUND;
         console.debug("Handled response of 'find' query with no content");
     } else { // query was a find and document(s) were found
         status = StatusCodes.OK;
         removePrivateFields(res);
-        response = transform(res);
+        response = transform instanceof Function ? transform(res) : res;
         console.debug("Handled response with 'find' query with content");
     }
     return { status, response };
@@ -38,16 +38,18 @@ function handleQueryResponse(res, err, transform) {
 // handles the output of the createDocument() function and saves the document created
 // the function returns { status, response } which is what will be sent to the user
 // if err is not null the response will contain info about the error that occured
-async function handleCreateResponseAndSave(doc, err) {
-    let status = null;
-    let response = null;
+async function handleCreateResponseAndSave({ doc, err }) {
+    let status = undefined;
+    let response = undefined;
 
     if (err) { // some error occured
         status = StatusCodes.BAD_REQUEST;
         response = err; // TODO: error handling
         console.debug("Handled error that occured during document creation");
     } else { // creation successful
-        [status, response] = handleSaveResponse(...(await saveDocument(doc)));
+        const result = handleSaveResponse(await saveDocument(doc));
+        status = result.status;
+        response = result.response;
         console.debug("Handled response of successful document creation");
     }
     return { status, response };
@@ -56,9 +58,9 @@ async function handleCreateResponseAndSave(doc, err) {
 // handles the output of the saveDocument() function
 // the function returns { status, response } which is what will be sent to the user
 // if err is not null the response will contain info about the error that occured
-function handleSaveResponse(err) {
-    let status = null;
-    let response = null;
+function handleSaveResponse({ err }) {
+    let status = undefined;
+    let response = undefined;
 
     if (err) { // some error occured
         status = StatusCodes.INTERNAL_SERVER_ERROR;
