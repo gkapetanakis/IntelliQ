@@ -16,12 +16,4 @@ async function deleteQueryHelper(query) {
     }
 }
 
-function removePrivateFields(json) {
-    // TODO
-}
-
-function handleErrors(err) {
-    // TODO
-}
-
-export { findQueryHelper, deleteQueryHelper, removePrivateFields, handleErrors };
+export { findQueryHelper, deleteQueryHelper };
