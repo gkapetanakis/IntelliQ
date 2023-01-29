@@ -22,7 +22,7 @@ async function executeQuery(query) {
     return { res, err };
 }
 
-// creates a document of the given model using the json provided and returns { doc, err }
+// creates and saves a document of the given model using the json provided and returns { doc, err }
 // doc is:
 //     the document created
 //     null if an error occured
@@ -31,35 +31,16 @@ async function executeQuery(query) {
 //     the error that occured if an error occured
 // this function basically wraps a try/catch block that would
 // otherwise be repeated at every place a document is created
-function createDocument(json, model) {
-    let doc = null;
+async function createDocument(json, model) {
     let err = null;
     try {
-        doc = new model(json);
-        console.debug("A document was successfully created");
+        await model.create(json);
+        console.debug("A document was successfully created and saved");
     } catch (error) {
         err = error;
-        console.debug("An error occured while creating a document");
-    }
-    return { doc, err };
-}
-
-// saves the given document to the database and returns { err }
-// err is:
-//     null if no error occured
-//     the error that occured if an error occured
-// this function basically wraps a try/catch block that would
-// otherwise be repeated at every place a document is saved
-async function saveDocument(document) {
-    let err = null;
-    try {
-        await document.save();
-        console.debug("A document was saved successfully to the database");
-    } catch (error) {
-        err = error;
-        console.debug("An error occured while saving a document to the database");
+        console.debug("An error occured while creating and saving a document");
     }
     return { err };
 }
 
-export { executeQuery, createDocument, saveDocument };
+export { executeQuery, createDocument };
