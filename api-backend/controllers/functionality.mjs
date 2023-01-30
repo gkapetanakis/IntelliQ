@@ -8,8 +8,6 @@ import { handleQueryResponse } from "../lib/apiUtils.mjs";
 // fetch a questionnaire from the database
 async function getQuestionnaire(req, res) {
     const questionnaireID = req.params.questionnaireID;
-
-    console.debug("Get Questionnaire Start");
     
     // build query
     const query = Questionnaire
@@ -23,8 +21,6 @@ async function getQuestionnaire(req, res) {
 
     // send response
     res.status(status).json(response);
-
-    console.debug("Get Questionnaire End");
 }
 
 // fetch a question from the database
@@ -32,28 +28,22 @@ async function getQuestion(req, res) {
     const questionnaireID = req.params.questionnaireID;
     const questionID = req.params.questionID;
 
-    console.debug("Get Question Start");
-
     // build query
     const query = Questionnaire
         .findOne()
         .where({ "questionnaireID" : questionnaireID })
-        .elemMatch("questions", { "qID" : questionID })
+        .where({ "questions" : { $elemMatch : { "qID" : questionID } } })
+        .select({ "questions" : { $elemMatch : { "qID" : questionID } } })
         .select({ "questionnaireID" : false })
         .select({ "questionnaireTitle" : false })
         .select({ "keywords" : false })
-        .select({ "questions" : { $elemMatch : { "qID" : questionID } } })
         .lean(); // return POJO
 
     // define transform function
     const transform = (questionnaire) => {
-        // sort the options by increasing ID
-        questionnaire["questions"][0]["options"].sort((o1, o2) =>
-            o1["optID"] < o2["optID"] ? -1 : 1
-        );
         return {
             questionnaireID: questionnaireID,
-            ...questionnaire["questions"][0]
+            ...questionnaire["questions"][0] // the array will only have one element
         };
     };
 
@@ -62,8 +52,6 @@ async function getQuestion(req, res) {
 
     // send response
     res.status(status).json(response);
-
-    console.debug("Get Question End");
 }
 
 // post an answer to the database
