@@ -28,9 +28,19 @@ questionnaireSchema.plugin(uniqueValidator);
 
 questionnaireSchema.pre(/save/, function(next) {
     // sort questions by increasing qID before saving document
+    // to avoid having to sort after every 'find'
     this["questions"].sort((q1, q2) =>
-        (q1["qID"] < q2["qID"] ? -1 : 1)
+        q1["qID"] < q2["qID"] ? -1 : 1
     );
+    
+    // sort options by increasing optID before saving document
+    // to avoid having to sort after every 'find'
+    this["questions"].forEach((question) => {
+        question["options"].sort((o1, o2) =>
+            o1["optID"] < o2["optID"] ? -1 : 1
+        );
+    });
+    
     next();
 });
 
