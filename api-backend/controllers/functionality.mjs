@@ -2,8 +2,8 @@
 
 // import this package's modules
 import Questionnaire from "../models/questionnaire.mjs";
-import { executeQuery } from "../lib/dbUtils.mjs";
-import { handleQueryResponse } from "../lib/apiUtils.mjs";
+import { createDocument, executeQuery } from "../lib/dbUtils.mjs";
+import { handleCreateResponse, handleQueryResponse } from "../lib/apiUtils.mjs";
 
 // fetch a questionnaire from the database
 async function getQuestionnaire(req, res) {
@@ -55,8 +55,26 @@ async function getQuestion(req, res) {
 }
 
 // post an answer to the database
-function postDoAnswer(req, res) {
-    // TODO
+async function postDoAnswer(req, res) {
+    const questionnaireID = req.params.questionnaireID;
+    const questionID = req.params.questionID;
+    const sessionID = req.params.sessionID;
+    const optionID = req.params.optionID;
+
+    // construct the answer
+    const obj = {
+        questionnaireID: questionnaireID,
+        session: sessionID,
+        qID: questionID,
+        ans: optionID,
+        _uniqueID: questionnaireID + sessionID + questionID
+    };
+
+    // create and save the answer document
+    const status = handleCreateResponse(await createDocument(obj, Answer));
+
+    // send the response
+    res.status(status).send();
 }
 
 // fetch a session from the database
