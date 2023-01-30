@@ -26,6 +26,14 @@ const questionnaireSchema = new mongoose.Schema({
 // easily handle duplicate unique fields
 questionnaireSchema.plugin(uniqueValidator);
 
+questionnaireSchema.pre(/save/, function(next) {
+    // sort questions by increasing qID before saving document
+    this["questions"].sort((q1, q2) =>
+        (q1["qID"] < q2["qID"] ? -1 : 1)
+    );
+    next();
+});
+
 // mainly used for debugging
 questionnaireSchema.post(/save/, function(err, res, next) {
     if (!err) {

@@ -18,17 +18,8 @@ async function getQuestionnaire(req, res) {
         .select({ "questions.options" : false })
         .lean(); // return POJO
 
-    // define transform function
-    const transform = (questionnaire) => {
-        // sort questions by increasing ID
-        questionnaire["questions"].sort((q1, q2) =>
-            (q1["qID"] < q2["qID"] ? -1 : 1)
-        );
-        return questionnaire;
-    };
-
     // execute query and create response
-    const { status, response } = handleQueryResponse(await executeQuery(query), transform);
+    const { status, response } = handleQueryResponse(await executeQuery(query));
 
     // send response
     res.status(status).json(response);
