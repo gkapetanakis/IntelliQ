@@ -78,13 +78,68 @@ async function postDoAnswer(req, res) {
 }
 
 // fetch a session from the database
-function getGetSessionAnswers(req, res) {
-    // TODO
+async function getGetSessionAnswers(req, res) {
+    const questionnaireID = questionnaireID;
+    const sessionID = sessionID;
+
+    // build the query
+    const query = Answer
+        .find()
+        .where({ "questionnaireID" : questionnaireID })
+        .where({ "session" : sessionID })
+        .select({ "questionnaireID" : false })
+        .select({ "session" : false })
+        .select({ "_uniqueID" : false })
+        .select({ "_date" : false})
+        .sort({ "qID" : "ascending" })
+        .lean(); // return POJO
+
+    // function to be used on the fetched documents before sending them to the user
+    const transform = (docs) => {
+        return {
+            questionnaireID: questionnaireID,
+            session: sessionID,
+            answers: docs
+        };
+    };
+
+    // execute the query and handle the response
+    const { status, response } = handleQueryResponse(await executeQuery(query), transform);
+
+    // send response
+    res.status(status).json(response);
 }
 
 // fetch all the answers to a question from the database
-function getGetQuestionAnswers(req, res) {
-    // TODO
+async function getGetQuestionAnswers(req, res) {
+    const questionnaireID = req.params.questionnaireID;
+    const questionID = req.params.questionID;
+
+    // build the query
+    const query = Answer
+        .find()
+        .where({ "questionnaireID" : questionnaireID })
+        .where({ "qID" : questionID })
+        .select({ "questionnaireID" : false })
+        .select({ "qID" : false })
+        .select({ "_uniqueID" : false })
+        .sort({ "_date" : "ascending" })
+        .lean(); // return POJO
+
+    // function to be used on the fetched documents before sending them to the user
+    const transform = (docs) => {
+        return {
+            questionnaireID: questionnaireID,
+            questionID: questionID,
+            answers: docs
+        };
+    };
+
+    // execute the query, handle its response and handle any errors that may occur
+    const { status, response } = handleQueryResponse(await executeQuery(query), transform);
+
+    // send response
+    res.status(status).json(response);
 }
 
 export { getQuestionnaire, getQuestion, postDoAnswer, getGetSessionAnswers, getGetQuestionAnswers };
