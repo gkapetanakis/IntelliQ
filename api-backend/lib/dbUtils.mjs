@@ -14,10 +14,8 @@ async function executeQuery(query) {
     let err = null;
     try {
         res = await query;
-        console.debug("A query completed successfully");
     } catch (error) {
         err = error;
-        console.debug("An error occured while executing a query");
     }
     return { res, err };
 }
@@ -35,10 +33,8 @@ async function createDocument(json, model) {
     let err = null;
     try {
         await model.create(json);
-        console.debug("A document was successfully created and saved");
     } catch (error) {
         err = error;
-        console.debug("An error occured while creating and saving a document");
     }
     return { err };
 }

@@ -3,7 +3,7 @@ import { StatusCodes } from "http-status-codes";
 
 // import this package's modules
 import { executeQuery } from "./dbUtils.mjs";
-import { handleErrors } from "./errorUtils.mjs";
+import { getStatusCodeFromError } from "./errorUtils.mjs";
 import { removePrivateFields } from "./jsonUtils.mjs";
 
 // handles the output of the executeQuery() function
@@ -17,7 +17,7 @@ function handleQueryResponse({ res, err }, transform) {
     let response = undefined;
 
     if (err) { // some error occured
-        status = handleErrors(err);
+        status = getStatusCodeFromError(err);
     } else if (res.deletedCount !== undefined) { // query was a delete
         status = StatusCodes.NO_CONTENT;
     } else if (!res || res.length === 0) { // query was a find but no document was found
@@ -36,7 +36,7 @@ function handleCreateResponse({ err }) {
     let status = undefined;
 
     if (err) { // some error occured
-        status = handleErrors(err);
+        status = getStatusCodeFromError(err);
     } else { // save successful
         status = StatusCodes.NO_CONTENT;
     }
