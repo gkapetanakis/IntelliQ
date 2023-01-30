@@ -2,9 +2,15 @@
 import mongoose from "mongoose";
 import uniqueValidator from "mongoose-unique-validator";
 
+// import this package's modules
+import * as debugUtils from "../lib/debugUtils.mjs";
+
+// the type of this schema's documents
+const docType = "Answer";
+
 const answerSchema = new mongoose.Schema({
-    session: { type: String, required: true },
     questionnaireID: { type: String, required: true },
+    session: { type: String, required: true },
     qID: { type: String, required: true },
     ans: { type: String, default: "-" },
     // _uniqueID will be used to easily enforce that an answer is unique
@@ -17,34 +23,11 @@ const answerSchema = new mongoose.Schema({
 // easily handle duplicate unique fields
 answerSchema.plugin(uniqueValidator);
 
-// mainly used for debugging
-answerSchema.post(/save/, function(err, res, next) {
-    if (!err) {
-        console.debug("Answer: 'save' operation completed successfully");
-        console.debug(`${res.isArray() ? res.length : 1} document${res.isArray() && res.length !== 1 ? "s were" : " was"} created`);
-    } else
-        console.error("Answer: error during 'save' operation");
-    next();
-});
+answerSchema.post(/save/, debugUtils.successfulSaveHook(docType)); // hook if save succeeds
+answerSchema.post(/save/, debugUtils.failedSaveHook(docType)); // hook if save fails
+answerSchema.post(/find/, debugUtils.successfulFindHook(docType)); // hook if find succeeds
+answerSchema.post(/find/, debugUtils.failedFindHook(docType)); // hook if find fails
+answerSchema.post(/delete/, debugUtils.successfulDeleteHook(docType)); // hook if delete succeeds
+answerSchema.post(/delete/, debugUtils.failedDeleteHook(docType)); // hook if delete fails
 
-// mainly used for debugging
-answerSchema.post(/find/, function(err, res, next) {
-    if (!err) {
-        console.debug("Answer: 'find' operation completed successfully");
-        console.debug(`${res.isArray() ? res.length : 1} document${res.isArray() && res.length !== 1 ? "s were" : " was"} found`);
-    } else
-        console.error("Answer: error during 'find' operation");
-    next();
-});
-
-// mainly used for debugging
-answerSchema.post(/delete/, function(err, res, next) {
-    if (!err) {
-        console.debug("Answer: 'delete' operation completed successfully");
-        console.debug(`${res.deletedCount} answer${res.deletedCount !== 1 ? "s were" : " was"} deleted`);
-    } else
-        console.error("Answer: error during 'delete' operation");
-    next();
-});
-
-export default mongoose.model("Answer", answerSchema);
+export default mongoose.model(docType, answerSchema);
