@@ -1,6 +1,6 @@
 // executes the given query and returns a pair { res, err }
 // res is:
-//     the query response and it is:
+//     the query response:
 //         the document(s) found in a 'find' query (can be null if none were found)
 //         an object that contains the number of documents deleted in a 'delete' query (deletedCount field)
 //     null if an error occured

@@ -43,9 +43,11 @@ function handleCreateResponse({ err }) {
     return status;
 }
 
+// performs the given query and returns true if one or more documents are returned
 async function documentExists(query) {
     const { res, err } = await executeQuery(query);
-    return { ans: (res != null), err };
+    const ans = (res != null) && (!Array.isArray(res) || res.length > 0);
+    return { ans, err };
 }
 
 export { handleQueryResponse, handleCreateResponse, documentExists };
