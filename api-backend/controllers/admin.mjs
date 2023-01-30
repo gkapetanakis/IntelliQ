@@ -4,160 +4,100 @@
 import mongoose from "mongoose";
 import { StatusCodes } from "http-status-codes";
 
+// import this package's modules
+import { DATABASE_URL } from "../app.mjs";
+import Questionnaire from "../models/questionnaire.mjs";
+import Answer from "../models/answer.mjs";
+import { executeQuery, createDocument } from "../lib/dbUtils.mjs";
+import { handleQueryResponse, handleCreateResponse, documentExists } from "../lib/apiUtils.mjs";
+
 // check database connectivity
-function getHealthcheck(req, res) {
-    const statusCode = StatusCodes.OK;
-    const db = mongoose.connection;
+function getHealthcheck(_req, res) {
     // reasyState is equal to 1 if connection to database is healthy
     const response = {
-        status: db.readyState === 1 ? "OK" : "failed",
-        dbconnection: `mongodb://${db.host}:${db.port}/${db.name}`
+        status: mongoose.connection.readyState === 1 ? "OK" : "failed",
+        dbconnection: DATABASE_URL
     };
-    res.status(statusCode).json(response);
+    res.status(StatusCodes.OK).json(response);
 }
 
 // upload a questionnaire to the database
 async function postQuestionnaireUpd(req, res) {
-    let statusCode = StatusCodes.NO_CONTENT;
-    let reasonValue = undefined;
-    let response = undefined;
-
-    // turn the uploaded document into a JSON object
+    // turn the uploaded document into a JSON object:
     // req.file.buffer contains the uploaded file data as bytes
     // toString() is required to make it readable
-    // JSON.parse() turns a JSON string into a proper JSON object
-    const jsonified = JSON.parse(req.file.buffer.toString());
-    // create a questionnaire with the given values
-    const questionnaire = new Questionnaire(jsonified);
+    // JSON.parse() turns a json string into a proper json object
+    const obj = JSON.parse(req.file.buffer.toString());
 
-    // save the questionnaire
-    const { success } = await saveDocument(questionnaire);
-    if (!success) {
-        console.log(error);
-        statusCode = StatusCodes.BAD_REQUEST;
-        reasonValue = "Bad questionnaire parameters"; // When proper validation is added, this will become more specific
-        response = { error: reasonValue };
-    }
-    res.status(statusCode).send(response);
+    // create a document and save it
+    const status = handleCreateResponse(await createDocument(obj, Questionnaire));
 
-    // helper functions --------------------
-
-    async function saveDocument(document) {
-        try {
-            await document.save();
-            console.log("A new questionnaire was saved to the database");
-            return { success: true };
-        } catch (error) {
-            console.log("Failed to save a new questionnaire to the database:", error);
-            return { success: false };
-        }
-    }
+    // send response
+    res.status(status);
 }
 
 // delete all documents form the database
-async function postResetAll(req, res) {
-    let statusCode = StatusCodes.OK;
-    let response = {
+async function postResetAll(_req, res) {
+    // create response
+    const response = {
         status: "OK",
         reason: undefined
     };
 
-    const { qSuccess } = await deleteAllQuestionnaires();
-    const { sSuccess } = await deleteAllSessions();
+    // delete all questionnaires
+    const questionnaireQuery = Questionnaire.deleteMany();
+    const questionnaireResult = handleQueryResponse(await executeQuery(questionnaireQuery));
+    
+    // delete all answers
+    const answerQuery = Answer.deleteMany();
+    const answerResult = handleQueryResponse(await executeQuery(answerQuery));
 
-    if (!qSuccess || !sSuccess) {
-        statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+    // http codes greater than 299 indicate that somethinng went wrong
+    if (questionnaireResult.status > 299 || answerResult.status > 299) {
         response.status = "failed";
-        response.reason = "An error occured while querying the database, ";
+        response.reason = "Internal server error:";
+        if (questionnaireResult.status > 299)
+            response.reason += " Failed to delete questionnaires.";
+        if (answerResult.status > 299)
+            response.reason += " Failed to delete answers.";
     }
 
-    if (!qSuccess && !sSuccess) response.reason += "no documents were deleted";
-    else if (!qSuccess) response.reason += "only sessions were deleted";
-    else if (!sSuccess) response.reason += "only questionnaires were deleted";
-
-    res.status(statusCode).json(response);
-
-    // helper functions --------------------
-
-    async function deleteAllQuestionnaires() {
-        try {
-            const { deletedCount } = await Questionnaire.deleteMany();
-            console.log(`Deleted all ${deletedCount} questionnaires from the database`);
-            return { success: true };
-        } catch (error) {
-            console.error("An error occured while trying to delete all questionnaires:", error);
-            return { success: false };
-        }
-    }
-
-    async function deleteAllSessions() {
-        try {
-            const { deletedCount } = await Session.deleteMany();
-            console.log(`Deleted all ${deletedCount} sessions from the database`);
-            return { success: true };
-        } catch (error) {
-            console.error("An error occured while trying to delete all sessions:", error);
-            return { success: false };
-        }
-    }
+    // send response
+    res.status(response.status === "OK" ? StatusCodes.OK : StatusCodes.INTERNAL_SERVER_ERROR).json(response);
 }
 
 // delete all sessions of a given questionnaire
 async function postResetQ(req, res) {
-    let statusCode = StatusCodes.OK;
-    let response = {
+    const questionnaireID = req.params.questionnaireID;
+
+    // create response
+    const response = {
         status: "OK",
         reason: undefined
     };
 
-    const { vSuccess, vError } = await verifyQuestionnaireId();
-    if (vError) {
-        statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+    // verify questionnaire exists
+    const query = Questionnaire
+        .exists()
+        .where({ "questionnaireID" : questionnaireID });
+    const { ans, err } = await documentExists(query);
+
+    if (err || !ans) {
         response.status = "failed";
-        response.reason = "An error occured while querying the database";
-    } else if (!vSuccess) {
-        statusCode = StatusCodes.NOT_FOUND;
-        response.status = "failed";
-        response.reason = "No questionnaire exists with the given ID";
+        response.reason = (err) ? "Internal server error" : "No questionnaire exists with the given ID";
     } else {
-        const { dSuccess } = await deleteQuestionnaireSessions();
-        if (!dSuccess) {
-            statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+        const query = Answer
+            .deleteMany()
+            .where({ "questionnaireID" : questionnaireID });
+        const { status } = handleQueryResponse(await executeQuery(query));
+        // http codes greater than 299 indicate that somethinng went wrong
+        if (status > 299) {
             response.status = "failed";
-            response.reason = "An error occured while querying the database";
+            response.reason = "Internal server error";
         }
     }
 
-    res.status(statusCode).json(response);
-
-    // helper functions --------------------
-
-    async function verifyQuestionnaireId(questionnaireID) {
-        try {
-            const foundQuestionnaire = await Questionnaire.findOne().where("questionnaireID").equals(questionnaireID);
-            return {
-                success: foundQuestionnaire !== null,
-                error: false
-            };
-        } catch (error) {
-            console.error("An error occured while trying to find the given questionnaire:", error);
-            return {
-                success: false,
-                error: true
-            };
-        }
-    }
-
-    async function deleteQuestionnaireSessions(questionnaireID) {
-        try {
-            const { deletedCount } = await Session.deleteMany(queryOptions).where("questionnaireID").equals(questionnaireID);
-            console.log(`Deleted ${deletedCount} sessions from the database`);
-            return { success: true };
-        } catch (error) {
-            console.error("An error occured while trying to delete the requested sessions:", error);
-            return { success: false };
-        }
-    }
+    res.status(response.status === "OK" ? StatusCodes.NO_CONTENT : StatusCodes.INTERNAL_SERVER_ERROR).json(response);
 }
 
 export { getHealthcheck, postQuestionnaireUpd, postResetAll, postResetQ };
