@@ -1,8 +1,8 @@
 // executes the given query and returns a pair { res, err }
 // res is:
 //     the query response and it is:
-//         the document(s) found in a "find" query (can be null if none were found)
-//         the number of documents deleted in a "delete" query
+//         the document(s) found in a 'find' query (can be null if none were found)
+//         an object that contains the number of documents deleted in a 'delete' query (deletedCount field)
 //     null if an error occured
 // err is:
 //     null if no error occured
@@ -10,8 +10,7 @@
 // this function basically just wraps a try/catch block that would
 // otherwise be repeated at every place a query is executed
 async function executeQuery(query) {
-    let res = null;
-    let err = null;
+    let res = null, err = null;
     try {
         res = await query;
     } catch (error) {

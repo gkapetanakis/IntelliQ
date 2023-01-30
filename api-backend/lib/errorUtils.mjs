@@ -6,8 +6,10 @@ import { StatusCodes } from "http-status-codes";
 //     internal error:
 //         failed to connect to the database -> INTERNAL SERVER ERROR
 
-function getStatusCodeFromError(err) {
-    return err.name === "ValidationError" ? StatusCodes.BAD_REQUEST : StatusCodes.INTERNAL_SERVER_ERROR;
+function handleError(err) {
+    return err.name === "ValidationError"
+        ? { status: StatusCodes.BAD_REQUEST }
+        : { status: StatusCodes.INTERNAL_SERVER_ERROR };
 }
 
-export { getStatusCodeFromError };
+export { handleError };

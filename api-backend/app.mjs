@@ -1,5 +1,3 @@
-"use strict"; // strict mode to reduce errors
-
 // import third party modules
 import express from "express";
 import mongoose from "mongoose";
@@ -30,8 +28,11 @@ mongoose.connection.on("disconnected", () => console.log("Disconnected from data
 
 // configure the express app
 const app = express();
+app.use(express.json());
 app.use(`${APP_BASE_URL}/admin`, adminRouter); // set up admin endpoints
 app.use(APP_BASE_URL, functionalityRouter); // set up functionality endpoints
 
 // start the express app
 app.listen(APP_PORT, APP_HOST, console.log("App is now listening on port", APP_PORT));
+
+export { DATABASE_URL };

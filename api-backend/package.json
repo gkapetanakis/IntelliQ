@@ -4,7 +4,7 @@
   "description": "Questionnaire App",
   "main": "app.js",
   "scripts": {
-    "develop": "nodemon run app.js"
+    "dev": "nodemon run app.mjs"
   },
   "repository": {
     "type": "git",

@@ -33,10 +33,10 @@ async function postQuestionnaireUpd(req, res) {
     const status = handleCreateResponse(await createDocument(obj, Questionnaire));
 
     // send response
-    res.status(status);
+    res.status(status).send();
 }
 
-// delete all documents form the database
+// delete all documents from the database
 async function postResetAll(_req, res) {
     // create response
     const response = {
