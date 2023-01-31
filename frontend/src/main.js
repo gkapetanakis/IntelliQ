@@ -1,12 +1,6 @@
 import App from "./App.svelte";
 import { clearStorage } from "./stores/dataStores";
 
-/*
-window.addEventListener("beforeunload", function (e) {
-    e.type
-    clearStorage();
-}); */
-
 const app = new App({
     target: document.getElementById("app")
 });
