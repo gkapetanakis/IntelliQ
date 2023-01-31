@@ -18,17 +18,13 @@ const questionnaireInfo = createAndSubscribe("questionnaireInfo",{
 const questionsArray = createAndSubscribe("questionsArray", []);
 const session = createAndSubscribe("session", null);
 const currentScreen = createAndSubscribe("currentScreen", "searchForm");
-const chosenOpt = createAndSubscribe("chosenOpt", null); // chosenOption
+const chosenOpt = writable(null); // chosenOption, should NOT stay when refreshing
 const errorInfo = createAndSubscribe("errorInfo",""); // a string which is the Error Message
 
 function clearStorage() {
-    localStorage.removeItem("questionnaireInfo");
-    localStorage.removeItem("questionsArray");
-    localStorage.removeItem("session");
-    localStorage.removeItem("currentScreen");
-    localStorage.removeItem("chosenOpt");
-    localStorage.removeItem("errorInfo");
+    sessionStorage.clear();
     location.reload();
+    // since we reload we don't care about chosenOpt here
 }
 
 export {
@@ -50,12 +46,12 @@ function createAndSubscribe(variableName, initialValue) {
     // create the variable with some initial value
     const variable =
         writable(
-            JSON.parse(localStorage.getItem(variableName)) ||
+            JSON.parse(sessionStorage.getItem(variableName)) ||
             initialValue);
 
     // save the variable locally
     variable.subscribe(
-        (val) => localStorage.setItem(
+        (val) => sessionStorage.setItem(
                     variableName,
                     JSON.stringify(val)));
 
