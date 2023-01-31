@@ -29,7 +29,6 @@
     //                if this is the first question you answer get a session ID +
     //                make $chosenOpt null for the next question +
     //                notify parent for new data or errors
-
     async function submitAnswer() {
         try {
             let nextQuestionID = searchNextQuestionID(
@@ -163,7 +162,7 @@
                 <input type="radio" name="option" value={option} bind:group={$chosenOpt}>
                 fill this field
                 {:else}
-                <input type="text" name="option" bind:value={option.opttxt} placeholder="enter your information">
+                <input type="text" name="option" bind:value={$chosenOpt.opttxt} placeholder="enter your information">
                 {/if}
             {:else}
                 <input type="radio" name="option" value={option} bind:group={$chosenOpt}>
