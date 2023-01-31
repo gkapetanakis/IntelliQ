@@ -1,6 +1,7 @@
 import { writable } from "svelte/store";
 
-const noNextQuestionID = "-";
+const noNextQuestionID = "-"; // if a question has this string as a nextqID, then
+                              // this is where the questionnaire ends
 
 const baseUrl = ""
 + `http://${import.meta.env.VITE_APP_HOST}`
@@ -17,8 +18,8 @@ const questionnaireInfo = createAndSubscribe("questionnaireInfo",{
 const questionsArray = createAndSubscribe("questionsArray", []);
 const session = createAndSubscribe("session", null);
 const currentScreen = createAndSubscribe("currentScreen", "searchForm");
-const chosenOpt = createAndSubscribe("chosenOpt", null);
-const errorInfo = createAndSubscribe("errorInfo","");
+const chosenOpt = createAndSubscribe("chosenOpt", null); // chosenOption
+const errorInfo = createAndSubscribe("errorInfo",""); // a string which is the Error Message
 
 function clearStorage() {
     localStorage.removeItem("questionnaireInfo");
@@ -46,11 +47,13 @@ export {
 
 function createAndSubscribe(variableName, initialValue) {
 
+    // create the variable with some initial value
     const variable =
         writable(
             JSON.parse(localStorage.getItem(variableName)) ||
             initialValue);
 
+    // save the variable locally
     variable.subscribe(
         (val) => localStorage.setItem(
                     variableName,

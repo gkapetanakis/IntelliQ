@@ -31,19 +31,17 @@
         $questionnaireInfo.nextQuestionID = event.detail.nextQuestionID;
         $session = event.detail.session;
     }
-
-    function handleErrorOccured(event) {
-        const myError = event.detail;
-
-        $errorInfo = myError.toString();
+    /* -------------------------------------------------------------------*/
+    
+    function handleErrorOccured() {
         $currentScreen = "errorScreen";
     }
-    /* -------------------------------------------------------------------*/
+
 </script>
 
 <!-- We create our Screens/Forms and install handlers for possible events.
-     The await keyword is quite usefull, allows the Promise to bring us
-     useful data to be peacefully resolved -->
+     The await keyword is quite usefull, allows for the peaceful resolution
+     of the promise for data -->
 <main>
 {#if $currentScreen === "searchForm"}
     <SearchForm
@@ -60,6 +58,8 @@
         session={$session}
         on:answeredQuestion={answeredQuestion}
         on:errorOccured={handleErrorOccured}/>
+    {:catch err}
+        {handleErrorOccured()}
     {/await}
 {:else if $currentScreen === "finishedScreen"}
 <div class="finish-card">
