@@ -4,7 +4,10 @@
     import ErrorCard from "./forms/ErrorCard.svelte";
     import Card from "./forms/Card.svelte";
 
+    // after answering a question we look for the next
     import { searchNextQuestion } from "./lib/search";
+
+    // stores and useful data to manage the state of our app
     import {
         questionnaireInfo,
         questionsArray,
@@ -14,10 +17,13 @@
         errorInfo
         } from "./stores/dataStores";
 
+    /* -------------------------------------------------------------------*/
+    //In Svelte, when we use events that carry data,
+    //that data is in the event.detail field
+
     async function foundQuestionnaire(event) {
         $questionnaireInfo = event.detail.questionnaireInfo;
         $questionsArray = event.detail.questionsArray;
-
         $currentScreen = "answerQuestionForm";
     }
 
@@ -32,9 +38,12 @@
         $errorInfo = myError.toString();
         $currentScreen = "errorScreen";
     }
-
+    /* -------------------------------------------------------------------*/
 </script>
 
+<!-- We create our Screens/Forms and install handlers for possible events.
+     The await keyword is quite usefull, allows the Promise to bring us
+     useful data to be peacefully resolved -->
 <main>
 {#if $currentScreen === "searchForm"}
     <SearchForm
