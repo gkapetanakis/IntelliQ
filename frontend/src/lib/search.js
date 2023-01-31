@@ -1,32 +1,45 @@
-import { noNextQuestionID, baseUrl, fetchInfo } from "../stores/dataStores";
+import { noNextQuestionID, baseUrl, currentScreen } from "../stores/dataStores";
+import { MyError }  from "./myError";
 
 async function searchQuestionnaire(ID) {
-    const url = `${baseUrl}/questionnaire/${ID}`;
-    const response = await fetch(url);
+    try {
+        const url = `${baseUrl}/questionnaire/${ID}`;
+        const response = await fetch(url);
+        
+        let content;
+        if (response?.ok) {
+            const questionnaire = await response.json();
+    
+            // set-up questionnaire information
+            const {questionnaireID, questionnaireTitle} = questionnaire;
+            const firstQuestionID = getFirstQuestionID(questionnaire);
+    
+            const questionnaireInfo = {
+                questionnaireID,
+                questionnaireTitle,
+                nextQuestionID: firstQuestionID
+            };
+            const questionsArray = questionnaire.questions.map(question => question.qID);
+    
+            content = {questionnaireInfo, questionsArray};        
+        }
+        else {
+            content = await response.text();
+            throw new MyError({
+                message: content,
+                statusCode: response.status
+            })
+        }
+        return content;
 
-    let content;
-    if (response?.ok) {
-        const questionnaire = await response.json();
-
-        // set-up questionnaire information
-        const {questionnaireID, questionnaireTitle} = questionnaire;
-        const firstQuestionID = getFirstQuestionID(questionnaire);
-
-        const questionnaireInfo = {
-            questionnaireID,
-            questionnaireTitle,
-            nextQuestionID: firstQuestionID
-        };
-        const questionsArray = questionnaire.questions.map(question => question.qID);
-
-        content = {questionnaireInfo, questionsArray};        
+    } catch (err) {
+        throw new MyError({
+            message: err.message,
+            name: err.name,
+            statusCode: err?.statusCode
+        });
     }
-    else {
-        content = await response.text();
-    }
 
-    fetchInfo.set({ status: response.status, content });
-    return content;
 
     function getFirstQuestionID(questionnaire) {
         const { questions } = questionnaire;
@@ -52,19 +65,33 @@ function searchNextQuestionID(
 }
 
 async function searchNextQuestion(questionnaireInfo) {
-    const { questionnaireID, nextQuestionID } = questionnaireInfo;
+    try {
+        const { questionnaireID, nextQuestionID } = questionnaireInfo;
+        if (nextQuestionID === noNextQuestionID) {
+            currentScreen.set("finishedScreen");
+            return null;
+        }
+    
+        const url = `${baseUrl}/question/${questionnaireID}/${nextQuestionID}`;
+        const response = await fetch(url);
+    
+        if (response?.ok) {
+            return await response.json();
+        } else {
+            const content = await response.text();
+            throw new MyError({
+                message: content,
+                statusCode: response.status
+            });
+        }
 
-    if (nextQuestionID === noNextQuestionID) {
-        return {finished: true, nextQuestion: null};
+    } catch (err) {
+        throw new MyError({
+            message: err.message,
+            name: err.name,
+            statusCode: err?.statusCode
+        });
     }
-
-    const url = `${baseUrl}/question/${questionnaireID}/${nextQuestionID}`;
-    const response = await fetch(url);
-
-    const content = await response.json();
-
-    fetchInfo.set({status: response.status, content});
-    return {finished: false, nextQuestion: content};
 }
 
 export { searchQuestionnaire, searchNextQuestionID, searchNextQuestion };

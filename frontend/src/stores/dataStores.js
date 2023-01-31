@@ -18,12 +18,7 @@ const questionsArray = createAndSubscribe("questionsArray", []);
 const session = createAndSubscribe("session", null);
 const currentScreen = createAndSubscribe("currentScreen", "searchForm");
 const chosenOpt = createAndSubscribe("chosenOpt", null);
-
-// a variable to handle error API calls probably...
-const fetchInfo = writable({
-    status: null,
-    content: null
-});
+const errorInfo = createAndSubscribe("errorInfo","");
 
 function clearStorage() {
     localStorage.removeItem("questionnaireInfo");
@@ -31,6 +26,7 @@ function clearStorage() {
     localStorage.removeItem("session");
     localStorage.removeItem("currentScreen");
     localStorage.removeItem("chosenOpt");
+    localStorage.removeItem("errorInfo");
     location.reload();
 }
 
@@ -42,7 +38,7 @@ export {
     session,
     currentScreen,
     chosenOpt,
-    fetchInfo,
+    errorInfo,
     clearStorage,
 };
 
