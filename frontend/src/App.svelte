@@ -1,47 +1,124 @@
 <script>
+    import SearchForm from "./forms/SearchForm.svelte";
+    import AnswerQuestionForm from "./forms/AnswerQuestionForm.svelte";
+    import ErrorCard from "./forms/ErrorCard.svelte";
+    import Card from "./forms/Card.svelte";
 
-    import SearchForm from "./lib/SearchForm.svelte";
-    import AnswerQuestionForm from "./lib/AnswerQuestionForm.svelte";
-    import { findNextQuestion } from "./lib/functions/submitAnswer";
-
-    let questionnaireInfo;
-    let questionsArray;
-    let session = null;
-    let currentScreen = "searchForm";
+    import { searchNextQuestion } from "./lib/search";
+    import {
+        questionnaireInfo,
+        questionsArray,
+        session,
+        currentScreen,
+        clearStorage,
+        errorInfo
+        } from "./stores/dataStores";
 
     async function foundQuestionnaire(event) {
-        console.log(event.detail);
-        questionnaireInfo = event.detail.questionnaireInfo;
-        questionsArray = event.detail.questionsArray;
+        $questionnaireInfo = event.detail.questionnaireInfo;
+        $questionsArray = event.detail.questionsArray;
 
-        currentScreen = "answerQuestionForm";
+        $currentScreen = "answerQuestionForm";
     }
 
     function answeredQuestion(event) {
-        console.log(event.detail);
-        questionnaireInfo.nextQuestionID = event.detail.nextQuestionID;
-        session = event.detail.session;
+        $questionnaireInfo.nextQuestionID = event.detail.nextQuestionID;
+        $session = event.detail.session;
+    }
+
+    function handleErrorOccured(event) {
+        const myError = event.detail;
+
+        $errorInfo = myError.toString();
+        $currentScreen = "errorScreen";
     }
 
 </script>
 
 <main>
-    {#if currentScreen === "searchForm"}
-        <div class="searchFrom">
-            <SearchForm on:foundQuestionnaire={foundQuestionnaire}/>
-        </div>
-    {:else if currentScreen === "answerQuestionForm"}
-        <div class="answerQuestionForm">
-            {#await findNextQuestion(questionnaireInfo)}
-                <p>Loading...</p>
-            {:then nextQuestion}
-                <AnswerQuestionForm
-                {questionnaireInfo}
-                {questionsArray}
-                {nextQuestion}
-                {session}
-                on:answeredQuestion={answeredQuestion}/>
-            {/await}
-        </div>
-    {/if}
+{#if $currentScreen === "searchForm"}
+    <SearchForm
+        on:foundQuestionnaire={foundQuestionnaire}
+        on:errorOccured={handleErrorOccured}/>
+{:else if $currentScreen === "answerQuestionForm"}
+    {#await searchNextQuestion($questionnaireInfo)}
+    <Card>Loading...</Card>
+    {:then nextQuestion}
+    <AnswerQuestionForm
+        questionnaireInfo={$questionnaireInfo}
+        questionsArray={$questionsArray}
+        nextQuestion={nextQuestion}
+        session={$session}
+        on:answeredQuestion={answeredQuestion}
+        on:errorOccured={handleErrorOccured}/>
+    {/await}
+{:else if $currentScreen === "finishedScreen"}
+<div class="finish-card">
+    <Card>
+        <form on:submit|preventDefault={clearStorage}> 
+            <p>Congratulations! You finished answering a questionnaire!</p>
+            <button type="submit">Reset</button> 
+        </form>
+    </Card>
+</div>
+{:else}
+<div class="error-card">
+    <ErrorCard>
+        <form on:submit|preventDefault={clearStorage}>
+            <p>{$errorInfo}</p>
+            <button type="submit" >Reset</button>
+        </form>
+    </ErrorCard>
+</div>
+{/if}
 </main>
+
+<style>
+    .finish-card {
+        text-align: center;
+        padding: 2em;
+    }
+
+    .finish-card form {
+        margin-top: 2em;
+        display: inline-block;
+    }
+
+    .finish-card p {
+        font-size: 1.2em;
+        color: #4d4d4d;
+        margin-bottom: 1em;
+    }
+
+    .finish-card button {
+        padding: 0.5em 1em;
+        background-color: #737373;
+        color: #fff;
+        border: none;
+        border-radius: 0.2em;
+        font-size: 1em;
+        cursor: pointer;
+    }
+
+    .error-card form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 1rem;
+    }
+
+    .error-card p {
+        font-weight: bold;
+        margin-bottom: 1rem;
+    }
+
+    .error-card button {
+        background-color: #721c24;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 0.75rem 1.5rem;
+        font-weight: bold;
+        cursor: pointer;
+    }
+</style>
