@@ -12,4 +12,6 @@ function handleError(err) {
         : { status: StatusCodes.INTERNAL_SERVER_ERROR };
 }
 
-export { handleError };
+export {
+    handleError
+};

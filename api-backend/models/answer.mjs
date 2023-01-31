@@ -23,6 +23,18 @@ const answerSchema = new mongoose.Schema({
 // easily handle duplicate unique fields
 answerSchema.plugin(uniqueValidator);
 
+answerSchema.pre(/save/, function(next) {
+    // doing this for hook to work even when saving multiple documents
+    const answers = Array.isArray(this) ? this : [this];
+
+    // validate that the questionnaire exists
+    // validate that the questions exists
+    // validate that the option exists
+    // validate that the _uniqueID is correct (sanity check)
+    
+    next();
+});
+
 answerSchema.post(/save/, debugUtils.successfulSaveHook(docType)); // hook if save succeeds
 answerSchema.post(/save/, debugUtils.failedSaveHook(docType)); // hook if save fails
 answerSchema.post(/find/, debugUtils.successfulFindHook(docType)); // hook if find succeeds

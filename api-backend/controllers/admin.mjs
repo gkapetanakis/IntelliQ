@@ -100,4 +100,9 @@ async function postResetQ(req, res) {
     res.status(response.status === "OK" ? StatusCodes.NO_CONTENT : StatusCodes.INTERNAL_SERVER_ERROR).json(response);
 }
 
-export { getHealthcheck, postQuestionnaireUpd, postResetAll, postResetQ };
+export {
+    getHealthcheck,
+    postQuestionnaireUpd,
+    postResetAll,
+    postResetQ
+};

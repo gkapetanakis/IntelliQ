@@ -26,7 +26,7 @@ mongoose.connection.on("error", (error) => console.error("Database connection er
 mongoose.connection.on("connected", () => console.log("Connected to database")); // add connection event listener
 mongoose.connection.on("disconnected", () => console.log("Disconnected from database")); // add disconnection event listener
 
-// configure the express app
+// create and configure the express app
 const app = express();
 app.use(express.json());
 app.use(`${APP_BASE_URL}/admin`, adminRouter); // set up admin endpoints
@@ -35,4 +35,9 @@ app.use(APP_BASE_URL, functionalityRouter); // set up functionality endpoints
 // start the express app
 app.listen(APP_PORT, APP_HOST, console.log("App is now listening on port", APP_PORT));
 
-export { DATABASE_URL };
+export {
+    APP_HOST,
+    APP_PORT,
+    APP_BASE_URL,
+    DATABASE_URL
+};

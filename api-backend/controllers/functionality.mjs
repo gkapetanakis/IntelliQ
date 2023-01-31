@@ -2,6 +2,7 @@
 
 // import this package's modules
 import Questionnaire from "../models/questionnaire.mjs";
+import Answer from "../models/answer.mjs";
 import { createDocument, executeQuery } from "../lib/dbUtils.mjs";
 import { handleCreateResponse, handleQueryResponse } from "../lib/apiUtils.mjs";
 
@@ -142,4 +143,10 @@ async function getGetQuestionAnswers(req, res) {
     res.status(status).json(response);
 }
 
-export { getQuestionnaire, getQuestion, postDoAnswer, getGetSessionAnswers, getGetQuestionAnswers };
+export {
+    getQuestionnaire,
+    getQuestion,
+    postDoAnswer,
+    getGetSessionAnswers,
+    getGetQuestionAnswers
+};

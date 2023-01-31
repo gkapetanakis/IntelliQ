@@ -37,6 +37,11 @@ questionnaireSchema.pre(/save/, function(next) {
     // doing this for hook to work even when saving multiple documents
     const questionnaires = Array.isArray(this) ? this : [this];
 
+    // validate that the qIDs are unique
+    // validate that the optIDs are unique
+    // remove any duplicate keywords
+    // validate that the nextqIDs are correct
+
     questionnaires.forEach((questionnaire) => {
         // sort questions by increasing qID before saving document
         // to avoid having to sort after every 'find'

@@ -1,10 +1,10 @@
 // executes the given query and returns a pair { res, err }
-// res is:
+// res:
 //     the query response:
 //         the document(s) found in a 'find' query (can be null if none were found)
 //         an object that contains the number of documents deleted in a 'delete' query (deletedCount field)
-//     null if an error occured
-// err is:
+//         null if an error occured
+// err:
 //     null if no error occured
 //     the error that occured if an error occured
 // this function basically just wraps a try/catch block that would
@@ -38,4 +38,7 @@ async function createDocument(json, model) {
     return { err };
 }
 
-export { executeQuery, createDocument };
+export {
+    executeQuery,
+    createDocument
+};
