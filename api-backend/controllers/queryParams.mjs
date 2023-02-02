@@ -7,16 +7,25 @@ import { AsyncParser } from "@json2csv/node";
 // accept requests with either no query parameters or
 // only 1 "format" parameter
 function checkParams(req, res, next) {
+    const formatValues = [undefined, "json", "csv"];
     const query = req.query;
     const keys = Object.keys(query);
-    if (keys.length === 0 ||
-       (keys.length === 1 &&
-        keys[0] === "format")) {
-        next(); // accept request and continue proccessing
-      } else {
-        res.status(StatusCodes.BAD_REQUEST).json();
+
+    if (keys.length > 1) {
         // reject request
-      }
+        res.status(StatusCodes.BAD_REQUEST).json();
+        return;
+
+    }
+    const format = query?.format;
+    if (formatValues.includes(format)) {
+        // accept request
+        next();
+    }
+    else {
+        // reject request
+        res.status(StatusCodes.BAD_REQUEST).json();
+    }
 }
 
 // format based on the value of "format" query parameter
@@ -42,6 +51,7 @@ async function format(req, res) {
         res.status(status).send(response);
     }
     else {
+        // this case will execute only if we've written checkParams wrong
         res.status(StatusCodes.BAD_REQUEST).json();
     }
 }
