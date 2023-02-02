@@ -11,7 +11,7 @@ function checkParams(req, res, next) {
     const query = req.query;
 
     // if we don't care about other query parameters remove this segment
-    /* ------------------------ start segment ------------------------ */
+    // ------------------------- start segment -------------------------
     const keys = Object.keys(query);
     if (keys.length > 1) {
         // reject request
@@ -19,7 +19,7 @@ function checkParams(req, res, next) {
         return;
 
     }
-    /* ------------------------- end segment ------------------------- */
+    // -------------------------- end segment --------------------------
 
     const format = query?.format;
     if (formatValues.includes(format)) {
