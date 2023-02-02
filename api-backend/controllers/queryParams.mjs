@@ -17,7 +17,6 @@ function checkParams(req, res, next) {
         // reject request
         res.status(StatusCodes.BAD_REQUEST).json();
         return;
-
     }
     // -------------------------- end segment --------------------------
 
@@ -35,7 +34,8 @@ function checkParams(req, res, next) {
 // format based on the value of "format" query parameter
 async function format(req, res) {
     const format = req.query?.format;
-    let { status, response } = res.locals.data;
+    // res.locals.data might not have a "response"
+    let { status, response } = res.locals?.data;
 
     if (!format || format === "json") {
         res.status(status).json(response);
