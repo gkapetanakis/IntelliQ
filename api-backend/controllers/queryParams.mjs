@@ -22,17 +22,23 @@ function checkParams(req, res, next) {
 // format based on the value of "format" query parameter
 async function format(req, res) {
     const format = req.query?.format;
-    let { status, response } = res.locals?.data;
+    let { status, response } = res.locals.data;
 
-    if (format === "json" || !format) {
+    if (!format || format === "json") {
         res.status(status).json(response);
     }
     else if (format === "csv") {
-        res.set("Content-Type", "text/csv");
-        if ( status > 199 && status < 300  && !!response) {
-            const parser = new AsyncParser();
-            response = await parser.parse(response).promise();
+        if (!!response) {
+            try {
+                const parser = new AsyncParser();
+                response = await parser.parse(response).promise();
+            }
+            catch (err) {
+                status = StatusCodes.INTERNAL_SERVER_ERROR;
+                response = undefined;
+            }
         }
+        res.set("Content-Type", "text/csv");
         res.status(status).send(response);
     }
     else {
