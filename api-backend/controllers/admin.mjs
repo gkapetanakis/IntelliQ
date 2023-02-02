@@ -12,17 +12,18 @@ import { executeQuery, createDocument } from "../lib/dbUtils.mjs";
 import { handleQueryResponse, handleCreateResponse, documentExists } from "../lib/apiUtils.mjs";
 
 // check database connectivity
-function getHealthcheck(_req, res) {
+function getHealthcheck(_req, res, next) {
     // reasyState is equal to 1 if connection to database is healthy
     const response = {
         status: mongoose.connection.readyState === 1 ? "OK" : "failed",
         dbconnection: DATABASE_URL
     };
-    res.status(StatusCodes.OK).json(response);
+    res.locals.data = { status: StatusCodes.OK, response };
+    next();
 }
 
 // upload a questionnaire to the database
-async function postQuestionnaireUpd(req, res) {
+async function postQuestionnaireUpd(req, res, next) {
     // turn the uploaded document into a JSON object:
     // req.file.buffer contains the uploaded file data as bytes
     // toString() is required to make it readable
@@ -32,12 +33,13 @@ async function postQuestionnaireUpd(req, res) {
     // create a document and save it
     const status = handleCreateResponse(await createDocument(obj, Questionnaire));
 
-    // send response
-    res.status(status).send();
+    // set response
+    res.locals.data = { status };
+    next();
 }
 
 // delete all documents from the database
-async function postResetAll(_req, res) {
+async function postResetAll(_req, res, next) {
     // create response
     const response = {
         status: "OK",
@@ -62,12 +64,15 @@ async function postResetAll(_req, res) {
             response.reason += " Failed to delete answers.";
     }
 
-    // send response
-    res.status(response.status === "OK" ? StatusCodes.OK : StatusCodes.INTERNAL_SERVER_ERROR).json(response);
+    // set response data
+    res.locals.data = {
+        status: response.status === "OK" ? StatusCodes.OK : StatusCodes.INTERNAL_SERVER_ERROR,
+        response: response };
+    next();
 }
 
 // delete all sessions of a given questionnaire
-async function postResetQ(req, res) {
+async function postResetQ(req, res, next) {
     const questionnaireID = req.params.questionnaireID;
 
     // create response
@@ -97,7 +102,12 @@ async function postResetQ(req, res) {
         }
     }
 
-    res.status(response.status === "OK" ? StatusCodes.NO_CONTENT : StatusCodes.INTERNAL_SERVER_ERROR).json(response);
+    //set response data
+    res.locals.data = {
+        status: response.status === "OK" ? StatusCodes.NO_CONTENT : StatusCodes.INTERNAL_SERVER_ERROR,
+        response: response
+    };
+    next();
 }
 
 export {

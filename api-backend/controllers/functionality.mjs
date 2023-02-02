@@ -7,7 +7,7 @@ import { createDocument, executeQuery } from "../lib/dbUtils.mjs";
 import { handleCreateResponse, handleQueryResponse } from "../lib/apiUtils.mjs";
 
 // fetch a questionnaire from the database
-async function getQuestionnaire(req, res) {
+async function getQuestionnaire(req, res, next) {
     const questionnaireID = req.params.questionnaireID;
     
     // build query
@@ -20,12 +20,13 @@ async function getQuestionnaire(req, res) {
     // execute query and create response
     const { status, response } = handleQueryResponse(await executeQuery(query));
 
-    // send response
-    res.status(status).json(response);
+    // set response
+    res.locals.data = { status, response };
+    next();
 }
 
 // fetch a question from the database
-async function getQuestion(req, res) {
+async function getQuestion(req, res, next) {
     const questionnaireID = req.params.questionnaireID;
     const questionID = req.params.questionID;
 
@@ -51,12 +52,13 @@ async function getQuestion(req, res) {
     // execute query and create response
     const { status, response } = handleQueryResponse(await executeQuery(query), transform);
 
-    // send response
-    res.status(status).json(response);
+    // set response
+    res.locals.data = { status, response };
+    next();
 }
 
 // post an answer to the database
-async function postDoAnswer(req, res) {
+async function postDoAnswer(req, res, next) {
     const questionnaireID = req.params.questionnaireID;
     const questionID = req.params.questionID;
     const sessionID = req.params.sessionID;
@@ -74,12 +76,13 @@ async function postDoAnswer(req, res) {
     // create and save the answer document
     const status = handleCreateResponse(await createDocument(obj, Answer));
 
-    // send the response
-    res.status(status).send();
+    // set the response
+    res.locals.data = { status };
+    next();
 }
 
 // fetch a session from the database
-async function getGetSessionAnswers(req, res) {
+async function getGetSessionAnswers(req, res, next) {
     const questionnaireID = questionnaireID;
     const sessionID = sessionID;
 
@@ -107,12 +110,13 @@ async function getGetSessionAnswers(req, res) {
     // execute the query and handle the response
     const { status, response } = handleQueryResponse(await executeQuery(query), transform);
 
-    // send response
-    res.status(status).json(response);
+    // set response data
+    res.locals.data = { status, response };
+    next();
 }
 
 // fetch all the answers to a question from the database
-async function getGetQuestionAnswers(req, res) {
+async function getGetQuestionAnswers(req, res, next) {
     const questionnaireID = req.params.questionnaireID;
     const questionID = req.params.questionID;
 
@@ -139,8 +143,9 @@ async function getGetQuestionAnswers(req, res) {
     // execute the query, handle its response and handle any errors that may occur
     const { status, response } = handleQueryResponse(await executeQuery(query), transform);
 
-    // send response
-    res.status(status).json(response);
+    // set response data
+    res.locals.data = { status, response };
+    next();
 }
 
 export {

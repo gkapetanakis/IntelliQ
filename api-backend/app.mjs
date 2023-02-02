@@ -41,3 +41,10 @@ export {
     APP_BASE_URL,
     DATABASE_URL
 };
+
+// there are 4 levels of middleware:
+//      -->                                 (0)
+//      {admin, functionality}Router -->    (1)
+//      checkParams -->                     (2)
+//      actually handle request -->         (3)
+//      format                              (4)

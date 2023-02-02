@@ -7,6 +7,10 @@ import multer from "multer";
 // import this package's modules
 import * as controller from "../controllers/admin.mjs";
 
+// import checking middleware
+// import formatting middleware
+import { checkParams, format } from "../controllers/queryParams.mjs";
+
 // configure multer (module that helps with handling multipart/form-data files)
 const multerOptions = {
     storage: multer.memoryStorage() // store received files in RAM (and not on the disk)
@@ -16,17 +20,20 @@ const upload = multer(multerOptions);
 // create the router
 const router = express.Router();
 
+// check parameters of requests
+router.use(checkParams);
+
 // endpoint to check the health of the connection to the database
-router.get("/healthcheck", controller.getHealthcheck);
+router.get("/healthcheck", controller.getHealthcheck, format);
 
 // endpoint to post a new questionnaire (as a JSON file)
 // file contents in req.file
-router.post("/questionnaire_upd", upload.single("file"), controller.postQuestionnaireUpd);
+router.post("/questionnaire_upd", upload.single("file"), controller.postQuestionnaireUpd, format);
 
 // endpoint to delete everything in the database
-router.post("/resetall", controller.postResetAll);
+router.post("/resetall", controller.postResetAll, format);
 
 // endpoint to delete a questionnaire's sessions
-router.post("/resetq/:questionnaireID", controller.postResetQ);
+router.post("/resetq/:questionnaireID", controller.postResetQ, format);
 
 export default router;
