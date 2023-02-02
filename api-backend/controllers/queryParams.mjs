@@ -9,10 +9,10 @@ import { AsyncParser } from "@json2csv/node";
 function checkParams(req, res, next) {
     const formatValues = [undefined, "json", "csv"];
     const query = req.query;
-    const keys = Object.keys(query);
 
     // if we don't care about other query parameters remove this segment
     /* ------------------------ start segment ------------------------ */
+    const keys = Object.keys(query);
     if (keys.length > 1) {
         // reject request
         res.status(StatusCodes.BAD_REQUEST).json();
