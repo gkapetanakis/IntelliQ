@@ -13,7 +13,7 @@ function checkParams(req, res, next) {
     // if we don't care about other query parameters remove this segment
     // ------------------------- start segment -------------------------
     const keys = Object.keys(query);
-    if (keys.length > 1 || keys[0] !== "format") {
+    if (keys.length > 1 || (keys.length === 1 && keys[0] !== "format")) {
         // reject request
         res.status(StatusCodes.BAD_REQUEST).json();
         return;
