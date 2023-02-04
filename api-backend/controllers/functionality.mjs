@@ -3,25 +3,17 @@
 // import this package's modules
 import Questionnaire from "../models/questionnaire.mjs";
 import Answer from "../models/answer.mjs";
-import { createDocument, executeQuery } from "../lib/dbUtils.mjs";
-import { handleCreateResponse, handleQueryResponse } from "../lib/apiUtils.mjs";
 
 // fetch a questionnaire from the database
 async function getQuestionnaire(req, res, next) {
     const questionnaireID = req.params.questionnaireID;
-    
-    // build query
-    const query = Questionnaire
+
+    res.locals.query = Questionnaire
         .findOne()
         .where({ "questionnaireID" : questionnaireID })
         .select({ "questions.options" : false })
-        .lean(); // return POJO
+        .lean(); // return POJO 
 
-    // execute query and create response
-    const { status, response } = handleQueryResponse(await executeQuery(query));
-
-    // set response
-    res.locals.data = { status, response };
     next();
 }
 
@@ -30,8 +22,7 @@ async function getQuestion(req, res, next) {
     const questionnaireID = req.params.questionnaireID;
     const questionID = req.params.questionID;
 
-    // build query
-    const query = Questionnaire
+    res.locals.query = Questionnaire
         .findOne()
         .where({ "questionnaireID" : questionnaireID })
         .where({ "questions" : { $elemMatch : { "qID" : questionID } } })
@@ -41,19 +32,13 @@ async function getQuestion(req, res, next) {
         .select({ "keywords" : false })
         .lean(); // return POJO
 
-    // define transform function
-    const transform = (questionnaire) => {
+    res.locals.transform = (questionnaire) => {
         return {
             questionnaireID: questionnaireID,
-            ...questionnaire["questions"][0] // the array will only have one element
+            ...questionnaire.questions[0] // the array will only have one element
         };
     };
 
-    // execute query and create response
-    const { status, response } = handleQueryResponse(await executeQuery(query), transform);
-
-    // set response
-    res.locals.data = { status, response };
     next();
 }
 
@@ -64,8 +49,8 @@ async function postDoAnswer(req, res, next) {
     const sessionID = req.params.sessionID;
     const optionID = req.params.optionID;
 
-    // construct the answer
-    const obj = {
+    res.locals.model = Answer;
+    res.locals.obj = {
         questionnaireID: questionnaireID,
         session: sessionID,
         qID: questionID,
@@ -73,21 +58,15 @@ async function postDoAnswer(req, res, next) {
         _uniqueID: questionnaireID + sessionID + questionID
     };
 
-    // create and save the answer document
-    const status = handleCreateResponse(await createDocument(obj, Answer));
-
-    // set the response
-    res.locals.data = { status };
     next();
 }
 
 // fetch a session from the database
 async function getGetSessionAnswers(req, res, next) {
-    const questionnaireID = questionnaireID;
-    const sessionID = sessionID;
+    const questionnaireID = req.params.questionnaireID;
+    const sessionID = req.params.sessionID;
 
-    // build the query
-    const query = Answer
+    res.locals.query = Answer
         .find()
         .where({ "questionnaireID" : questionnaireID })
         .where({ "session" : sessionID })
@@ -98,20 +77,14 @@ async function getGetSessionAnswers(req, res, next) {
         .sort({ "qID" : "ascending" })
         .lean(); // return POJO
 
-    // function to be used on the fetched documents before sending them to the user
-    const transform = (docs) => {
+    res.locals.transform = (answers) => {
         return {
             questionnaireID: questionnaireID,
             session: sessionID,
-            answers: docs
+            answers: answers
         };
     };
 
-    // execute the query and handle the response
-    const { status, response } = handleQueryResponse(await executeQuery(query), transform);
-
-    // set response data
-    res.locals.data = { status, response };
     next();
 }
 
@@ -120,8 +93,7 @@ async function getGetQuestionAnswers(req, res, next) {
     const questionnaireID = req.params.questionnaireID;
     const questionID = req.params.questionID;
 
-    // build the query
-    const query = Answer
+    res.locals.query = Answer
         .find()
         .where({ "questionnaireID" : questionnaireID })
         .where({ "qID" : questionID })
@@ -131,20 +103,14 @@ async function getGetQuestionAnswers(req, res, next) {
         .sort({ "_date" : "ascending" })
         .lean(); // return POJO
 
-    // function to be used on the fetched documents before sending them to the user
-    const transform = (docs) => {
+    res.locals.transform = (answers) => {
         return {
             questionnaireID: questionnaireID,
             questionID: questionID,
-            answers: docs
+            answers: answers
         };
     };
 
-    // execute the query, handle its response and handle any errors that may occur
-    const { status, response } = handleQueryResponse(await executeQuery(query), transform);
-
-    // set response data
-    res.locals.data = { status, response };
     next();
 }
 
