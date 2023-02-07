@@ -21,7 +21,7 @@
     //In Svelte, when we use events that carry data,
     //that data is in the event.detail field
 
-    async function foundQuestionnaire(event) {
+    function foundQuestionnaire(event) {
         $questionnaireInfo = event.detail.questionnaireInfo;
         $questionsArray = event.detail.questionsArray;
         $currentScreen = "answerQuestionForm";
