@@ -4,6 +4,7 @@ import uniqueValidator from "mongoose-unique-validator";
 
 // import this package's modules
 import * as debugUtils from "../lib/debugUtils.mjs";
+import questionnaireCustomValidator from "./questionnaireValidator.mjs";
 
 // the type of this schema's documents
 const docType = "Questionnaire";
@@ -18,7 +19,7 @@ const questionSchema = new mongoose.Schema({
     qID: { type: String, required: true },
     qtext: { type: String, required: true },
     required: { type: String, enum: ["true", "false"], lowercase: true, default: "false" },
-    type: { type: String, required: true, enum: ["question", "profile"] },
+    type: { type: String, enum: ["question", "profile"], lowercase: true, default: "question" },
     options: [{ type: optionSchema, required: true }]
 });
 
@@ -32,27 +33,29 @@ const questionnaireSchema = new mongoose.Schema({
 // easily handle duplicate unique fields
 questionnaireSchema.plugin(uniqueValidator);
 
+// if built-in validation is successful, perform custom validation
+questionnaireSchema.post(/validate/, function(doc, next) {
+    const err = questionnaireCustomValidator(doc);
+    next(err);
+});
+
 // will run before a questionnaire is saved
 questionnaireSchema.pre(/save/, function(next) {
     // doing this for hook to work even when saving multiple documents
     const questionnaires = Array.isArray(this) ? this : [this];
 
-    // validate that the qIDs are unique
-    // validate that the optIDs are unique
-    // remove any duplicate keywords
-    // validate that the nextqIDs are correct
-
     questionnaires.forEach((questionnaire) => {
         // sort questions by increasing qID before saving document
         // to avoid having to sort after every 'find'
-        questionnaire["questions"].sort((q1, q2) =>
-            q1["qID"] < q2["qID"] ? -1 : 1
+        questionnaire.questions.sort((q1, q2) =>
+            q1.qID < q2.qID ? -1 : 1
         );
+        
         // sort options by increasing optID before saving document
         // to avoid having to sort after every 'find'
-        questionnaire["questions"].forEach((question) => {
-            question["options"].sort((o1, o2) =>
-                o1["optID"] < o2["optID"] ? -1 : 1
+        questionnaire.questions.forEach((question) => {
+            question.options.sort((o1, o2) =>
+                o1.optID < o2.optID ? -1 : 1
             );
         });
     });

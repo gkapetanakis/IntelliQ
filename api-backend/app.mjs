@@ -6,6 +6,8 @@ import dotenv from "dotenv";
 // import this package's modules
 import adminRouter from "./routes/admin.mjs";
 import functionalityRouter from "./routes/functionality.mjs";
+import formatHandler from "./middleware/formatHandler.mjs";
+import errorHandler from "./middleware/errorHandler.mjs";
 
 // load environmental variables from the .env file
 // if not in a production environment
@@ -28,9 +30,10 @@ mongoose.connection.on("disconnected", () => console.log("Disconnected from data
 
 // create and configure the express app
 const app = express();
-app.use(express.json());
 app.use(`${APP_BASE_URL}/admin`, adminRouter); // set up admin endpoints
 app.use(APP_BASE_URL, functionalityRouter); // set up functionality endpoints
+app.use(formatHandler); // set up format handler middleware
+app.use(errorHandler); // set up the error handler middleware
 
 // start the express app
 app.listen(APP_PORT, APP_HOST, console.log("App is now listening on port", APP_PORT));
@@ -41,10 +44,3 @@ export {
     APP_BASE_URL,
     DATABASE_URL
 };
-
-// there are 4 levels of middleware:
-//      -->                                 (0)
-//      {admin, functionality}Router -->    (1)
-//      checkParams -->                     (2)
-//      actually handle request -->         (3)
-//      format                              (4)

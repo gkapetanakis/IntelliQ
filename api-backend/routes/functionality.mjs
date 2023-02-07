@@ -5,30 +5,27 @@ import express from "express";
 
 // import this package's modules
 import * as controller from "../controllers/functionality.mjs";
-
-// import checking middleware
-// import formatting middleware
-import { checkParams, format } from "../controllers/queryParams.mjs";
+import { findQueryHandler, createQueryHandler } from "../middleware/queryHandler.mjs";
 
 // create the router
 const router = express.Router();
 
-// check parameters of requests
-router.use(checkParams);
-
 // endpoint to fetch a questionnaire from the database
-router.get("/questionnaire/:questionnaireID", controller.getQuestionnaire, format);
+router.get("/questionnaire/:questionnaireID", controller.getQuestionnaire);
 
 // endpoint to fetch a question from the database
-router.get("/question/:questionnaireID/:questionID", controller.getQuestion, format);
+router.get("/question/:questionnaireID/:questionID", controller.getQuestion);
 
 // endpoint to post an answer to the database
-router.post("/doanswer/:questionnaireID/:questionID/:sessionID/:optionID", controller.postDoAnswer, format);
+router.post("/doanswer/:questionnaireID/:questionID/:sessionID/:optionID", controller.postDoAnswer, createQueryHandler);
 
 // endpoint to fetch a session from the database
-router.get("/getsessionanswers/:questionnaireID/:sessionID", controller.getGetSessionAnswers, format);
+router.get("/getsessionanswers/:questionnaireID/:sessionID", controller.getGetSessionAnswers);
 
 // endpoint to fetch all the answers to a question from the database
-router.get("/getquestionanswers/:questionnaireID/:questionID", controller.getGetQuestionAnswers, format);
+router.get("/getquestionanswers/:questionnaireID/:questionID", controller.getGetQuestionAnswers);
+
+// all "GET" endpoints use this handler
+router.get(/.*/, findQueryHandler);
 
 export default router;
