@@ -15,6 +15,7 @@
     export let nextQuestion;
     export let session;
 
+
     /* ------------------------------------------------------------------------------ */
     // destructure data in a proper format
     const { questionnaireID, questionnaireTitle } = questionnaireInfo;

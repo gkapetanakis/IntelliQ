@@ -42,7 +42,6 @@ export {
 //-------------- helper function-------------------------------
 
 function createAndSubscribe(variableName, initialValue) {
-
     // create the variable with some initial value
     const variable =
         writable(
