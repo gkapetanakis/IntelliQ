@@ -1,3 +1,6 @@
+<!-- A generic wrapper for our stuff. We want them to look like
+     cards, hence the name -->
+
 <div class="card">
     <slot></slot>
 </div>

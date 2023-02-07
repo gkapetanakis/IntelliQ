@@ -1,3 +1,5 @@
+<!-- same thing as card but for errors -->
+
 <div class="error-card">
     <slot></slot>
 </div>

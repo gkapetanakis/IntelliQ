@@ -63,7 +63,10 @@ function failedDeleteHook(docType) {
 }
 
 export { 
-    successfulSaveHook, failedSaveHook,
-    successfulFindHook, failedFindHook,
-    successfulDeleteHook, failedDeleteHook 
+    successfulSaveHook,
+    failedSaveHook,
+    successfulFindHook,
+    failedFindHook,
+    successfulDeleteHook,
+    failedDeleteHook 
 };

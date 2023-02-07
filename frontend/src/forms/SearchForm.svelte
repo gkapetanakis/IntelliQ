@@ -6,6 +6,8 @@
     let dispatch = createEventDispatcher();
     let inputText = "";
 
+    // get questionnaire data, if successfull dispatch questionnaire data
+    // to App.svelte (parent) else dispatch error
     async function handleSubmit() {
         try {
             const questionnaireData = await searchQuestionnaire(inputText.trim());

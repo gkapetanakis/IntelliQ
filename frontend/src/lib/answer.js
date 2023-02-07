@@ -1,7 +1,7 @@
 import { baseUrl } from "../stores/dataStores";
 import { MyError }  from "./myError";
 
-// how many retries we'll do if the session already exists
+// # of retries we'll do if the session we generate already exists
 const maxIters = 3;
 
 async function doAnswerAndStartSession(questionnaireID, questionID, session = null, optionID, iterations = 0) {
@@ -39,6 +39,7 @@ async function doAnswerAndStartSession(questionnaireID, questionID, session = nu
         });
     }
 
+    // magic ID generator...
     function generateID(length = 4) {
         return (Math.random().toString(36).substring(2)
         + Date.now().toString(36)).substring(0,length);
