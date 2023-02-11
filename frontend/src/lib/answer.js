@@ -5,7 +5,7 @@ import { MyError }  from "./myError";
 const maxIters = 3;
 
 async function doAnswerAndStartSession(questionnaireID, questionID, session = null, optionID, iterations = 0) {
-    if (!session) {
+    if (!session && iterations < maxIters) {
         session = generateID();
     }
 
