@@ -29,7 +29,7 @@ async function doAnswerAndStartSession(questionnaireID, questionID, session = nu
         }
     } catch (err) {
         // retry to get a valid session
-        if (iterations < maxIters && err?.statusCode) {
+        if (iterations < (maxIters - 1) && err?.statusCode) {
             return doAnswerAndStartSession(questionnaireID, questionID, null, optionID, iterations + 1);
         }
         throw new MyError({
