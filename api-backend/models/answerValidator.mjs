@@ -38,9 +38,9 @@ async function answerCustomValidator(answer) {
             if (question.required === "false" && answer.ans === "")
                 invalidans = false;
             // if the question is open string and any answer has been given, then it's valid
-            else if (question.qtext === "<open string>" && answer.ans !== "")
+            else if (question.options[0].opttxt === "<open string>" && answer.ans !== "")
                 invalidans = false;
-
+                
             // if the answer has not been validated yet, validate it
             if (invalidans) {
                 for (let o = 0; o < question.options.length; ++o) {
