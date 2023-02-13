@@ -1,19 +1,15 @@
 <script>
     import { createEventDispatcher } from "svelte";
-    import { searchQuestionnaire } from "../lib/search";
+    import { searchQuestionnaire } from "../functionUtils/search";
     import Card from "./Card.svelte";
 
     let dispatch = createEventDispatcher();
     let inputText = "";
 
-    // get questionnaire data, if successfull dispatch questionnaire data
-    // to App.svelte (parent) else dispatch error
     async function handleSubmit() {
-        try {
-            const questionnaireData = await searchQuestionnaire(inputText.trim());
+        const questionnaireData = await searchQuestionnaire(inputText.trim());
+        if (!!questionnaireData) {
             dispatch("foundQuestionnaire", questionnaireData);
-        } catch (err) {
-            dispatch("errorOccured",err);
         }
     }
 </script>

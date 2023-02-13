@@ -1,13 +1,14 @@
 <script>
-    import { chosenOpt, clearStorage } from "../stores/dataStores";
+    import { writable } from "svelte/store";
+    import { openStringQuestion } from "../dataUtils/constantValues";
+    import { clearStorage, seenQuestions } from "../dataUtils/stores";
     import { createEventDispatcher } from "svelte";
-    import { searchNextQuestion,searchNextQuestionID } from "../lib/search";
-    import { doAnswerAndStartSession } from "../lib/answer";
+    import { searchNextQuestionID } from "../functionUtils/search";
+    import { doAnswerAndStartSession } from "../functionUtils/answer";
     import Card from "./Card.svelte";
 
-    const keywordForTextQuestions = "TXT";
-
     let dispatch = createEventDispatcher();
+    const chosenOpt = writable(null);
 
     // parameters that are passed through the parent (App.svelte)
     export let questionnaireInfo;
@@ -15,95 +16,92 @@
     export let nextQuestion;
     export let session;
 
-
-    /* ------------------------------------------------------------------------------ */
+    // ------------------------------------------------------------------------------ 
     // destructure data in a proper format
     const { questionnaireID, questionnaireTitle } = questionnaireInfo;
-    const { qID, qtext, required: requiredString, options: someOptions } = nextQuestion;
+    const { qID, qtext, required: requiredString, options} = nextQuestion;
 
     const required = requiredString.toLowerCase() !== "false"; 
-    let options = setUpOptions(someOptions);
-    /* ------------------------------------------------------------------------------ */
 
-    // submitAnswer = find the ID of the next Question +
-    //                send the POST request +
-    //                if this is the first question you answer get a session ID +
-    //                make $chosenOpt null for the next question +
-    //                notify parent for new data or errors
+    const isOpenString =
+        (options.length === 1) &&
+        (options[0].opttxt === openStringQuestion);
+
+    if (isOpenString) {
+        $chosenOpt = options[0];
+        options[0].opttxt = null; // this is where we'll write the
+    } // user's answer
+
+    // ------------------------------------------------------------------------------ 
+
     async function submitAnswer() {
-        try {
-            let nextQuestionID = searchNextQuestionID(
+        let nextQuestionID = searchNextQuestionID(
             questionsArray,
             nextQuestion,
             $chosenOpt);
 
-        session = await doAnswerAndStartSession( // if chosenOpt === null this doesn't work
+        session = await doAnswerAndStartSession(
             questionnaireID,
             qID,
             session,
-            (foundTextKeyword($chosenOpt.optID)?$chosenOpt.opttxt:$chosenOpt.optID));
+            (isOpenString)?$chosenOpt.opttxt:$chosenOpt);
+        
+        // submit answer was successfull
+        seenQuestions.update(val => [...val, { qID, qtext, options, ans: (isOpenString)?$chosenOpt.opttxt:$chosenOpt}]);
+        // save the question
 
         $chosenOpt = null;
-        dispatch("answeredQuestion", {nextQuestionID, session});
-        } catch (err) {
-            dispatch("errorOccured", err);
+        if (!!nextQuestion && !!session) {
+            dispatch("answeredQuestion", {nextQuestionID, session});
         }
-
     }
 
-    // questions can reference at most one other question (should be multiple choice)
-    async function replaceRegex(content) {
+    function replaceRegex(content) {
         const regex = /\[\*(.*?)\]/g; // look for strings like this one: "[*<string>]"
         let match;
-        let result = {
-            qID: null,
-            optID: null
-        };
+        let matchings = [];
 
-        // find questionID and optionID, the questionID should be a substring of the optionID
         while ((match = regex.exec(content)) !== null) {
-            if (result.optID === null) {
-                result.optID = match;
+            const word = match[1];
+            // maybe it's a qID
+            let lookup = $seenQuestions.filter(question => question.qID === word);
+            if (lookup.length) {
+                matchings = [...matchings, { original: match[0], replacement: lookup[0].qtext }];
                 continue;
             }
 
-            if (result.optID[1].includes(match[1])) {
-                result.qID = match;
-            }
-            else {
-                result.qID = result.optID;
-                result.optID = match;
+            // maybe it's an optID
+            lookup = $seenQuestions.filter(question => {
+                for (const option of question.options) {
+                    if (option.optID === word) return true;
+                }
+                return false;
+            });
+            if (lookup.length) {
+                let opttxt;
+                for (const option of lookup[0].options) {
+                    if (option.optID === word) {
+                        opttxt = option.opttxt;
+                        break;
+                    }
+                }
+                matchings = [...matchings, { original: match[0], replacement: opttxt }];
             }
         }
 
-        // search for the replacement text and do the replacement, handle errors...
-        if (result.qID !== null && result.optID !== null) {
-            try {
-                const referencedQuestion = await searchNextQuestion({
-                questionnaireID,
-                questionnaireTitle,
-                nextQuestionID: result.qID[1]});
-            
-                const {qtext, options} = referencedQuestion;
-                const opttxt = options.find(option => option.optID === result.optID[1]).opttxt;
-
-                content = content.replace(result.optID[0], `"${opttxt}"`);
-                content = content.replace(result.qID[0], `"${qtext}"`);
-            } catch (err) {
-                dispatch("errorOccured", err);
-                return;
-            }
-
+        for (const { original, replacement } of matchings) {
+            content = content.replace(original, replacement);
         }
 
-        // return the edited (or not) string
         return content;
     }
 
-    // clear user's choice, edits in text fields, etc...
     function handleClear() {
         $chosenOpt = null;
-        options = setUpOptions(someOptions);
+        if (isOpenString) {
+            $chosenOpt = options[0];
+            options[0].opttxt = null;
+        }
     }
 
     // delete local Storage, which deletes the state of our app
@@ -111,18 +109,13 @@
         clearStorage();
     }
 
-    // question IDs that include the keyword are answered by user input text
-    function foundTextKeyword(text) {
-        return text.includes(keywordForTextQuestions);
-    }
-
     // determine whether the submit button will be disabled or not
     function calculateDisabled(option) {
         if(!required) return false;
 
         if (!!option) {
-            if(foundTextKeyword(option.optID)) {
-            return !option.opttxt; // text questions
+            if(isOpenString) {
+                return !option.opttxt; // text questions
             }
             return !option; // non text questions
         }
@@ -131,33 +124,17 @@
     // make the disabled variable reactive to the users choice
     $: disabled = calculateDisabled($chosenOpt);
 
-    // setUpOptions = erase text fields of text questions and for convenience to the user
-    // if there is only one option in a text question, choose it by default.
-    function setUpOptions(someOptions) {
-        const options = someOptions.map(option => {
-            return foundTextKeyword(option.optID)? {...option, opttxt: null}: option;
-        })
-        if (options.length === 1 && foundTextKeyword(options[0].optID)) {
-            $chosenOpt = options[0];
-        }
-        return options;
-    }
-
 </script>
 
 <Card>
     <header>
         <h1>{questionnaireTitle}</h1>
-        {#await replaceRegex(qtext)}
-            <p>{qtext}</p>
-        {:then questionText}
-            <p>{questionText}</p>
-        {/await}
+        <p>{replaceRegex(qtext)}</p>
     </header>
     <form id="question-form" on:submit|preventDefault={submitAnswer}>
         {#each options as option (option.optID)}
         <label>
-            {#if foundTextKeyword(option.optID)} <!-- For text questions, allow the user to pick the text option and then
+            {#if isOpenString} <!-- For text questions, allow the user to pick the text option and then
                                                       show only the text input field -->
                 {#if $chosenOpt?.optID !== option.optID} <!-- $chosenOpt could be null here... -->
                 <input type="radio" name="option" value={option} bind:group={$chosenOpt}>
