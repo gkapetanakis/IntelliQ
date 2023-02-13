@@ -44,10 +44,10 @@
             questionnaireID,
             qID,
             session,
-            (isOpenString)?$chosenOpt.opttxt:$chosenOpt);
+            (isOpenString)?$chosenOpt.opttxt:$chosenOpt.optID);
         
         // submit answer was successfull
-        seenQuestions.update(val => [...val, { qID, qtext, options, ans: (isOpenString)?$chosenOpt.opttxt:$chosenOpt}]);
+        seenQuestions.update(val => [...val, { qID, qtext, options, ans: $chosenOpt.opttxt}]);
         // save the question
 
         $chosenOpt = null;
@@ -57,14 +57,15 @@
     }
 
     function replaceRegex(content) {
-        const regex = /\[\*(.*?)\]/g; // look for strings like this one: "[*<string>]"
+        const regex = /\[\*(.*?)\]/g; // look for strings like this one: "[*string]"
         let match;
         let matchings = [];
 
+        let lookup;
         while ((match = regex.exec(content)) !== null) {
             const word = match[1];
             // maybe it's a qID
-            let lookup = $seenQuestions.filter(question => question.qID === word);
+            lookup = $seenQuestions.filter(question => question.qID === word);
             if (lookup.length) {
                 matchings = [...matchings, { original: match[0], replacement: lookup[0].qtext }];
                 continue;
@@ -87,10 +88,12 @@
                 }
                 matchings = [...matchings, { original: match[0], replacement: opttxt }];
             }
-        }
+        } // regex.exec returns in match the following: match[0] = "[*string]", match[1] = "string"
+          // and this is really helpful for us
 
         for (const { original, replacement } of matchings) {
-            content = content.replace(original, replacement);
+            content = content.replace(original, `"${replacement}"`);
+            // We want the replacement to appear in "" for styling reasons!
         }
 
         return content;
