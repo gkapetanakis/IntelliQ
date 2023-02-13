@@ -26,6 +26,9 @@ router.get("/getsessionanswers/:questionnaireID/:sessionID", controller.getGetSe
 router.get("/getquestionanswers/:questionnaireID/:questionID", controller.getGetQuestionAnswers);
 
 // all "GET" endpoints use this handler
-router.get(/.*/, findQueryHandler);
+router.get("/questionnaire", findQueryHandler);
+router.get("/question", findQueryHandler);
+router.get("/getsessionanswers", findQueryHandler);
+router.get("/getquestionanswers", findQueryHandler);
 
 export default router;
