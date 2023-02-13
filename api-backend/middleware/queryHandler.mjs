@@ -3,6 +3,8 @@ import { removePrivateFields } from "../lib/jsonUtils.mjs";
 
 // uses res.locals.query, res.locals.transform
 async function findQueryHandler(req, res, next) {
+    console.log("Query handler executing");
+
     try {
         const doc = await res.locals.query;
         if (!doc || doc?.length === 0) {
