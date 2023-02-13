@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { StatusCodes } from "http-status-codes";
 import { removePrivateFields } from "../lib/jsonUtils.mjs";
 
@@ -9,6 +10,7 @@ async function findQueryHandler(req, res, next) {
         const doc = await res.locals.query;
         if (!doc || doc?.length === 0) {
             res.status(StatusCodes.NOT_FOUND);
+            next(new Error("Document not found"));
         } else {
             removePrivateFields(doc);
             res.status(StatusCodes.OK);
@@ -31,7 +33,10 @@ async function createQueryHandler(req, res, next) {
         res.send();
         return;
     } catch (err) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+        res.status(err instanceof mongoose.Error.ValidationError
+            ? StatusCodes.BAD_REQUEST
+            : StatusCodes.INTERNAL_SERVER_ERROR
+        );
         next(err);
     }
 }

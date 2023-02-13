@@ -27,8 +27,13 @@ async function postQuestionnaireUpd(req, res, next) {
     // req.file.buffer contains the uploaded file data as bytes
     // toString() is required to make it readable
     // JSON.parse() turns a json string into a proper json object
-    res.locals.obj = JSON.parse(req.file.buffer.toString());
-    next();
+    try {
+        res.locals.obj = JSON.parse(req.file.buffer.toString());
+        next();
+    } catch (err) {
+        res.status(StatusCodes.BAD_REQUEST);
+        next(err);
+    }
 }
 
 // delete all documents from the database

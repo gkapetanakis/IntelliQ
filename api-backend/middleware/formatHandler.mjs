@@ -24,7 +24,9 @@ async function formatHandler(req, res) {
             res.status(StatusCodes.INTERNAL_SERVER_ERROR);
             next(err);
         }
-    }
+    } //else {
+        //res.set("Content-Type", "application/json");
+    //}
 
     res.json(res.locals.responseObj);
 }
