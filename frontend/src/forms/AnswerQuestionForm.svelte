@@ -37,7 +37,7 @@
             nextQuestion,
             $chosenOpt);
 
-        session = await doAnswerAndStartSession(
+        session = await doAnswerAndStartSession( // if chosenOpt === null this doesn't work
             questionnaireID,
             qID,
             session,
