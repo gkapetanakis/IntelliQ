@@ -5,30 +5,22 @@ import { StatusCodes } from "http-status-codes";
 // change format from JSON to CSV if requested
 // uses req.locals.responseObj
 async function formatHandler(req, res, next) {
-    console.log("Format handler executing");
+    console.log(`${res.locals.step++}. Format handler executing`);
 
-    if (!res.locals?.responseObj) {
-        res.send();
-        return;
-    }
-
-    if (req.query?.format === "csv") {
+    if (res.locals?.responseObj && req.query?.format === "csv") {
         const responseObj = res.locals.responseObj;
         const parser = new AsyncParser();
         try {
             const responseCsv = await parser.parse(responseObj).promise();
             res.set("Content-Type", "text/csv");
             res.send(responseCsv);
-            return;
         } catch (err) {
             res.status(StatusCodes.INTERNAL_SERVER_ERROR);
             next(err);
         }
-    } //else {
-        //res.set("Content-Type", "application/json");
-    //}
-
-    res.json(res.locals.responseObj);
+    }
+    else
+        next();
 }
 
 export default formatHandler;

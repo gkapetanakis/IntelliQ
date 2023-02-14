@@ -1,7 +1,8 @@
 import { StatusCodes, ReasonPhrases } from "http-status-codes";
 
-function errorHandler(err, req, res, next) {
-    console.log("Error handler executing");
+function errorHandler(_err, _req, res, next) {
+    console.log(`${res.locals.step++}. Error handler executing`);
+
     const error = { message: "An error occured" };
     if (res.statusCode === StatusCodes.BAD_REQUEST)
         error.message = ReasonPhrases.BAD_REQUEST;
@@ -11,7 +12,8 @@ function errorHandler(err, req, res, next) {
         error.message = ReasonPhrases.INTERNAL_SERVER_ERROR;
     else
         console.error("Unknown error status code encountered:", res.statusCode);
-    res.json(error);
+    res.locals.responseObj = error;
+    next();
 }
 
 export default errorHandler;

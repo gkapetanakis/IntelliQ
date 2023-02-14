@@ -3,8 +3,8 @@ import { StatusCodes } from "http-status-codes";
 import { removePrivateFields } from "../lib/jsonUtils.mjs";
 
 // uses res.locals.query, res.locals.transform
-async function findQueryHandler(req, res, next) {
-    console.log("Query handler executing");
+async function findQueryHandler(_req, res, next) {
+    console.log(`${res.locals.step++}. Query handler (find) executing`);
 
     try {
         const doc = await res.locals.query;
@@ -26,12 +26,13 @@ async function findQueryHandler(req, res, next) {
 }
 
 // uses res.locals.model, res.locals.obj
-async function createQueryHandler(req, res, next) {
+async function createQueryHandler(_req, res, next) {
+    console.log(`${res.locals.step++}. Query handler (create) executing`);
+
     try {
         await res.locals.model.create(res.locals.obj);
         res.status(StatusCodes.NO_CONTENT);
-        res.send();
-        return;
+        next();
     } catch (err) {
         res.status(err instanceof mongoose.Error.ValidationError
             ? StatusCodes.BAD_REQUEST
