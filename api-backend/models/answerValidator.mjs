@@ -4,10 +4,12 @@ import mongoose from "mongoose";
 async function answerCustomValidator(answer) {
     const Questionnaire = mongoose.model("Questionnaire");
 
-    let invalidID;
-    let invalidqID;
-    let invalidans;
+    let invalidID = false;
+    let invalidqID = true; // assume it is invalid
+    let invalidans = true; // assume it is invalid
 
+    // check if the questionnaireID is valid, i.e. a questionnaire
+    // with that ID exists
     let questionnaire = null;
     try {
         questionnaire = await Questionnaire
@@ -25,37 +27,38 @@ async function answerCustomValidator(answer) {
     let err = null;
     invalidID = !questionnaire;
     if (!invalidID) {
-        // questionnaire exists
+        // the questionnaire exists
+        for (const question in questionnaire.questions) {
 
-        // search for question
-        const questionHelper = questionnaire.questions.filter(question => question.qID === answer.qID);
-        if (questionHelper.length !== 1) {
-            invalidqID = true;
-        }
-        else { // question found
+            // continue until a question with the same qID is found
+            if (question.qID !== answer.qID)
+                continue;
+
+            // question found
             invalidqID = false;
-            const question = questionHelper[0];
 
-            invalidans = true; // we are going to attempt to validate the answer
-
-            // if an aswer is not required, and none has been given, then it's valid
+            // if an aswer is not required, and none has been given, then ans is valid
             if (question.required === "false" && answer.ans === "") {
                 invalidans = false;
             }
-            // if the question is open string and any answer has been given, then it's valid
+
+            // if the question is open string and any answer has been given, then ans is valid
             else if (question.options[0].opttxt === "<open string>" && answer.ans !== "") {
                 invalidans = false;
             }
-            // if the answer has not been validated yet, validate it            
+
+            // if ans has not been validated yet, validate it            
             if (invalidans) {
-                for (const option of question.options) {
-                    // if the answer matches with an optID, then it's valid
+                for (const option in question.options) {
+                    // continue until an option with the same ID is found
                     if (option.optID !== answer.ans)
-                    continue;
+                        continue;
+
+                    // option found, ans is valid
                     invalidans = false;
+                    break;
                 }
             }
-
         }
     }
     else {
@@ -69,7 +72,7 @@ async function answerCustomValidator(answer) {
     const error = !invalidID && (invalidqID || invalidans);
     if (error) {
         err = new mongoose.Error.ValidationError(answer);
-        if (invalidqID) // fixed this
+        if (invalidqID)
             err.addError("qID", new mongoose.Error.ValidatorError({
                 path: "qID", reason: "the questionnaire does not have a question with this qID"
             }));
