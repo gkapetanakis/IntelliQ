@@ -17,7 +17,7 @@ function successfulSaveHook(docType) {
 function failedSaveHook(docType) {
     return function(err, _res, next) {
         console.error(`\t${docType}:\
-        \n\t\terror during 'save' operation:`, err
+        \n\t\terror during 'save' operation:\n`, err
         );
         next();
     };
@@ -37,7 +37,7 @@ function successfulFindHook(docType) {
 function failedFindHook(docType) {
     return function(err, _res, next) {
         console.error(`\t${docType}:\
-        \n\t\terror during 'find' operation:`, err
+        \n\t\terror during 'find' operation:\n`, err
         );
         next();
     };
@@ -56,7 +56,7 @@ function successfulDeleteHook(docType) {
 function failedDeleteHook(docType) {
     return function(err, _res, next) {
         console.error(`\t${docType}:\
-        \n\t\terror during 'delete' operation:`, err
+        \n\t\terror during 'delete' operation:\n`, err
         );
         next();
     };
