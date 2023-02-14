@@ -4,14 +4,19 @@ import mongoose from "mongoose";
 function questionnaireCustomValidator(questionnaire) {
 
     let questionnaireObject = {};
-    for (question of questionnaire.questions) {
+    let nextQuestionID = {};
+    for (const question of questionnaire.questions) {
         questionnaireObject[question.qID] = question;
     } // probably faster lookups
-    
-    // globally unique checking
-    const qIDs = new Set();
-    const optIDs = new Set();
 
+    for (let i = 0; i < questionnaire.questions.length; ++i) {
+        questionnaireObject[questionnaire.questions[i].qID] = questionnaire.questions[i];
+        if (i < questionnaire.questions.length - 1)
+            nextQuestionID[questionnaire.questions[i].qID] = questionnaire.questions[i + 1].qID;
+        else
+            nextQuestionID[questionnaire.questions[i].qID] = "-";
+    }
+    
     // all possible errors
     let dupeQ = false;
     let dupeO = false;
@@ -48,7 +53,7 @@ function questionnaireCustomValidator(questionnaire) {
                 path: "opttxt", reason: "open text questions must ony have one option"
             }));
         if (invalidTxtReference)
-            err.addError("question.option.qtext", new mongoose.Error.ValidatorError({
+            err.addError("question.qtext", new mongoose.Error.ValidatorError({
                 path: "qtext", reason: "qtext references question the user couldn't have answered"
             }));
     }
@@ -63,13 +68,13 @@ function questionnaireCustomValidator(questionnaire) {
         const parentQ = pQ;
         const branchQIDs = new Set(bQIDs); // we don't want to influence the original sets.
         const branchOptIDs = new Set(bOptIDs); // Use a copy constructor
-        // globally unique qID
-        if (qIDs.has(parentQ.qID)) {
+
+        // unique qID
+        if (branchQIDs.has(parentQ.qID)) {
             dupeQ = true;
             return true;
         }
         else {
-            qIDs.add(parentQ.qID);
             branchQIDs.add(parentQ.qID);
         }
 
@@ -84,18 +89,27 @@ function questionnaireCustomValidator(questionnaire) {
             }
         }
 
+        // unique optID
+        let optionsArray = parentQ.options;
+        if (parentQ.required === "false") {
+            const getNextQuestionID = nextQuestionID[parentQ.qID];
+            const newChild = questionnaireObject[getNextQuestionID];
+            if (!!newChild) {
+                optionsArray = [...optionsArray, newChild];
+            }
+        }
+        for (const option of optionsArray) {
+                if (branchOptIDs.has(option.optID)) {
+                    dupeO = true;
+                    return true;
+                }
+                else {
+                    branchOptIDs.add(option.optID);
+                }
+        }
+
         // time to check options!
         for (const option of parentQ.options) {
-            // globally unique optID
-            if (optIDs.has(option.optID)) {
-                dupeO = true;
-                return true;
-            }
-            else {
-                optIDs.add(option.optID);
-                branchOptIDs.add(option.optID);
-            }
-
             // nextqID is not a previous qID in the branch
             if (branchQIDs.has(option.nextqID)) {
                 prevN = true;
@@ -111,7 +125,7 @@ function questionnaireCustomValidator(questionnaire) {
             if (option.nextqID === "-") continue;
 
             // for each option create a branch
-            let newParentQ = questionnaireObject[option.nextqID];
+            const newParentQ = questionnaireObject[option.nextqID];
             if (!newParentQ) {
                 invalidN = true;
                 return true;
