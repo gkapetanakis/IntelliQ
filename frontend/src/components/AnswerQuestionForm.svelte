@@ -21,7 +21,9 @@
     const { questionnaireID, questionnaireTitle } = questionnaireInfo;
     const { qID, qtext: sometext, required: requiredString, options} = nextQuestion;
 
-    const required = requiredString.toLowerCase() !== "false"; 
+    const required = requiredString.toLowerCase() !== "false";
+    // the required field is given as a string. We turn it into a boolean (or numerical)
+    // value first
 
     const isOpenString =
         (options.length === 1) &&

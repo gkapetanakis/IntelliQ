@@ -68,15 +68,18 @@
         <button form="finish-card-form" type="submit">Reset</button> 
         <Card>
             <form id="finish-card-form" on:submit|preventDefault={clearStorage}>
+            <!-- The submit event handler logically shouldn't be here, It has remained here
+                 because it made sense in previous implementations and it works nontheless.
+                 Might change location of event handler to a more suitable position at a later date -->
                 <p>Congratulations! You finished answering a questionnaire!</p>
                 <p>Here are your answers for "{$questionnaireInfo.questionnaireTitle}":</p>
             </form>
         </Card>
-        {#each $seenQuestions as question}
+        {#each $seenQuestions as { qtext, ans }}
         <Card>
-            <p>Question: {question.qtext}</p>
-            {#if question.ans !== ""}
-            <p>Your answer: {question.ans}</p>
+            <p>Question: {qtext}</p>
+            {#if ans !== ""}
+            <p>Your answer: {ans}</p>
             {:else}
             <p>This question was skipped.</p>
             {/if}
