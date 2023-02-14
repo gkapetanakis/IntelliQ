@@ -15,12 +15,11 @@ function questionnaireCustomValidator(questionnaire) {
     let invalidTxtReference = false;
 
     let err = null;
-    const { wrong } = questionnaireCustomValidatorHelper(
+    if (questionnaireCustomValidatorHelper(
         questionnaire.questions[0],
         new Set(),
         new Set()
-    );
-    if (wrong) {
+    )) {
         err = new mongoose.Error.ValidationError(questionnaire);
         if (dupeQ)
             err.addError("question.qID", new mongoose.Error.ValidatorError({
