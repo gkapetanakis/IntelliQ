@@ -28,7 +28,7 @@ async function answerCustomValidator(answer) {
     invalidID = !questionnaire;
     if (!invalidID) {
         // the questionnaire exists
-        for (const question in questionnaire.questions) {
+        for (const question of questionnaire.questions) {
 
             // continue until a question with the same qID is found
             if (question.qID !== answer.qID)
@@ -49,7 +49,7 @@ async function answerCustomValidator(answer) {
 
             // if ans has not been validated yet, validate it            
             if (invalidans) {
-                for (const option in question.options) {
+                for (const option of question.options) {
                     // continue until an option with the same ID is found
                     if (option.optID !== answer.ans)
                         continue;
