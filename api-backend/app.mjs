@@ -22,17 +22,29 @@ const APP_BASE_URL = process.env.APP_BASE_URL;
 const DATABASE_URL = `mongodb://${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}/${process.env.DATABASE_NAME}`;
 
 // connect to the database asynchronously
+const mongooseOptions = {
+    serverSelectionTimeoutMS: 5000 // retry requests for up to 5 seconds
+};
 (async () => {
     try {
-        await mongoose.connect(DATABASE_URL);
-    } catch (err) {
-        console.error("Mongoose failed to connect:", err);
+        await mongoose.connect(DATABASE_URL, mongooseOptions);
+    } catch {
+        console.error("Mongoose failed to connect");
     }
 })();
 
-mongoose.connection.on("error", (error) => console.error("Database connection error:", error)); // add error event listener
+mongoose.connection.on("error", (error) => console.error("Database connection error:\n", error)); // add error event listener
 mongoose.connection.on("connected", () => console.log("Connected to database")); // add connection event listener
-mongoose.connection.on("disconnected", () => console.log("Disconnected from database")); // add disconnection event listener
+mongoose.connection.on("disconnected", () => {
+    console.log("Disconnected from database");
+    (async () => {
+        try {
+            await mongoose.connect(DATABASE_URL, mongooseOptions);
+        } catch {
+            console.error("Mongoose failed to connect");
+        }
+    })();
+}); // add disconnection event listener
 
 // create and configure the express app
 const app = express();
