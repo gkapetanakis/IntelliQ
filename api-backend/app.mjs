@@ -6,7 +6,6 @@ import dotenv from "dotenv";
 // import this package's modules
 import adminRouter from "./routes/admin.mjs";
 import functionalityRouter from "./routes/functionality.mjs";
-import formatHandler from "./middleware/formatHandler.mjs";
 import errorHandler from "./middleware/errorHandler.mjs";
 
 // load environmental variables from the .env file
@@ -22,18 +21,45 @@ const APP_PORT = process.env.APP_PORT;
 const APP_BASE_URL = process.env.APP_BASE_URL;
 const DATABASE_URL = `mongodb://${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}/${process.env.DATABASE_NAME}`;
 
-// connect to the database
-mongoose.connect(DATABASE_URL);
+// connect to the database asynchronously
+(async () => {
+    try {
+        await mongoose.connect(DATABASE_URL);
+    } catch (err) {
+        console.error("Mongoose failed to connect:", err);
+    }
+})();
+
 mongoose.connection.on("error", (error) => console.error("Database connection error:", error)); // add error event listener
 mongoose.connection.on("connected", () => console.log("Connected to database")); // add connection event listener
 mongoose.connection.on("disconnected", () => console.log("Disconnected from database")); // add disconnection event listener
 
 // create and configure the express app
 const app = express();
+app.use((req, res, next) => { // first middleware in the chain - just logs something
+    console.log("------------------------------\n");
+    res.locals.step = 1;
+    console.log(req.url);
+    console.log(`${res.locals.step++}. Endpoint controller executing`);
+
+    next();
+});
 app.use(`${APP_BASE_URL}/admin`, adminRouter); // set up admin endpoints
 app.use(APP_BASE_URL, functionalityRouter); // set up functionality endpoints
-app.use(formatHandler); // set up format handler middleware
-app.use(errorHandler); // set up the error handler middleware
+app.use(errorHandler); // set up error handling middleware
+app.use((req, res) => { // last middleware in the chain - just sends the response
+    console.log(`${res.locals.step++}. Final middleware executing; sending response\n`);
+
+    const responseObj = res.locals?.responseObj;
+    const format = req.query?.format || "json";
+
+    if (!responseObj) // no content
+        res.send();
+    else if (format === "csv") // csv
+        res.send(responseObj);
+    else // json
+        res.json(responseObj);
+});
 
 // start the express app
 app.listen(APP_PORT, APP_HOST, console.log("App is now listening on port", APP_PORT));
@@ -44,3 +70,13 @@ export {
     APP_BASE_URL,
     DATABASE_URL
 };
+
+/*
+    middleware order:
+        - first middleware (always runs, just logs something)
+        - route controller (always runs)
+        - query handler (if applicable)
+        - format handler (if applicable)
+        - error handler (if at any point an error occurs)
+        - final middleware (always runs, just sends the response)
+*/
