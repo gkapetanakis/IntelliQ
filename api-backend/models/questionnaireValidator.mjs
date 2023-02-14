@@ -2,6 +2,12 @@ import mongoose from "mongoose";
 
 // moved the validator here to clean up the code of the questionnaire module
 function questionnaireCustomValidator(questionnaire) {
+
+    let questionnaireObject = {};
+    for (question of questionnaire.questions) {
+        questionnaireObject[question.qID] = question;
+    } // probably faster lookups
+    
     // globally unique checking
     const qIDs = new Set();
     const optIDs = new Set();
@@ -105,12 +111,11 @@ function questionnaireCustomValidator(questionnaire) {
             if (option.nextqID === "-") continue;
 
             // for each option create a branch
-            let newParentQ = questionnaire.questions.filter(question => question.qID === option.nextqID);
-            if (newParentQ.length !== 1) {
+            let newParentQ = questionnaireObject[option.nextqID];
+            if (!newParentQ) {
                 invalidN = true;
                 return true;
             }
-            newParentQ = newParentQ[0];
 
             if(questionnaireCustomValidatorHelper(
                 newParentQ,
