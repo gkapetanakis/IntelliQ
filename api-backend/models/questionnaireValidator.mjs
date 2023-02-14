@@ -2,56 +2,25 @@ import mongoose from "mongoose";
 
 // moved the validator here to clean up the code of the questionnaire module
 function questionnaireCustomValidator(questionnaire) {
+    // globally unique checking
     const qIDs = new Set();
     const optIDs = new Set();
-    const nextqIDs = new Set();
 
+    // all possible errors
     let dupeQ = false;
     let dupeO = false;
     let prevN = false;
     let invalidN = false;
     let invalidOpenText = false;
-
-    for (let q = 0; q < questionnaire.questions.length; ++q) {
-        const question = questionnaire.questions[q];
-
-        // unique qID
-        if (qIDs.has(question.qID))
-            dupeQ = true;
-        else
-            qIDs.add(question.qID);
-        
-        for (let o = 0; o < question.options.length; ++o) {
-            const option = question.options[o];
-
-            // unique optID
-            if (optIDs.has(option.optID))
-                dupeO = true;
-            else
-                optIDs.add(option.optID);
-
-            // not previous nextqID
-            if (option.nextqID === "-")
-                continue;
-            else if (qIDs.has(option.nextqID))
-                prevN = false;
-            else
-                nextqIDs.add(option.nextqID);
-            
-            // valid open text
-            if (option.opttxt === "<open string>" && question.options.length > 1)
-                invalidOpenText = true;
-        }
-    }
-
-    // valid nextqID
-    for (const nextqID in nextqIDs)
-        if (!qIDs.has(nextqID))
-            invalidN = true;
+    let invalidTxtReference = false;
 
     let err = null;
-    const error = dupeQ || dupeO || prevN || invalidN || invalidOpenText;
-    if (error) {
+    const { wrong } = questionnaireCustomValidatorHelper(
+        questionnaire.questions[0],
+        new Set(),
+        new Set()
+    );
+    if (wrong) {
         err = new mongoose.Error.ValidationError(questionnaire);
         if (dupeQ)
             err.addError("question.qID", new mongoose.Error.ValidatorError({
@@ -73,8 +42,90 @@ function questionnaireCustomValidator(questionnaire) {
             err.addError("questions.option.opttxt", new mongoose.Error.ValidatorError({
                 path: "opttxt", reason: "open text questions must ony have one option"
             }));
+        if (invalidTxtReference)
+            err.addError("question.option.qtext", new mongoose.Error.ValidatorError({
+                path: "qtext", reason: "qtext references question the user couldn't have answered"
+            }));
     }
     return err;
+
+    // ----------------- helper function --------------------
+    function questionnaireCustomValidatorHelper(
+        pQ,
+        bQIDs,
+        bOptIDs
+    ) {
+        const parentQ = pQ;
+        const branchQIDs = new Set(bQIDs); // we don't want to influence the original sets.
+        const branchOptIDs = new Set(bOptIDs); // Use a copy constructor
+        // globally unique qID
+        if (qIDs.has(parentQ.qID)) {
+            dupeQ = true;
+            return true;
+        }
+        else {
+            qIDs.add(parentQ.qID);
+            branchQIDs.add(parentQ.qID);
+        }
+
+        // reference in qtext only to previous questions/options on the branch
+        const regex = /\[\*(.*?)\]/g; // look for strings like this one: "[*string]"
+        let match;
+        while ((match = regex.exec(parentQ.qtext)) !== null) {
+            const word = match[1];
+            if (!branchQIDs.has(word) && !branchOptIDs.has(word)) {
+                invalidTxtReference = true;
+                return true;
+            }
+        }
+
+        // time to check options!
+        for (const option of parentQ.options) {
+            // globally unique optID
+            if (optIDs.has(option.optID)) {
+                dupeO = true;
+                return true;
+            }
+            else {
+                optIDs.add(option.optID);
+                branchOptIDs.add(option.optID);
+            }
+
+            if (option.nextqID === "-") continue;
+            // nextqID is not a previous qID in the branch
+            if (branchQIDs.has(option.nextqID)) {
+                prevN = true;
+                return true;
+            }
+            else {
+            }
+
+            // valid open text question
+            if (option.opttxt === "<open string>" && parentQ.options.length !== 1) {
+                invalidOpenText = true;
+                return true;
+            }
+
+            // for each option create a branch
+            let newParentQ = questionnaire.questions.filter(question => question.qID === option.nextqID);
+            if (newParentQ.length !== 1) {
+                invalidN = true;
+                return true;
+            }
+            newParentQ = newParentQ[0];
+
+            if(questionnaireCustomValidatorHelper(
+                newParentQ,
+                branchQIDs,
+                branchOptIDs,
+            )) {
+                return true;
+            }
+        }
+
+        // everything went well...
+        return false;
+    }
 }
 
 export default questionnaireCustomValidator;
