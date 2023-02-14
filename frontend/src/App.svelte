@@ -10,8 +10,9 @@
         questionsArray,
         session,
         currentScreen,
-        clearStorage,
-        errorInfo
+        seenQuestions,
+        errorInfo,
+        clearStorage
     } from "./dataUtils/stores";
 
     let errorInfoToString; // used in the App to display the Error
@@ -63,23 +64,35 @@
         on:answeredQuestion={answeredQuestion}/>
     {/await} <!-- errors are caught in errorInfo subscriber -->
 {:else if $currentScreen === "finishedScreen"}
-<div class="finish-card">
-    <Card>
-        <form on:submit|preventDefault={clearStorage}> 
-            <p>Congratulations! You finished answering a questionnaire!</p>
-            <button type="submit">Reset</button> 
-        </form>
-    </Card>
-</div>
+    <div class="finish-card">
+        <button form="finish-card-form" type="submit">Reset</button> 
+        <Card>
+            <form id="finish-card-form" on:submit|preventDefault={clearStorage}>
+                <p>Congratulations! You finished answering a questionnaire!</p>
+                <p>Here are your answers for "{$questionnaireInfo.questionnaireTitle}":</p>
+            </form>
+        </Card>
+        {#each $seenQuestions as question}
+        <Card>
+            <p>Question: {question.qtext}</p>
+            {#if question.ans !== ""}
+            <p>Your answer: {question.ans}</p>
+            {:else}
+            <p>This question was skipped.</p>
+            {/if}
+        </Card>
+        {/each}
+        <button form="finish-card-form" type="submit">Reset</button> 
+    </div>
 {:else}
-<div class="error-card">
-    <ErrorCard>
-        <form on:submit|preventDefault={clearStorage}>
-            <p>{errorInfoToString}</p>
-            <button type="submit" >Reset</button>
-        </form>
-    </ErrorCard>
-</div>
+    <div class="error-card">
+        <ErrorCard>
+            <form on:submit|preventDefault={clearStorage}>
+                <p>{errorInfoToString}</p>
+                <button type="submit" >Reset</button>
+            </form>
+        </ErrorCard>
+    </div>
 {/if}
 </main>
 

@@ -4,7 +4,7 @@ import { StatusCodes } from "http-status-codes";
 
 // change format from JSON to CSV if requested
 // uses req.locals.responseObj
-async function formatHandler(req, res) {
+async function formatHandler(req, res, next) {
     console.log("Format handler executing");
 
     if (!res.locals?.responseObj) {

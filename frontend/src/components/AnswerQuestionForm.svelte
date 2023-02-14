@@ -19,7 +19,7 @@
     // ------------------------------------------------------------------------------ 
     // destructure data in a proper format
     const { questionnaireID, questionnaireTitle } = questionnaireInfo;
-    const { qID, qtext, required: requiredString, options} = nextQuestion;
+    const { qID, qtext: sometext, required: requiredString, options} = nextQuestion;
 
     const required = requiredString.toLowerCase() !== "false"; 
 
@@ -29,9 +29,10 @@
 
     if (isOpenString) {
         $chosenOpt = options[0];
-        options[0].opttxt = null; // this is where we'll write the
-    } // user's answer
+        options[0].opttxt = ""; // this is where we'll write the
+    }                           // user's answer
 
+    const qtext = replaceRegex(sometext);
     // ------------------------------------------------------------------------------ 
 
     async function submitAnswer() {
@@ -40,14 +41,29 @@
             nextQuestion,
             $chosenOpt);
 
+        let optionID;
+        if (isOpenString) {
+            optionID = $chosenOpt.opttxt;
+        }
+        else if (!!$chosenOpt) {
+            optionID = $chosenOpt.optID;
+        }
+        else {
+            optionID = "";
+        }
         session = await doAnswerAndStartSession(
             questionnaireID,
             qID,
             session,
-            (isOpenString)?$chosenOpt.opttxt:$chosenOpt.optID);
+            optionID);
         
         // submit answer was successfull
-        seenQuestions.update(val => [...val, { qID, qtext, options, ans: $chosenOpt.opttxt}]);
+        seenQuestions.update(val =>
+        [...val, {
+            qID,
+            qtext,
+            options,
+            ans: (!!$chosenOpt)?$chosenOpt.opttxt:""}]);
         // save the question
 
         $chosenOpt = null;
@@ -132,7 +148,7 @@
 <Card>
     <header>
         <h1>{questionnaireTitle}</h1>
-        <p>{replaceRegex(qtext)}</p>
+        <p>{qtext}</p>
     </header>
     <form id="question-form" on:submit|preventDefault={submitAnswer}>
         {#each options as option (option.optID)}

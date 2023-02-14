@@ -47,7 +47,10 @@ async function postDoAnswer(req, res, next) {
     const questionnaireID = req.params.questionnaireID;
     const questionID = req.params.questionID;
     const sessionID = req.params.sessionID;
-    const optionID = req.params.optionID;
+    const optionID = (!!req.params?.optionID)
+                    ?req.params.optionID
+                    :""; // optionID won't be there if the user
+                         // did not answer, this counts as "empty"
 
     res.locals.model = Answer;
     res.locals.obj = {

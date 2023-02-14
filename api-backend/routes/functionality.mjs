@@ -16,8 +16,8 @@ router.get("/questionnaire/:questionnaireID", controller.getQuestionnaire, findQ
 // endpoint to fetch a question from the database
 router.get("/question/:questionnaireID/:questionID", controller.getQuestion, findQueryHandler);
 
-// endpoint to post an answer to the database
-router.post("/doanswer/:questionnaireID/:questionID/:sessionID/:optionID", controller.postDoAnswer, createQueryHandler);
+// endpoint to post an answer to the database, optionID may not exist in optional questions
+router.post("/doanswer/:questionnaireID/:questionID/:sessionID/:optionID?", controller.postDoAnswer, createQueryHandler);
 
 // endpoint to fetch a session from the database
 router.get("/getsessionanswers/:questionnaireID/:sessionID", controller.getGetSessionAnswers, findQueryHandler);
