@@ -109,7 +109,7 @@ function questionnaireCustomValidator(questionnaire) {
         }
 
         // time to check options!
-        for (const option of parentQ.options) {
+        for (const option of optionsArray) {
             // nextqID is not a previous qID in the branch
             if (branchQIDs.has(option.nextqID)) {
                 prevN = true;
