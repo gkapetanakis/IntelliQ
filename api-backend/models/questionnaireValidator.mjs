@@ -55,8 +55,8 @@ function questionnaireCustomValidator(questionnaire) {
         bOptIDs
     ) {
         const parentQ = pQ;
-        const branchQIDs = structuredClone(bQIDs); // we don't want to influence the original sets.
-        const branchOptIDs = structuredClone(bOptIDs); // Use a copy constructor
+        const branchQIDs = new Set(bQIDs); // we don't want to influence the original sets.
+        const branchOptIDs = new Set(bOptIDs); // Use a copy constructor
         // globally unique qID
         if (qIDs.has(parentQ.qID)) {
             dupeQ = true;
