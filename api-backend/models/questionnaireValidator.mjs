@@ -90,13 +90,10 @@ function questionnaireCustomValidator(questionnaire) {
                 branchOptIDs.add(option.optID);
             }
 
-            if (option.nextqID === "-") continue;
             // nextqID is not a previous qID in the branch
             if (branchQIDs.has(option.nextqID)) {
                 prevN = true;
                 return true;
-            }
-            else {
             }
 
             // valid open text question
@@ -104,6 +101,8 @@ function questionnaireCustomValidator(questionnaire) {
                 invalidOpenText = true;
                 return true;
             }
+
+            if (option.nextqID === "-") continue;
 
             // for each option create a branch
             let newParentQ = questionnaire.questions.filter(question => question.qID === option.nextqID);
