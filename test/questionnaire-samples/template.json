@@ -1,0 +1,22 @@
+{
+    "questionnaireID": "",
+    "questionnaireTitle": "",
+    "keywords": "",
+    "questions":
+    [
+        {
+            "qID": "",
+            "qtext": "",
+            "required": "",
+            "type": "",
+            "options":
+            [
+                {
+                    "optID": "",
+                    "opttxt": "",
+                    "nextqID": ""
+                }
+            ]
+        }
+    ]
+}
