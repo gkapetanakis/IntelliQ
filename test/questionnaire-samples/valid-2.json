@@ -86,7 +86,7 @@
         },
         {
             "qID": "Q04",
-            "qtext": "You answered [*Q0301] on the previous question. Does that worry you?",
+            "qtext": "You answered [*Q03O1] on the previous question. Does that worry you?",
             "required": "true",
             "options":
             [
