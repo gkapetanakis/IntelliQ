@@ -13,7 +13,7 @@ const answerSchema = new mongoose.Schema({
     questionnaireID: { type: String, required: true },
     session: { type: String, required: true, minLength: 4, maxLength: 4 },
     qID: { type: String, required: true },
-    ans: { type: String },
+    ans: { type: String, default: "" },
     // _uniqueID will be used to easily enforce that an answer is unique
     // it will be equal to questionnaireID + session + qID
     _uniqueID: { type: String, required: true, unique: true },

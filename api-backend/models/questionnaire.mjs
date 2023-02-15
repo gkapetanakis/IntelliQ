@@ -20,14 +20,22 @@ const questionSchema = new mongoose.Schema({
     qtext: { type: String, required: true },
     required: { type: String, enum: ["true", "false"], lowercase: true, default: "false" },
     type: { type: String, enum: ["question", "profile"], lowercase: true, default: "question" },
-    options: [{ type: optionSchema, required: true }]
+    options: { 
+        type: [{ type: optionSchema }],
+        required: true,
+        validate: (arr) => Array.isArray(arr) && arr.length > 0
+    } 
 });
 
 const questionnaireSchema = new mongoose.Schema({
     questionnaireID: { type: String, required: true, unique: true },
     questionnaireTitle: { type: String, required: true },
     keywords: [{ type: String }],
-    questions: [{ type: questionSchema, required: true }]
+    questions: { 
+        type: [{ type: questionSchema }],
+        required: true,
+        validate: (arr) => Array.isArray(arr) && arr.length > 0
+    } 
 });
 
 // easily handle duplicate unique fields

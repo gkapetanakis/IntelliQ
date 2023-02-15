@@ -1,0 +1,7 @@
+search.js: in normal operation of the app these are purely
+functional tools for the rest of the components. In error cases
+or when answering is over these have side effects (allow the user
+to view the appropriate screen/message)
+
+answer.js: same thing but related to answering questions instead of
+searching for them

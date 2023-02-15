@@ -1,21 +1,32 @@
 <script>
-    import SearchForm from "./forms/SearchForm.svelte";
-    import AnswerQuestionForm from "./forms/AnswerQuestionForm.svelte";
-    import ErrorCard from "./forms/ErrorCard.svelte";
-    import Card from "./forms/Card.svelte";
-
-    // after answering a question we look for the next
-    import { searchNextQuestion } from "./lib/search";
-
-    // stores and useful data to manage the state of our app
+    import Card from "./components/Card.svelte";
+    import ErrorCard from "./components/ErrorCard.svelte";
+    import SearchForm from "./components/SearchForm.svelte";
+    import AnswerQuestionForm from "./components/AnswerQuestionForm.svelte";
+    import { searchNextQuestion } from "./functionUtils/search";
+    import { noNextQuestionID } from "./dataUtils/constantValues";
     import {
         questionnaireInfo,
         questionsArray,
         session,
         currentScreen,
-        clearStorage,
-        errorInfo
-        } from "./stores/dataStores";
+        seenQuestions,
+        errorInfo,
+        clearStorage
+    } from "./dataUtils/stores";
+
+    let errorInfoToString; // used in the App to display the Error
+    errorInfo.subscribe(({message, name, statusCode}) => {
+        let outputString = name;
+        if (!!message) outputString += `: ${message}`;
+        if (!!statusCode) outputString += ` (Status Code: ${statusCode})`;
+        errorInfoToString = outputString;
+    });
+
+    errorInfo.subscribe(({message, name, statusCode}) => {
+        if (!!message || !!name || !!statusCode)
+            $currentScreen = "errorScreen";
+    }); // in case an error occurs
 
     /* -------------------------------------------------------------------*/
     //In Svelte, when we use events that carry data,
@@ -29,24 +40,18 @@
 
     function answeredQuestion(event) {
         $questionnaireInfo.nextQuestionID = event.detail.nextQuestionID;
+        if ($questionnaireInfo.nextQuestionID === noNextQuestionID) {
+            $currentScreen = "finishedScreen"; // user reached the end!
+        }
         $session = event.detail.session;
     }
     /* -------------------------------------------------------------------*/
-    
-    function handleErrorOccured() {
-        $currentScreen = "errorScreen";
-    }
-
 </script>
 
-<!-- We create our Screens/Forms and install handlers for possible events.
-     The await keyword is quite usefull, allows for the peaceful resolution
-     of the promise for data -->
 <main>
 {#if $currentScreen === "searchForm"}
     <SearchForm
-        on:foundQuestionnaire={foundQuestionnaire}
-        on:errorOccured={handleErrorOccured}/>
+        on:foundQuestionnaire={foundQuestionnaire}/>
 {:else if $currentScreen === "answerQuestionForm"}
     {#await searchNextQuestion($questionnaireInfo)}
     <Card>Loading...</Card>
@@ -56,29 +61,41 @@
         questionsArray={$questionsArray}
         nextQuestion={nextQuestion}
         session={$session}
-        on:answeredQuestion={answeredQuestion}
-        on:errorOccured={handleErrorOccured}/>
-    {:catch err}
-        {handleErrorOccured()}
-    {/await}
+        on:answeredQuestion={answeredQuestion}/>
+    {/await} <!-- errors are caught in errorInfo subscriber -->
 {:else if $currentScreen === "finishedScreen"}
-<div class="finish-card">
-    <Card>
-        <form on:submit|preventDefault={clearStorage}> 
-            <p>Congratulations! You finished answering a questionnaire!</p>
-            <button type="submit">Reset</button> 
-        </form>
-    </Card>
-</div>
+    <div class="finish-card">
+        <button form="finish-card-form" type="submit">Reset</button> 
+        <Card>
+            <form id="finish-card-form" on:submit|preventDefault={clearStorage}>
+            <!-- The submit event handler logically shouldn't be here, It has remained here
+                 because it made sense in previous implementations and it works nontheless.
+                 Might change location of event handler to a more suitable position at a later date -->
+                <p>Congratulations! You finished answering a questionnaire!</p>
+                <p>Here are your answers for "{$questionnaireInfo.questionnaireTitle}":</p>
+            </form>
+        </Card>
+        {#each $seenQuestions as { qtext, ans }}
+        <Card>
+            <p>Question: {qtext}</p>
+            {#if ans !== ""}
+            <p>Your answer: {ans}</p>
+            {:else}
+            <p>This question was skipped.</p>
+            {/if}
+        </Card>
+        {/each}
+        <button form="finish-card-form" type="submit">Reset</button> 
+    </div>
 {:else}
-<div class="error-card">
-    <ErrorCard>
-        <form on:submit|preventDefault={clearStorage}>
-            <p>{$errorInfo}</p>
-            <button type="submit" >Reset</button>
-        </form>
-    </ErrorCard>
-</div>
+    <div class="error-card">
+        <ErrorCard>
+            <form on:submit|preventDefault={clearStorage}>
+                <p>{errorInfoToString}</p>
+                <button type="submit" >Reset</button>
+            </form>
+        </ErrorCard>
+    </div>
 {/if}
 </main>
 

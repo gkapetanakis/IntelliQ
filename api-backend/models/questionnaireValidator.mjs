@@ -12,8 +12,7 @@ function questionnaireCustomValidator(questionnaire) {
     let invalidN = false;
     let invalidOpenText = false;
 
-    for (let q = 0; q < questionnaire.questions.length; ++q) {
-        const question = questionnaire.questions[q];
+    for (const question of questionnaire.questions) {
 
         // unique qID
         if (qIDs.has(question.qID))
@@ -21,8 +20,7 @@ function questionnaireCustomValidator(questionnaire) {
         else
             qIDs.add(question.qID);
         
-        for (let o = 0; o < question.options.length; ++o) {
-            const option = question.options[o];
+        for (const option of question.options) {
 
             // unique optID
             if (optIDs.has(option.optID))
@@ -30,17 +28,17 @@ function questionnaireCustomValidator(questionnaire) {
             else
                 optIDs.add(option.optID);
 
+            // valid open text
+            if (option.opttxt === "<open string>" && question.options.length > 1)
+            invalidOpenText = true;
+
             // not previous nextqID
             if (option.nextqID === "-")
                 continue;
             else if (qIDs.has(option.nextqID))
-                prevN = false;
+                prevN = true;
             else
                 nextqIDs.add(option.nextqID);
-            
-            // valid open text
-            if (option.opttxt === "<open string>" && question.options.length > 1)
-                invalidOpenText = true;
         }
     }
 

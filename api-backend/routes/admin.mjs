@@ -19,7 +19,8 @@ const router = express.Router();
 router.get("/healthcheck", controller.getHealthcheck);
 
 // endpoint to post a new questionnaire (file contents in req.file)
-router.post("/questionnaire_upd", upload.single("file"), controller.postQuestionnaireUpd, createQueryHandler);
+router.post("/questionnaire_upd", upload.single("file"), 
+    controller.postQuestionnaireUpd, [createQueryHandler]);
 
 // endpoint to delete everything in the database
 router.post("/resetall", controller.postResetAll);
