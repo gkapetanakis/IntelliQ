@@ -1,0 +1,36 @@
+{
+    "questionnaireID": "IN012",
+    "questionnaireTitle": "Title",
+    "questions":
+    [
+        {
+            "qID": "Q01",
+            "qtext": "Question 1",
+            "options":
+            [
+                {
+                    "optID": "Q01O01",
+                    "opttxt": "A",
+                    "nextqID": "Q02"
+                }
+            ]
+        },
+        {
+            "qID": "Q02",
+            "qtext": "B",
+            "options":
+            [
+                {
+                    "optID": "Q02O01",
+                    "opttxt": "B",
+                    "nextqID": "Q01"
+                },
+                {
+                    "optID": "Q02O02",
+                    "opttxt": "C",
+                    "nextqID": "-"
+                }
+            ]
+        }
+    ]
+}

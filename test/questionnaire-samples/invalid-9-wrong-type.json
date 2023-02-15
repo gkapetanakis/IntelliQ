@@ -1,0 +1,20 @@
+{
+    "questionnaireID": "IN009",
+    "questionnaireTitle": "Title",
+    "questions":
+    [
+        {
+            "qID": "Q01",
+            "qtext": "A",
+            "type": "invalid",
+            "options":
+            [
+                {
+                    "optID": "Q01O01",
+                    "opttxt": "Opt",
+                    "nextqID": "-"
+                }
+            ]
+        }
+    ]
+}

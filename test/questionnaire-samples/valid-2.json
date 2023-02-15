@@ -1,0 +1,128 @@
+{
+    "questionnaireID": "QQ001",
+    "questionnaireTitle": "Demo - Do you drink enough water?",
+    "keywords": "",
+    "questions":
+    [
+        {
+            "qID": "P01",
+            "qtext": "What's your name?",
+            "required": "true",
+            "type": "profile",
+            "options":
+            [
+                {
+                    "optID": "P01O1",
+                    "opttxt": "<open string>",
+                    "nextqID": "P02"
+                }
+            ]
+        },
+        {
+            "qID": "P02",
+            "qtext": "What is your favourite water brand?",
+            "type": "profile",
+            "options":
+            [
+                {
+                    "optID": "P02O1",
+                    "opttxt": "<open string>",
+                    "nextqID": "Q01"
+                }
+            ]
+        },
+        {
+            "qID": "Q01",
+            "qtext": "Do you drink enough water?",
+            "required": "true",
+            "options":
+            [
+                {
+                    "optID": "Q01O1",
+                    "opttxt": "Yes",
+                    "nextqID": "Q03"
+                },
+                {
+                    "optID": "Q01O2",
+                    "opttxt": "No",
+                    "nextqID": "Q02"
+                },
+                {
+                    "optID": "Q01O3",
+                    "opttxt": "I don't know",
+                    "nextqID": "Q03"
+                }
+            ]
+        },
+        {
+            "qID": "Q02",
+            "qtext": "Why not?",
+            "required": "true",
+            "options":
+            [
+                {
+                    "optID": "Q02O1",
+                    "opttxt": "<open string>"
+                }
+            ]
+        },
+        {
+            "qID": "Q03",
+            "qtext": "Do you find that the frequency at which you drink water is increasing or decreasing lately?",
+            "required": "true",
+            "options":
+            [
+                {
+                    "optID": "Q03O1",
+                    "opttxt": "Increasing",
+                    "nextqID": "Q04"
+                },
+                {
+                    "optID": "Q03O2",
+                    "opttxt": "Decreasing",
+                    "nextqID": "Q06"
+                }
+            ]
+        },
+        {
+            "qID": "Q04",
+            "qtext": "You answered [*Q0301] on the previous question. Does that worry you?",
+            "required": "true",
+            "options":
+            [
+                {
+                    "optID": "Q04O1",
+                    "opttxt": "Yes"
+                },
+                {
+                    "optID": "Q04O2",
+                    "opttxt": "No",
+                    "nextqID": "Q05"
+                }
+            ]
+        },
+        {
+            "qID": "Q05",
+            "qtext": "Well, it should.",
+            "required": "true",
+            "options":
+            [
+                {
+                    "optID": "Q05O1",
+                    "opttxt": "..."
+                }
+            ]
+        },
+        {
+            "qID": "Q06",
+            "qtext": "Drink more water.",
+            "options":
+            [
+                {
+                    "optID": "Q06O1",
+                    "opttxt": "OK"
+                }
+            ]
+        }
+    ]
+}

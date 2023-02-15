@@ -1,0 +1,3892 @@
+{
+	"info": {
+		"_postman_id": "a7f4adf4-264c-4a12-b3ee-f126e81d8d57",
+		"name": "intelliQ API Demo (Run requests in order)",
+		"description": "Create and answer questionnaires",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24937825"
+	},
+	"item": [
+		{
+			"name": "Check Database Health",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/admin/healthcheck",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"admin",
+						"healthcheck"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "The health and the URL of the database connection",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/healthcheck",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"healthcheck"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"status\": \"<string>\",\n  \"dbconnection\": \"<string>\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Get The Demo Questionnaire",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/questionnaire/:questionnaireID",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"questionnaire",
+						":questionnaireID"
+					],
+					"variable": [
+						{
+							"key": "questionnaireID",
+							"value": "QQ001",
+							"description": "(Required) "
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/questionnaire/:questionnaireID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"questionnaire",
+								":questionnaireID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"questionnaireID\": \"<string>\",\n  \"questionnaireTitle\": \"<string>\",\n  \"keywords\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"questions\": [\n    {\n      \"qID\": \"<string>\",\n      \"qtext\": \"<string>\",\n      \"required\": \"<string>\",\n      \"type\": \"<string>\"\n    },\n    {\n      \"qID\": \"<string>\",\n      \"qtext\": \"<string>\",\n      \"required\": \"<string>\",\n      \"type\": \"<string>\"\n    }\n  ]\n}"
+				},
+				{
+					"name": "Bad Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/questionnaire/:questionnaireID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"questionnaire",
+								":questionnaireID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Not Found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/questionnaire/:questionnaireID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"questionnaire",
+								":questionnaireID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Internal Server Error",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/questionnaire/:questionnaireID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"questionnaire",
+								":questionnaireID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Get The First Question",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/question/:questionnaireID/:questionID",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"question",
+						":questionnaireID",
+						":questionID"
+					],
+					"variable": [
+						{
+							"key": "questionnaireID",
+							"value": "QQ001",
+							"description": "(Required) "
+						},
+						{
+							"key": "questionID",
+							"value": "P01",
+							"description": "(Required) "
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/question/:questionnaireID/:questionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"question",
+								":questionnaireID",
+								":questionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"options\": [\n    {\n      \"optID\": \"<string>\",\n      \"opttxt\": \"<string>\",\n      \"nextqID\": \"<string>\"\n    },\n    {\n      \"optID\": \"<string>\",\n      \"opttxt\": \"<string>\",\n      \"nextqID\": \"<string>\"\n    }\n  ],\n  \"questionnaireID\": \"<string>\"\n}"
+				},
+				{
+					"name": "Bad Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/question/:questionnaireID/:questionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"question",
+								":questionnaireID",
+								":questionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Not Found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/question/:questionnaireID/:questionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"question",
+								":questionnaireID",
+								":questionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Internal Server Error",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/question/:questionnaireID/:questionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"question",
+								":questionnaireID",
+								":questionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Answer The First Question",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"doanswer",
+						":questionnaireID",
+						":questionID",
+						":sessionID",
+						":optionID"
+					],
+					"variable": [
+						{
+							"key": "questionnaireID",
+							"value": "QQ001",
+							"description": "(Required) "
+						},
+						{
+							"key": "questionID",
+							"value": "P01",
+							"description": "(Required) "
+						},
+						{
+							"key": "sessionID",
+							"value": "DMSS",
+							"description": "(Required) "
+						},
+						{
+							"key": "optionID",
+							"value": "John Doe",
+							"description": "(Required) "
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "No Content",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"doanswer",
+								":questionnaireID",
+								":questionID",
+								":sessionID",
+								":optionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "sessionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "optionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "No Content",
+					"code": 204,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Bad Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"doanswer",
+								":questionnaireID",
+								":questionID",
+								":sessionID",
+								":optionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "sessionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "optionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Internal Server Error",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"doanswer",
+								":questionnaireID",
+								":questionID",
+								":sessionID",
+								":optionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "sessionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "optionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Get The Second Question",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/question/:questionnaireID/:questionID",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"question",
+						":questionnaireID",
+						":questionID"
+					],
+					"variable": [
+						{
+							"key": "questionnaireID",
+							"value": "QQ001",
+							"description": "(Required) "
+						},
+						{
+							"key": "questionID",
+							"value": "P02",
+							"description": "(Required) "
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/question/:questionnaireID/:questionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"question",
+								":questionnaireID",
+								":questionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"options\": [\n    {\n      \"optID\": \"<string>\",\n      \"opttxt\": \"<string>\",\n      \"nextqID\": \"<string>\"\n    },\n    {\n      \"optID\": \"<string>\",\n      \"opttxt\": \"<string>\",\n      \"nextqID\": \"<string>\"\n    }\n  ],\n  \"questionnaireID\": \"<string>\"\n}"
+				},
+				{
+					"name": "Bad Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/question/:questionnaireID/:questionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"question",
+								":questionnaireID",
+								":questionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Not Found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/question/:questionnaireID/:questionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"question",
+								":questionnaireID",
+								":questionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Internal Server Error",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/question/:questionnaireID/:questionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"question",
+								":questionnaireID",
+								":questionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Answer The Second Question",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"doanswer",
+						":questionnaireID",
+						":questionID",
+						":sessionID",
+						":optionID"
+					],
+					"variable": [
+						{
+							"key": "questionnaireID",
+							"value": "QQ001",
+							"description": "(Required) "
+						},
+						{
+							"key": "questionID",
+							"value": "P02",
+							"description": "(Required) "
+						},
+						{
+							"key": "sessionID",
+							"value": "DMSS",
+							"description": "(Required) "
+						},
+						{
+							"key": "optionID",
+							"value": "Fiji",
+							"description": "(Required) "
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "No Content",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"doanswer",
+								":questionnaireID",
+								":questionID",
+								":sessionID",
+								":optionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "sessionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "optionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "No Content",
+					"code": 204,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Bad Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"doanswer",
+								":questionnaireID",
+								":questionID",
+								":sessionID",
+								":optionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "sessionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "optionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Internal Server Error",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"doanswer",
+								":questionnaireID",
+								":questionID",
+								":sessionID",
+								":optionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "sessionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "optionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Get The Third Question",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/question/:questionnaireID/:questionID",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"question",
+						":questionnaireID",
+						":questionID"
+					],
+					"variable": [
+						{
+							"key": "questionnaireID",
+							"value": "QQ001",
+							"description": "(Required) "
+						},
+						{
+							"key": "questionID",
+							"value": "Q01",
+							"description": "(Required) "
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/question/:questionnaireID/:questionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"question",
+								":questionnaireID",
+								":questionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"options\": [\n    {\n      \"optID\": \"<string>\",\n      \"opttxt\": \"<string>\",\n      \"nextqID\": \"<string>\"\n    },\n    {\n      \"optID\": \"<string>\",\n      \"opttxt\": \"<string>\",\n      \"nextqID\": \"<string>\"\n    }\n  ],\n  \"questionnaireID\": \"<string>\"\n}"
+				},
+				{
+					"name": "Bad Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/question/:questionnaireID/:questionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"question",
+								":questionnaireID",
+								":questionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Not Found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/question/:questionnaireID/:questionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"question",
+								":questionnaireID",
+								":questionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Internal Server Error",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/question/:questionnaireID/:questionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"question",
+								":questionnaireID",
+								":questionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Answer The Third Question",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"doanswer",
+						":questionnaireID",
+						":questionID",
+						":sessionID",
+						":optionID"
+					],
+					"variable": [
+						{
+							"key": "questionnaireID",
+							"value": "QQ001",
+							"description": "(Required) "
+						},
+						{
+							"key": "questionID",
+							"value": "Q01",
+							"description": "(Required) "
+						},
+						{
+							"key": "sessionID",
+							"value": "DMSS",
+							"description": "(Required) "
+						},
+						{
+							"key": "optionID",
+							"value": "Q01O1",
+							"description": "(Required) "
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "No Content",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"doanswer",
+								":questionnaireID",
+								":questionID",
+								":sessionID",
+								":optionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "sessionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "optionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "No Content",
+					"code": 204,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Bad Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"doanswer",
+								":questionnaireID",
+								":questionID",
+								":sessionID",
+								":optionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "sessionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "optionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Internal Server Error",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"doanswer",
+								":questionnaireID",
+								":questionID",
+								":sessionID",
+								":optionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "sessionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "optionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Get The Fourth Question",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/question/:questionnaireID/:questionID",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"question",
+						":questionnaireID",
+						":questionID"
+					],
+					"variable": [
+						{
+							"key": "questionnaireID",
+							"value": "QQ001",
+							"description": "(Required) "
+						},
+						{
+							"key": "questionID",
+							"value": "Q03",
+							"description": "(Required) "
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/question/:questionnaireID/:questionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"question",
+								":questionnaireID",
+								":questionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"options\": [\n    {\n      \"optID\": \"<string>\",\n      \"opttxt\": \"<string>\",\n      \"nextqID\": \"<string>\"\n    },\n    {\n      \"optID\": \"<string>\",\n      \"opttxt\": \"<string>\",\n      \"nextqID\": \"<string>\"\n    }\n  ],\n  \"questionnaireID\": \"<string>\"\n}"
+				},
+				{
+					"name": "Bad Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/question/:questionnaireID/:questionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"question",
+								":questionnaireID",
+								":questionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Not Found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/question/:questionnaireID/:questionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"question",
+								":questionnaireID",
+								":questionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Internal Server Error",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/question/:questionnaireID/:questionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"question",
+								":questionnaireID",
+								":questionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Answer The Fourth Question",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"doanswer",
+						":questionnaireID",
+						":questionID",
+						":sessionID",
+						":optionID"
+					],
+					"variable": [
+						{
+							"key": "questionnaireID",
+							"value": "QQ001",
+							"description": "(Required) "
+						},
+						{
+							"key": "questionID",
+							"value": "Q03",
+							"description": "(Required) "
+						},
+						{
+							"key": "sessionID",
+							"value": "DMSS",
+							"description": "(Required) "
+						},
+						{
+							"key": "optionID",
+							"value": "Q03O1",
+							"description": "(Required) "
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "No Content",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"doanswer",
+								":questionnaireID",
+								":questionID",
+								":sessionID",
+								":optionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "sessionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "optionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "No Content",
+					"code": 204,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Bad Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"doanswer",
+								":questionnaireID",
+								":questionID",
+								":sessionID",
+								":optionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "sessionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "optionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Internal Server Error",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"doanswer",
+								":questionnaireID",
+								":questionID",
+								":sessionID",
+								":optionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "sessionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "optionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Get The Fifth Question",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/question/:questionnaireID/:questionID",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"question",
+						":questionnaireID",
+						":questionID"
+					],
+					"variable": [
+						{
+							"key": "questionnaireID",
+							"value": "QQ001",
+							"description": "(Required) "
+						},
+						{
+							"key": "questionID",
+							"value": "Q04",
+							"description": "(Required) "
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/question/:questionnaireID/:questionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"question",
+								":questionnaireID",
+								":questionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"options\": [\n    {\n      \"optID\": \"<string>\",\n      \"opttxt\": \"<string>\",\n      \"nextqID\": \"<string>\"\n    },\n    {\n      \"optID\": \"<string>\",\n      \"opttxt\": \"<string>\",\n      \"nextqID\": \"<string>\"\n    }\n  ],\n  \"questionnaireID\": \"<string>\"\n}"
+				},
+				{
+					"name": "Bad Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/question/:questionnaireID/:questionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"question",
+								":questionnaireID",
+								":questionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Not Found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/question/:questionnaireID/:questionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"question",
+								":questionnaireID",
+								":questionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Internal Server Error",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/question/:questionnaireID/:questionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"question",
+								":questionnaireID",
+								":questionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Answer The Fifth Question",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"doanswer",
+						":questionnaireID",
+						":questionID",
+						":sessionID",
+						":optionID"
+					],
+					"variable": [
+						{
+							"key": "questionnaireID",
+							"value": "QQ001",
+							"description": "(Required) "
+						},
+						{
+							"key": "questionID",
+							"value": "Q04",
+							"description": "(Required) "
+						},
+						{
+							"key": "sessionID",
+							"value": "DMSS",
+							"description": "(Required) "
+						},
+						{
+							"key": "optionID",
+							"value": "Q04O2",
+							"description": "(Required) "
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "No Content",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"doanswer",
+								":questionnaireID",
+								":questionID",
+								":sessionID",
+								":optionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "sessionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "optionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "No Content",
+					"code": 204,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Bad Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"doanswer",
+								":questionnaireID",
+								":questionID",
+								":sessionID",
+								":optionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "sessionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "optionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Internal Server Error",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"doanswer",
+								":questionnaireID",
+								":questionID",
+								":sessionID",
+								":optionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "sessionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "optionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Get The Sixth Question",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/question/:questionnaireID/:questionID",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"question",
+						":questionnaireID",
+						":questionID"
+					],
+					"variable": [
+						{
+							"key": "questionnaireID",
+							"value": "QQ001",
+							"description": "(Required) "
+						},
+						{
+							"key": "questionID",
+							"value": "Q05",
+							"description": "(Required) "
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/question/:questionnaireID/:questionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"question",
+								":questionnaireID",
+								":questionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"options\": [\n    {\n      \"optID\": \"<string>\",\n      \"opttxt\": \"<string>\",\n      \"nextqID\": \"<string>\"\n    },\n    {\n      \"optID\": \"<string>\",\n      \"opttxt\": \"<string>\",\n      \"nextqID\": \"<string>\"\n    }\n  ],\n  \"questionnaireID\": \"<string>\"\n}"
+				},
+				{
+					"name": "Bad Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/question/:questionnaireID/:questionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"question",
+								":questionnaireID",
+								":questionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Not Found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/question/:questionnaireID/:questionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"question",
+								":questionnaireID",
+								":questionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Internal Server Error",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/question/:questionnaireID/:questionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"question",
+								":questionnaireID",
+								":questionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Answer The Sixth Question",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"doanswer",
+						":questionnaireID",
+						":questionID",
+						":sessionID",
+						":optionID"
+					],
+					"variable": [
+						{
+							"key": "questionnaireID",
+							"value": "QQ001",
+							"description": "(Required) "
+						},
+						{
+							"key": "questionID",
+							"value": "Q05",
+							"description": "(Required) "
+						},
+						{
+							"key": "sessionID",
+							"value": "DMSS",
+							"description": "(Required) "
+						},
+						{
+							"key": "optionID",
+							"value": "Q05O1",
+							"description": "(Required) "
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "No Content",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"doanswer",
+								":questionnaireID",
+								":questionID",
+								":sessionID",
+								":optionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "sessionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "optionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "No Content",
+					"code": 204,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Bad Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"doanswer",
+								":questionnaireID",
+								":questionID",
+								":sessionID",
+								":optionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "sessionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "optionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Internal Server Error",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"doanswer",
+								":questionnaireID",
+								":questionID",
+								":sessionID",
+								":optionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "sessionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "optionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Add Some More Answers To A Question",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"doanswer",
+						":questionnaireID",
+						":questionID",
+						":sessionID",
+						":optionID"
+					],
+					"variable": [
+						{
+							"key": "questionnaireID",
+							"value": "QQ001",
+							"description": "(Required) "
+						},
+						{
+							"key": "questionID",
+							"value": "P01",
+							"description": "(Required) "
+						},
+						{
+							"key": "sessionID",
+							"value": "DNSS",
+							"description": "(Required) "
+						},
+						{
+							"key": "optionID",
+							"value": "Jane Doe",
+							"description": "(Required) "
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "No Content",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"doanswer",
+								":questionnaireID",
+								":questionID",
+								":sessionID",
+								":optionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "sessionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "optionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "No Content",
+					"code": 204,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Bad Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"doanswer",
+								":questionnaireID",
+								":questionID",
+								":sessionID",
+								":optionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "sessionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "optionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Internal Server Error",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"doanswer",
+								":questionnaireID",
+								":questionID",
+								":sessionID",
+								":optionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "sessionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "optionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Add Even More Answers To A Question",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"doanswer",
+						":questionnaireID",
+						":questionID",
+						":sessionID",
+						":optionID"
+					],
+					"variable": [
+						{
+							"key": "questionnaireID",
+							"value": "QQ001",
+							"description": "(Required) "
+						},
+						{
+							"key": "questionID",
+							"value": "P01",
+							"description": "(Required) "
+						},
+						{
+							"key": "sessionID",
+							"value": "DOSS",
+							"description": "(Required) "
+						},
+						{
+							"key": "optionID",
+							"value": "Alex",
+							"description": "(Required) "
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "No Content",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"doanswer",
+								":questionnaireID",
+								":questionID",
+								":sessionID",
+								":optionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "sessionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "optionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "No Content",
+					"code": 204,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Bad Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"doanswer",
+								":questionnaireID",
+								":questionID",
+								":sessionID",
+								":optionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "sessionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "optionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Internal Server Error",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/doanswer/:questionnaireID/:questionID/:sessionID/:optionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"doanswer",
+								":questionnaireID",
+								":questionID",
+								":sessionID",
+								":optionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "sessionID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "optionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "View All Answers Of That Question",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/getquestionanswers/:questionnaireID/:questionID",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"getquestionanswers",
+						":questionnaireID",
+						":questionID"
+					],
+					"variable": [
+						{
+							"key": "questionnaireID",
+							"value": "QQ001",
+							"description": "(Required) "
+						},
+						{
+							"key": "questionID",
+							"value": "P01",
+							"description": "(Required) "
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/getquestionanswers/:questionnaireID/:questionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getquestionanswers",
+								":questionnaireID",
+								":questionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"questionnaireID\": \"<string>\",\n  \"questionID\": \"<string>\",\n  \"answers\": [\n    {\n      \"session\": \"<string>\",\n      \"ans\": \"<string>\"\n    },\n    {\n      \"session\": \"<string>\",\n      \"ans\": \"<string>\"\n    }\n  ]\n}"
+				},
+				{
+					"name": "Bad Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/getquestionanswers/:questionnaireID/:questionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getquestionanswers",
+								":questionnaireID",
+								":questionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Not Found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/getquestionanswers/:questionnaireID/:questionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getquestionanswers",
+								":questionnaireID",
+								":questionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Internal Server Error",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/getquestionanswers/:questionnaireID/:questionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getquestionanswers",
+								":questionnaireID",
+								":questionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "questionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "View All Answers Of Our Session",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/getsessionanswers/:questionnaireID/:sessionID",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"getsessionanswers",
+						":questionnaireID",
+						":sessionID"
+					],
+					"variable": [
+						{
+							"key": "questionnaireID",
+							"value": "QQ001",
+							"description": "(Required) "
+						},
+						{
+							"key": "sessionID",
+							"value": "DMSS",
+							"description": "(Required) "
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/getsessionanswers/:questionnaireID/:sessionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getsessionanswers",
+								":questionnaireID",
+								":sessionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "sessionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"questionnaireID\": \"<string>\",\n  \"session\": \"<string>\",\n  \"answers\": [\n    {\n      \"qID\": \"<string>\",\n      \"ans\": \"<string>\"\n    },\n    {\n      \"qID\": \"<string>\",\n      \"ans\": \"<string>\"\n    }\n  ]\n}"
+				},
+				{
+					"name": "Bad Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/getsessionanswers/:questionnaireID/:sessionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getsessionanswers",
+								":questionnaireID",
+								":sessionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "sessionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Not Found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/getsessionanswers/:questionnaireID/:sessionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getsessionanswers",
+								":questionnaireID",
+								":sessionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "sessionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Internal Server Error",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/getsessionanswers/:questionnaireID/:sessionID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"getsessionanswers",
+								":questionnaireID",
+								":sessionID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								},
+								{
+									"key": "sessionID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Reset Everything",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/admin/resetall",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"admin",
+						"resetall"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "The status of the request and (if needed) the reason of its failure",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/resetall",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"resetall"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"status\": \"<string>\"\n}"
+				},
+				{
+					"name": "The status of the request and (if needed) the reason of its failure",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/admin/resetall",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"resetall"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"status\": \"<string>\",\n  \"reason\": \"<string>\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Upload The Demo Questionnaire Again",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "multipart/form-data"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "valid-2.json"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseUrl}}/admin/questionnaire_upd",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"admin",
+						"questionnaire_upd"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "No Content",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"value": "<binary>",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/questionnaire_upd",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"questionnaire_upd"
+							]
+						}
+					},
+					"status": "No Content",
+					"code": 204,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Bad Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"value": "<binary>",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/questionnaire_upd",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"questionnaire_upd"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Internal Server Error",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"value": "<binary>",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/admin/questionnaire_upd",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"questionnaire_upd"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "Get The Demo Questionnaire Again",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/questionnaire/:questionnaireID",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"questionnaire",
+						":questionnaireID"
+					],
+					"variable": [
+						{
+							"key": "questionnaireID",
+							"value": "QQ001",
+							"description": "(Required) "
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "OK",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/questionnaire/:questionnaireID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"questionnaire",
+								":questionnaireID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"questionnaireID\": \"<string>\",\n  \"questionnaireTitle\": \"<string>\",\n  \"keywords\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"questions\": [\n    {\n      \"qID\": \"<string>\",\n      \"qtext\": \"<string>\",\n      \"required\": \"<string>\",\n      \"type\": \"<string>\"\n    },\n    {\n      \"qID\": \"<string>\",\n      \"qtext\": \"<string>\",\n      \"required\": \"<string>\",\n      \"type\": \"<string>\"\n    }\n  ]\n}"
+				},
+				{
+					"name": "Bad Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/questionnaire/:questionnaireID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"questionnaire",
+								":questionnaireID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Not Found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/questionnaire/:questionnaireID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"questionnaire",
+								":questionnaireID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				},
+				{
+					"name": "Internal Server Error",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/questionnaire/:questionnaireID",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"questionnaire",
+								":questionnaireID"
+							],
+							"variable": [
+								{
+									"key": "questionnaireID",
+									"value": "<string>",
+									"description": "(Required) "
+								}
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "text",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "/intelliq_api",
+			"type": "string"
+		}
+	]
+}
