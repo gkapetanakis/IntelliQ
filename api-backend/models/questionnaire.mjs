@@ -21,7 +21,8 @@ const questionSchema = new mongoose.Schema({
     required: { type: String, enum: ["true", "false"], lowercase: true, default: "false" },
     type: { type: String, enum: ["question", "profile"], lowercase: true, default: "question" },
     options: { 
-        type: [{ type: optionSchema, required: true }],
+        type: [{ type: optionSchema }],
+        required: true,
         validate: (arr) => Array.isArray(arr) && arr.length > 0
     } 
 });
@@ -31,7 +32,8 @@ const questionnaireSchema = new mongoose.Schema({
     questionnaireTitle: { type: String, required: true },
     keywords: [{ type: String }],
     questions: { 
-        type: [{ type: questionSchema, required: true }],
+        type: [{ type: questionSchema }],
+        required: true,
         validate: (arr) => Array.isArray(arr) && arr.length > 0
     } 
 });

@@ -47,7 +47,7 @@ async function postDoAnswer(req, res, next) {
     const questionnaireID = req.params.questionnaireID;
     const questionID = req.params.questionID;
     const sessionID = req.params.sessionID;
-    const optionID = req.params?.optionID || "";
+    const optionID = (req.params.optionID !== "null") ? req.params.optionID : "";
 
     res.locals.model = Answer;
     res.locals.obj = {
