@@ -3,14 +3,23 @@
 Group: softeng2022-01
 Members: el19005, el19062
 
-Installation Instructions
+## Setup
 
-Requirements: Git, node.js, MongoDB
+### Software requirements
+* Git
+* node.js
+* MongoDB
 
+### Installation Instructions
+* Clone repository wherever you want (e.g. `/`)
+#### Back-end service
 1. Start the MongoDB service
-2. Clone repository wherever you want (e.g. "/")
-3. Run "npm install" inside "/api-backend" and "/frontend"
-4. Run "npm build" inside "/frontend"
-5. Run "sudo npm preview" inside "/frontend"
-6. Run "npm run dev" inside "/api-backend"
-7. Frontend application can be accessed in localhost:433, while backed can be accessed in localhost:9103/intelliq_api.
+2. Inside `/api-backend`:
+   1. Run `npm install`
+   2. Run `npm run dev`
+3. Application can now be accessed on `localhost:9103/intelliq_api`
+#### Front-end service _(requires back-end to be running to function properly)_
+1. Inside `/frontend`:
+   1. Run `npm run build`
+   2. Run `sudo npm run preview` (`sudo` is required to run on port 443)
+2. Application can now be accessed on `localhost:443`
