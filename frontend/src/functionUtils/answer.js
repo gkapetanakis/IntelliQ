@@ -15,6 +15,10 @@ async function doAnswerAndStartSession(
         session = generateID();
     }
 
+    if (!optionID) {
+        optionID = null;
+    } // send null when no answer is given
+
     try {
         const url = fetchAnswerURL({
             questionnaireID,
