@@ -22,7 +22,7 @@ const APP_BASE_URL = process.env.APP_BASE_URL;
 const DATABASE_URL = `mongodb://${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}/${process.env.DATABASE_NAME}`;
 
 // add event listeners to database connection
-mongoose.connection.on("error", (error) => console.error("Database connection error:\n", error));
+mongoose.connection.on("error", (error) => console.error("Database connection error\n"));
 mongoose.connection.on("connected", () => console.log("Connected to database"));
 mongoose.connection.on("disconnected", async () => {
     console.log("Disconnected from database");
@@ -47,21 +47,21 @@ app.listen(APP_PORT, APP_HOST, console.log("App is now listening on port", APP_P
 async function connectToDB() {
     try {
         await mongoose.connect(DATABASE_URL, {
-            serverSelectionTimeoutMS: 5000 // retry requests for up to 5 seconds
+            serverSelectionTimeoutMS: 10000 // retry requests every 10 seconds
         });
     } catch {
         console.error("Mongoose failed to connect");
     }
 };
 
-// first middleware in the chain - just logs something
+// first middleware in the chain - just for logging
 function firstMiddleware(req, res, next) {
     console.log("------------------------------\n");
     res.locals.step = 1;
 
     console.log(req.url);
     console.log(`${res.locals.step++}. Endpoint controller executing`);
-
+    
     next();
 }
 

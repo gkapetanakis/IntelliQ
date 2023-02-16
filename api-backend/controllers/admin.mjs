@@ -30,11 +30,10 @@ async function postQuestionnaireUpd(req, res, next) {
         // throws error if file does not exist
         res.locals.obj = JSON.parse(req.file.buffer.toString());
         res.locals.model = Questionnaire;
-        res.status(StatusCodes.OK);
         next();
     } catch (err) {
         // file did not exist
-        res.status(err instanceof TypeError || err instanceof mongoose.Error.ValidationError
+        res.status(err instanceof TypeError // TypeError: got undefined instead of string
             ? StatusCodes.BAD_REQUEST
             : StatusCodes.INTERNAL_SERVER_ERROR
         );

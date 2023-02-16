@@ -3,6 +3,7 @@ import { StatusCodes, ReasonPhrases } from "http-status-codes";
 function errorHandler(_err, _req, res, next) {
     console.log(`${res.locals.step++}. Error handler executing`);
 
+    // create response object based on error code
     const error = { message: "An error occured" };
     if (res.statusCode === StatusCodes.BAD_REQUEST)
         error.message = ReasonPhrases.BAD_REQUEST;
