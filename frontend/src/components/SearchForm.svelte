@@ -20,7 +20,7 @@
     </header>
     <form on:submit|preventDefault={handleSubmit}>
         <input type="text" bind:value={inputText} placeholder="Enter a Questionnaire ID">
-        <button type="submit" disabled={!inputText}>Submit</button>
+        <button type="submit" disabled={!inputText.trim()}>Submit</button>
         {#if !inputText}
         <p>Questionnaire must have an ID</p>
         {/if}

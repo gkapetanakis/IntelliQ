@@ -1,6 +1,7 @@
-import { noNextQuestionID } from "../dataUtils/constantValues";
 import { fetchQuestionnaireURL ,fetchQuestionURL } from "../dataUtils/paths";
 import { errorInfo } from "../dataUtils/stores";
+
+const noNextQuestionID = "-";
 
 async function searchQuestionnaire(questionnaireID) {
     try {
@@ -80,7 +81,7 @@ function searchNextQuestionID(
     if (!chosenOpt) { // user made no choice
         const nextIndex = questionsArray.findIndex(qID => qID === nextQuestion.qID) + 1;
         if (nextIndex < questionsArray.length)
-            nextqID = questionsArray[nextIndex];  
+            nextqID = questionsArray[nextIndex];
     } else {
         nextqID = chosenOpt.nextqID;
     }

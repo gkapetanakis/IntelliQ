@@ -5,7 +5,6 @@
     import SearchForm from "./components/SearchForm.svelte";
     import AnswerQuestionForm from "./components/AnswerQuestionForm.svelte";
     import { searchNextQuestion } from "./functionUtils/search";
-    import { noNextQuestionID } from "./dataUtils/constantValues";
     import {
         questionnaireInfo,
         questionsArray,
@@ -16,13 +15,15 @@
         clearStorage
     } from "./dataUtils/stores";
 
+    const noNextQuestionID = "-";
+
     let errorInfoToString; // used in the App to display the Error
     errorInfo.subscribe(({message, name, statusCode}) => {
-        let outputString = (!!name)?name:"";
+        let outputString = (!!name) ? name : "";
         if (!!message) outputString += `: ${message}`;
         if (!!statusCode) outputString += ` (Status Code: ${statusCode})`;
         // log errors in console
-        console.log(outputString);
+        console.error(outputString);
 
         // there are two cases: if statusCode exists then backend gave us an error answer
         // otherwise there was a problem communicating with the backend

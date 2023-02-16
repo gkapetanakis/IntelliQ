@@ -50,7 +50,6 @@ async function doAnswerAndStartSession(
                 statusCode: response.status
             });
         }
-
     } catch (err) {
         errorInfo.set({
             message: err.message,

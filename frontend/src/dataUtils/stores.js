@@ -37,13 +37,14 @@ function clearStorage() {
 // refresh but not close and open. Helps us keep our page fresh and organized for
 // the user.
 function createAndSubscribe(variableName, initialValue) {
-    const variable = writable(JSON.parse(sessionStorage.getItem(variableName)) ||
-                              initialValue); // create
+    const variable = writable(
+        JSON.parse(sessionStorage.getItem(variableName)) || initialValue
+    ); // create
     
-    variable.subscribe((val) => sessionStorage.setItem(
-                                                        variableName,
-                                                        JSON.stringify(val))
-                                                        ); // subscribe
+    variable.subscribe((val) => 
+        sessionStorage.setItem(variableName, JSON.stringify(val))
+    ); // subscribe
+
     return variable;
 }
 

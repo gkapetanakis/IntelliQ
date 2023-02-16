@@ -1,12 +1,12 @@
 <script>
     import { writable } from "svelte/store";
-    import { openStringQuestion } from "../dataUtils/constantValues";
     import { clearStorage, seenQuestions } from "../dataUtils/stores";
     import { createEventDispatcher } from "svelte";
     import { searchNextQuestionID } from "../functionUtils/search";
     import { doAnswerAndStartSession } from "../functionUtils/answer";
     import Card from "./Card.svelte";
 
+    const openStringQuestion = "<open string>";
     let dispatch = createEventDispatcher();
     const chosenOpt = writable(null);
 
@@ -70,7 +70,7 @@
             qID,
             qtext,
             options,
-            ans: (!!$chosenOpt)?$chosenOpt.opttxt:""}]);
+            ans: (!!$chosenOpt) ? $chosenOpt.opttxt : ""}]);
         // save the question
 
         $chosenOpt = null;
@@ -97,7 +97,8 @@
             // maybe it's an optID
             lookup = $seenQuestions.filter(question => {
                 for (const option of question.options) {
-                    if (option.optID === word) return true;
+                    if (option.optID === word)
+                        return true;
                 }
                 return false;
             });
@@ -126,7 +127,7 @@
         $chosenOpt = null;
         if (isOpenString) {
             $chosenOpt = options[0];
-            options[0].opttxt = null;
+            options[0].opttxt = "";
         }
     }
 
@@ -143,7 +144,7 @@
             if(isOpenString) {
                 return !option.opttxt; // text questions
             }
-            return !option; // non text questions
+            return false; // non text questions
         }
         return true;
     }
@@ -160,14 +161,8 @@
     <form id="question-form" on:submit|preventDefault={submitAnswer}>
         {#each options as option (option.optID)}
         <label>
-            {#if isOpenString} <!-- For text questions, allow the user to pick the text option and then
-                                                      show only the text input field -->
-                {#if $chosenOpt?.optID !== option.optID} <!-- $chosenOpt could be null here... -->
-                <input type="radio" name="option" value={option} bind:group={$chosenOpt}>
-                fill this field
-                {:else}
+            {#if isOpenString}
                 <input type="text" name="option" bind:value={$chosenOpt.opttxt} placeholder="enter your information">
-                {/if}
             {:else}
                 <input type="radio" name="option" value={option} bind:group={$chosenOpt}>
                 {option.opttxt}
