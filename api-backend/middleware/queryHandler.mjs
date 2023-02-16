@@ -17,7 +17,7 @@ async function findQueryHandler(_req, res, next) {
         // if not found throw error
         if (!doc || doc?.length === 0) {
             res.status(StatusCodes.NOT_FOUND);
-            throw new Error("Document not found");
+            next(new Error("Document not found"));
         } else {
             // remove private fields and transform with given function
             removePrivateFields(doc);
