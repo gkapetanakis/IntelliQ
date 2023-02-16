@@ -3885,7 +3885,7 @@
 	"variable": [
 		{
 			"key": "baseUrl",
-			"value": "/intelliq_api",
+			"value": "http://127.0.0.1:9103/intelliq_api",
 			"type": "string"
 		}
 	]

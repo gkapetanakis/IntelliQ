@@ -1,8 +1,10 @@
 openapi: 3.1.0
+
 info:
     version: 1.0.0
     title: intelliQ API
     description: Create and answer questionnaires
+
 paths:
     /admin/healthcheck:
         description: Check database connection health
@@ -28,6 +30,7 @@ paths:
                         text/csv:
                             schema:
                                 type: string
+
     /admin/questionnaire_upd:
         description: Upload a new questionnaire (multipart/form-data)
         post:
@@ -49,6 +52,7 @@ paths:
                     $ref: "#/components/responses/400response"
                 500:
                     $ref: "#/components/responses/500response"
+
     /admin/resetall:
         description: Purge the database
         post:
@@ -59,6 +63,7 @@ paths:
                 500:
                     description: Internal Server Error
                     $ref: "#/components/responses/resetResponseFailure"
+
     /admin/resetq/{questionnaireID}:
         description: Purge all sessions of a specific questionnaire from the database
         parameters:
@@ -74,9 +79,11 @@ paths:
                 500:
                     description: Internal Server Error
                     $ref: "#/components/responses/resetResponseFailure"
+
     /questionnaire/{questionnaireID}:
         description: Retrieve the basic info of a questionnaire
         parameters:
+            - $ref: "#/components/parameters/format"
             - $ref: "#/components/parameters/questionnaireID"
         get:
             responses:
@@ -95,9 +102,11 @@ paths:
                     $ref: "#/components/responses/404response"
                 500:
                     $ref: "#/components/responses/500response"
+
     /question/{questionnaireID}/{questionID}:
         description: Retrieve a question
         parameters:
+            - $ref: "#/components/parameters/format"
             - $ref: "#/components/parameters/questionnaireID"
             - $ref: "#/components/parameters/questionID"
         get:
@@ -124,6 +133,7 @@ paths:
                     $ref: "#/components/responses/404response"
                 500:
                     $ref: "#/components/responses/500response"
+
     /doanswer/{questionnaireID}/{questionID}/{sessionID}/{optionID}:
         description: Save a new answer to the database
         parameters:
@@ -139,9 +149,11 @@ paths:
                     $ref: "#/components/responses/400response"
                 500:
                     $ref: "#/components/responses/500response"
+
     /getsessionanswers/{questionnaireID}/{sessionID}:
         description: Retrieve all answers of a session
         parameters:
+            - $ref: "#/components/parameters/format"
             - $ref: "#/components/parameters/questionnaireID"
             - $ref: "#/components/parameters/sessionID"
         get:
@@ -161,9 +173,11 @@ paths:
                     $ref: "#/components/responses/404response"
                 500:
                     $ref: "#/components/responses/500response"
+
     /getquestionanswers/{questionnaireID}/{questionID}:
         description: Retrieve all answers to a question
         parameters:
+            - $ref: "#/components/parameters/format"
             - $ref: "#/components/parameters/questionnaireID"
             - $ref: "#/components/parameters/questionID"
         get:
@@ -183,6 +197,7 @@ paths:
                     $ref: "#/components/responses/404response"
                 500:
                     $ref: "#/components/responses/500response"
+
 components:
     schemas:
         format:
@@ -191,6 +206,7 @@ components:
                 enum:
                     - json
                     - csv
+
         Option:
             type: object
             required:
@@ -207,6 +223,7 @@ components:
                 nextqID:
                     description: The identifier of the following question
                     type: string
+
         QuestionWithoutOptions:
             type: object
             required:
@@ -233,6 +250,7 @@ components:
                     enum:
                         - profile
                         - question
+
         QuestionWithOptions:
             allOf:
                 - "#/components/schemas/QuestionWithoutOptions"
@@ -245,6 +263,7 @@ components:
                           type: array
                           items:
                               $ref: "#/components/schemas/Option"
+
         QuestionnaireWithoutOptions:
             type: object
             required:
@@ -269,6 +288,7 @@ components:
                     type: array
                     items:
                         $ref: "#/components/schemas/QuestionWithoutOptions"
+
         QuestionnaireWithOptions:
             allOf:
                 - $ref: "#/components/schemas/QuestionnaireWithoutOptions"
@@ -281,6 +301,7 @@ components:
                           type: array
                           items:
                               $ref: "#/components/schemas/QuestionWithOptions"
+
         Answer:
             type: object
             required:
@@ -301,6 +322,7 @@ components:
                 ans:
                     description: The selected option's unique identifier
                     $ref: "#/components/schemas/Option/properties/optID"
+
         SessionAnswers:
             type: object
             required:
@@ -325,6 +347,7 @@ components:
                                 $ref: "#/components/schemas/Answer/properties/qID"
                             ans:
                                 $ref: "#/components/schemas/Answer/properties/ans"
+
         QuestionAnswers:
             type: object
             required:
@@ -349,15 +372,20 @@ components:
                                 $ref: "#/components/schemas/Answer/properties/session"
                             ans:
                                 $ref: "#/components/schemas/Answer/properties/ans"
+
     responses:
         204response:
             description: No Content
+
         400response:
             description: Bad Request
+
         404response:
             description: Not Found
+
         500response:
             description: Internal Server Error
+
         resetResponseSuccess:
             description: The status of the request and (if needed) the reason of its failure
             content:
@@ -375,6 +403,7 @@ components:
                 text/csv:
                     schema:
                         type: string
+
         resetResponseFailure:
             description: The status of the request and (if needed) the reason of its failure
             content:
@@ -395,6 +424,7 @@ components:
                 text/csv:
                     schema:
                         type: string
+
     parameters:
         format:
             name: format
@@ -402,24 +432,28 @@ components:
             required: false
             schema:
                 $ref: "#/components/schemas/format"
+
         questionnaireID:
             name: questionnaireID
             in: path
             required: true
             schema:
                 $ref: "#/components/schemas/QuestionnaireWithoutOptions/properties/questionnaireID"
+
         questionID:
             name: questionID
             in: path
             required: true
             schema:
                 $ref: "#/components/schemas/QuestionWithoutOptions/properties/qID"
+
         optionID:
             name: optionID
             in: path
             required: true
             schema:
                 $ref: "#/components/schemas/Option/properties/optID"
+
         sessionID:
             name: sessionID
             in: path
