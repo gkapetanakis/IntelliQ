@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "ed8b8eb3-a6d8-4e93-af7e-483014cbb750",
+		"_postman_id": "315c5f5e-7d30-46cd-8418-c2a8e5b55b77",
 		"name": "intelliQ API Testing",
 		"description": "Create and answer questionnaires",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "25893231"
+		"_exporter_id": "24937825"
 	},
 	"item": [
 		{
@@ -118,7 +118,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"const dbAvailable = pm.variables.get(\"dbAvailable\") !== false;",
+									"const dbAvailable = pm.variables.get(\"dbAvailable\");",
 									"const validRequest = pm.variables.get(\"validRequest\");",
 									"const filename = pm.variables.get(\"filename\");",
 									"pm.variables.unset(\"validRequest\");",
@@ -141,10 +141,6 @@
 									"        pm.expect(pm.response.text()).to.be.empty;",
 									"    });",
 									"}",
-									"else {",
-									"    // if the request is unsuccessful, the response body should be a generic error",
-									"    pm.variables.set(\"runDefaultErrorTest\", true);",
-									"}",
 									""
 								],
 								"type": "text/javascript"
@@ -154,6 +150,7 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
+									"const dbAvailable = pm.variables.get(\"dbAvailable\");",
 									"const initialized = pm.variables.get(\"initialized\");",
 									"if (!initialized) {",
 									"    // only cases with the \"SUC\" element should succeed",
@@ -194,6 +191,7 @@
 									"}",
 									"",
 									"pm.variables.set(\"validRequest\", current.at(-1) === \"SUC\");",
+									"pm.variables.set(\"runDefaultErrorTest\", !(dbAvailable && pm.variables.get(\"validRequest\")));",
 									""
 								],
 								"type": "text/javascript"
@@ -354,7 +352,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"const dbAvailable = pm.variables.get(\"dbAvailable\") !== false;",
+									"const dbAvailable = pm.variables.get(\"dbAvailable\");",
 									"const shouldSucceed = pm.variables.get(\"shouldSucceed\");",
 									"pm.variables.unset(\"shouldSucceed\");",
 									"",
@@ -557,7 +555,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"const dbAvailable = pm.variables.get(\"dbAvailable\") !== false;",
+									"const dbAvailable = pm.variables.get(\"dbAvailable\");",
 									"",
 									"// STATUS CODE",
 									"pm.test(\"Status code is 200 or 500\", () => {",
@@ -678,7 +676,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"const dbAvailable = pm.variables.get(\"dbAvailable\") !== false;",
+							"const dbAvailable = pm.variables.get(\"dbAvailable\");",
 							"const validRequest = pm.variables.get(\"validRequest\");",
 							"const questionnaireID = pm.variables.get(\"questionnaireID\");",
 							"const questionID = pm.variables.get(\"questionID\");",
@@ -701,9 +699,6 @@
 							"        pm.expect(pm.response.text()).to.be.empty;",
 							"    });",
 							"}",
-							"else {",
-							"    pm.variables.set(\"runDefaultErrorTest\", true);",
-							"}",
 							""
 						],
 						"type": "text/javascript"
@@ -713,6 +708,7 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
+							"const dbAvailable = pm.variables.get(\"dbAvailable\");",
 							"const initialized = pm.variables.get(\"initialized\");",
 							"if (!initialized) {",
 							"    pm.variables.set(\"parameters\", [",
@@ -751,6 +747,7 @@
 							"}",
 							"",
 							"pm.variables.set(\"validRequest\", current.at(-1) === \"SUC\");",
+							"pm.variables.set(\"runDefaultErrorTest\", !(dbAvailable && pm.variables.get(\"validRequest\")));",
 							""
 						],
 						"type": "text/javascript"
@@ -966,8 +963,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"const dbAvailable = pm.variables.get(\"dbAvailable\") !== false;",
-							"const schema = pm.variables.get(\"schema\");",
+							"const dbAvailable = pm.variables.get(\"dbAvailable\");",
 							"const shouldSucceed = pm.variables.get(\"shouldSucceed\");",
 							"const questionnaireID = pm.variables.get(\"questionnaireID\");",
 							"pm.variables.unset(\"schema\");",
@@ -980,19 +976,7 @@
 							"    pm.response.to.have.status(dbAvailable ? (shouldSucceed ? 200 : 404) : 500);",
 							"});",
 							"",
-							"// BODY",
-							"if (dbAvailable && shouldSucceed) {",
-							"    pm.test(\"Success: Body is not empty\", () => {",
-							"        pm.expect(pm.response.text()).to.not.be.empty;",
-							"",
-							"        pm.test(\"Success: Body is correct\", () => {",
-							"            pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;",
-							"        });",
-							"    });",
-							"}",
-							"else {",
-							"    pm.variables.set(\"runDefaultErrorTest\", true);",
-							"}",
+							"// BODY is taken care of by collection test script",
 							""
 						],
 						"type": "text/javascript"
@@ -1002,6 +986,7 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
+							"const dbAvailable = pm.variables.get(\"dbAvailable\");",
 							"const initialized = pm.variables.get(\"initialized\");",
 							"if (!initialized) {",
 							"    pm.variables.set(\"parameters\", [",
@@ -1026,6 +1011,8 @@
 							"}",
 							"",
 							"pm.variables.set(\"shouldSucceed\", current.at(-1) === \"SUC\");",
+							"pm.variables.set(\"validateSchema\", dbAvailable && pm.variables.get(\"shouldSucceed\"));",
+							"pm.variables.set(\"runDefaultErrorTest\", !(dbAvailable && pm.variables.get(\"shouldSucceed\")));",
 							"pm.variables.set(\"schema\", {",
 							"    \"type\": \"object\",",
 							"    \"required\": {",
@@ -1251,8 +1238,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"const dbAvailable = pm.variables.get(\"dbAvailable\") !== false;",
-							"const schema = pm.variables.get(\"schema\");",
+							"const dbAvailable = pm.variables.get(\"dbAvailable\");",
 							"const shouldSucceed = pm.variables.get(\"shouldSucceed\");",
 							"const questionnaireID = pm.variables.get(\"questionnaireID\");",
 							"const questionID = pm.variables.get(\"questionID\");",
@@ -1267,19 +1253,7 @@
 							"    pm.response.to.have.status(dbAvailable ? (shouldSucceed ? 200 : 404) : 500);",
 							"});",
 							"",
-							"// BODY",
-							"if (dbAvailable && shouldSucceed) {",
-							"    pm.test(\"Success: Body is not empty\", () => {",
-							"        pm.expect(pm.response.text()).to.not.be.empty;",
-							"",
-							"        pm.test(\"Success: Body is correct\", () => {",
-							"            pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;",
-							"        });",
-							"    });",
-							"}",
-							"else {",
-							"    pm.variables.set(\"runDefaultErrorTest\", true);",
-							"}",
+							"// BODY is taken care of by collection test script",
 							""
 						],
 						"type": "text/javascript"
@@ -1289,6 +1263,7 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
+							"const dbAvailable = pm.variables.get(\"dbAvailable\");",
 							"const initialized = pm.variables.get(\"initialized\");",
 							"if (!initialized) {",
 							"    pm.variables.set(\"parameters\", [",
@@ -1315,6 +1290,8 @@
 							"}",
 							"",
 							"pm.variables.set(\"shouldSucceed\", current.at(-1) === \"SUC\");",
+							"pm.variables.set(\"validateSchema\", dbAvailable && pm.variables.get(\"shouldSucceed\"));",
+							"pm.variables.set(\"runDefaultErrorTest\", !(dbAvailable && pm.variables.get(\"shouldSucceed\")));",
 							"pm.variables.set(\"schema\", {",
 							"    \"type\": \"object\",",
 							"    \"required\": {",
@@ -1568,8 +1545,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"const dbAvailable = pm.variables.get(\"dbAvailable\") !== false;",
-							"const schema = pm.variables.get(\"schema\");",
+							"const dbAvailable = pm.variables.get(\"dbAvailable\");",
 							"const shouldSucceed = pm.variables.get(\"shouldSucceed\");",
 							"const questionnaireID = pm.variables.get(\"questionnaireID\");",
 							"const sessionID = pm.variables.get(\"sessionID\");",
@@ -1584,19 +1560,7 @@
 							"    pm.response.to.have.status(dbAvailable ? (shouldSucceed ? 200 : 404) : 500);",
 							"});",
 							"",
-							"// BODY",
-							"if (dbAvailable && shouldSucceed) {",
-							"    pm.test(\"Success: Body is not empty\", () => {",
-							"        pm.expect(pm.response.text()).to.not.be.empty;",
-							"",
-							"        pm.test(\"Success: Body is correct\", () => {",
-							"            pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;",
-							"        });",
-							"    });",
-							"}",
-							"else {",
-							"    pm.variables.set(\"runDefaultErrorTest\", true);",
-							"}",
+							"// BODY is taken care of by collection test script",
 							""
 						],
 						"type": "text/javascript"
@@ -1606,6 +1570,7 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
+							"const dbAvailable = pm.variables.get(\"dbAvailable\");",
 							"const initialized = pm.variables.get(\"initialized\");",
 							"if (!initialized) {",
 							"    pm.variables.set(\"parameters\", [",
@@ -1633,6 +1598,8 @@
 							"}",
 							"",
 							"pm.variables.set(\"shouldSucceed\", current.at(-1) === \"SUC\");",
+							"pm.variables.set(\"validateSchema\", dbAvailable && pm.variables.get(\"shouldSucceed\"));",
+							"pm.variables.set(\"runDefaultErrorTest\", !(dbAvailable && pm.variables.get(\"shouldSucceed\")));",
 							"pm.variables.set(\"schema\", {",
 							"    \"type\": \"object\",",
 							"    \"required\": {",
@@ -1878,8 +1845,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"const dbAvailable = pm.variables.get(\"dbAvailable\") !== false;",
-							"const schema = pm.variables.get(\"schema\");",
+							"const dbAvailable = pm.variables.get(\"dbAvailable\");",
 							"const shouldSucceed = pm.variables.get(\"shouldSucceed\");",
 							"const questionnaireID = pm.variables.get(\"questionnaireID\");",
 							"const questionID = pm.variables.get(\"questionID\");",
@@ -1894,19 +1860,7 @@
 							"    pm.response.to.have.status(dbAvailable ? (shouldSucceed ? 200 : 404) : 500);",
 							"});",
 							"",
-							"// BODY",
-							"if (dbAvailable && shouldSucceed) {",
-							"    pm.test(\"Success: Body is not empty\", () => {",
-							"        pm.expect(pm.response.text()).to.not.be.empty;",
-							"",
-							"        pm.test(\"Success: Body is correct\", () => {",
-							"            pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;",
-							"        });",
-							"    });",
-							"}",
-							"else {",
-							"    pm.variables.set(\"runDefaultErrorTest\", true);",
-							"}",
+							"// BODY is taken care of by collection test script",
 							""
 						],
 						"type": "text/javascript"
@@ -1916,6 +1870,7 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
+							"const dbAvailable = pm.variables.get(\"dbAvailable\");",
 							"const initialized = pm.variables.get(\"initialized\");",
 							"if (!initialized) {",
 							"    pm.variables.set(\"parameters\", [",
@@ -1945,6 +1900,8 @@
 							"}",
 							"",
 							"pm.variables.set(\"shouldSucceed\", current.at(-1) === \"SUC\");",
+							"pm.variables.set(\"validateSchema\", dbAvailable && pm.variables.get(\"shouldSucceed\"));",
+							"pm.variables.set(\"runDefaultErrorTest\", !(dbAvailable && pm.variables.get(\"shouldSucceed\")));",
 							"pm.variables.set(\"schema\", {",
 							"    \"type\": \"object\",",
 							"    \"required\": {",
@@ -2192,6 +2149,9 @@
 				"exec": [
 					"// reset the variable to false",
 					"pm.variables.set(\"runDefaultErrorTest\", false);",
+					"",
+					"// db is considered available only if it's not explicitly unavailable",
+					"pm.variables.set(\"dbAvailable\", pm.variables.get(\"dbAvailable\") !== false);",
 					""
 				]
 			}
@@ -2202,6 +2162,7 @@
 				"type": "text/javascript",
 				"exec": [
 					"const dbAvailable = pm.variables.get(\"dbAvailable\") !== false;",
+					"const validateSchema = pm.variables.get(\"validateSchema\");",
 					"const runDefaultErrorTest = pm.variables.get(\"runDefaultErrorTest\");",
 					"",
 					"// CONTENT-TYPE",
@@ -2219,6 +2180,17 @@
 					"});",
 					"",
 					"// BODY",
+					"if (validateSchema) {",
+					"    const schema = pm.variables.get(\"schema\"); ",
+					"    pm.test(\"Success: Body is not empty\", () => {",
+					"        pm.expect(pm.response.text()).to.not.be.empty;",
+					"",
+					"        pm.test(\"Success: Body is correct\", () => {",
+					"            pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;",
+					"        });",
+					"    });",
+					"}",
+					"",
 					"if (runDefaultErrorTest) {",
 					"    pm.test(\"Error: Body is not empty\", () => {",
 					"        pm.expect(pm.response.text()).to.not.be.empty;",
