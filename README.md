@@ -1,25 +1,37 @@
 # Software Engineering Project 2022-2023
 
-Group: softeng2022-01
-Members: el19005, el19062
+#### __Group__
+SoftEng2022-01
+#### __Members__
+* el19005 - Δημήτριος Γεωργούσης
+* el19062 - Γεώργιος-Αλέξιος Καπετανάκης
 
 ## Setup
 
 ### Software requirements
 * Git
-* node.js
 * MongoDB
+* Node.js
 
 ### Installation Instructions
-* Clone repository wherever you want (e.g. `/`)
+* Clone repository wherever you want (e.g. `/`).
 #### Back-end service
-1. Start the MongoDB service
-2. Inside `/api-backend`:
-   1. Run `npm install`
-   2. Run `npm run dev`
-3. Application can now be accessed on `localhost:9103/intelliq_api`
+1. Start the MongoDB service if it isn't already running.
+2. Navigate to `/api-backend`.
+3. Run `npm install`.
+4. The app needs some environment variables to function properly.
+   * If the app is run in a __development__ environment, these variables are loaded from a `.env` file which must contain the variables present in the `.env_sample` file found inside `/api-backend`. The variables can also be created manually.
+   * If the app is run in a __production__ environment, the variables contained in `.env_sample` must be created(`export VARIABLE=value` in Unix for example) manually. To run in a production environment you must also create the variable `NODE_ENV=production`.
+   * __Note:__ To switch back to a development environment from production, unset `NODE_ENV` or set it equal to `development`.
+4. Start the app using `npm run dev` (__development__ environment, uses `nodemon`) or `node app.mjs` (__production__ environment).
+3. Application can now be accessed on `http::/APP_HOST:APP_PORT/APP_BASE_URL`.
 #### Front-end service _(requires back-end to be running to function properly)_
-1. Inside `/frontend`:
-   1. Run `npm run build`
-   2. Run `sudo npm run preview` (`sudo` is required to run on port 443)
-2. Application can now be accessed on `localhost:443`
+1. Navigate to `/frontend`.
+2. Run `npm install`.
+3. The app needs some environment variables to function properly.
+   * If the app is run in a __development__ environment, these variables are loaded from a `.env.development` file which must contain the variables present in the `.env_sample` file found insinde `/frontend`.
+   * If the app is run in a __production__ environment, these variables are loaded from a `.env.production` file which must contain the variables present in the `.env_sample` file.
+   * __Note:__ In both cases the variables can also be created manually.
+4. Start the app using `npm run dev` (__development__ environment) or execute `npm run build` and then run the app using `npm run preview` (__production__ environment).
+   * __Note:__ Some ports (e.g. 443) require admin privileges to run (`sudo`).
+5. Application can now be accessed on `http(s)://VITE_APP_HOST:VITE_APP_PORT`
