@@ -1,8 +1,0 @@
-# Recommended modifications in Software
-# Engineering Project .vpp file
-
- + Sequence and Activity Diagrams need to include
-   the behaviour of our system in unpredictable
-   situations and/or errors (show different flows)
-
- : Our current diagrams do not meet this requirement.
