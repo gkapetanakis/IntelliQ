@@ -23,7 +23,8 @@
         if (!!message) outputString += `: ${message}`;
         if (!!statusCode) outputString += ` (Status Code: ${statusCode})`;
         // log errors in console
-        console.error(outputString);
+        if (!!outputString)
+            console.error(outputString);
 
         // there are two cases: if statusCode exists then backend gave us an error answer
         // otherwise there was a problem communicating with the backend
