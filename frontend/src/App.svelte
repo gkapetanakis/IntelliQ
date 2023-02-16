@@ -1,4 +1,5 @@
 <script>
+    import { StatusCodes } from "http-status-codes";
     import Card from "./components/Card.svelte";
     import ErrorCard from "./components/ErrorCard.svelte";
     import SearchForm from "./components/SearchForm.svelte";
@@ -17,10 +18,37 @@
 
     let errorInfoToString; // used in the App to display the Error
     errorInfo.subscribe(({message, name, statusCode}) => {
-        let outputString = name;
+        let outputString = (!!name)?name:"";
         if (!!message) outputString += `: ${message}`;
         if (!!statusCode) outputString += ` (Status Code: ${statusCode})`;
-        errorInfoToString = outputString;
+        // log errors in console
+        console.log(outputString);
+
+        // there are two cases: if statusCode exists then backend gave us an error answer
+        // otherwise there was a problem communicating with the backend
+        if (!!statusCode) {
+            switch (statusCode) {
+                case StatusCodes.BAD_REQUEST:
+                    outputString = "There was something wrong with your request.\n"
+                                 + "Make sure the object you're looking for is valid."
+                    break;
+                case StatusCodes.INTERNAL_SERVER_ERROR:
+                    outputString = "The Server failed unexpectedly. Sorry for the inconvenience.\n"
+                                 + "Please try again later."
+                    break;
+                case StatusCodes.NOT_FOUND:
+                    outputString = "There was something wrong with your request.\n"
+                                 + "Make sure the object you're looking exists."
+                    break;
+                default:
+                    outputString = "Some error occured... Can't help you more than that. Try again later."
+            }
+        }
+        else {
+            outputString = "There was an error communicating with the other services.\n"
+                         + "Please check your connection status and try again."
+        }
+        errorInfoToString = outputString; // error message shown to user.
     });
 
     errorInfo.subscribe(({message, name, statusCode}) => {
