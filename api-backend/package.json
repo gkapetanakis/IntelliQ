@@ -17,6 +17,7 @@
     },
     "homepage": "https://github.com/ntua/SoftEng22-01#readme",
     "devDependencies": {
+        "@faker-js/faker": "^7.6.0",
         "dotenv": "^16.0.3",
         "nodemon": "^2.0.20"
     },
