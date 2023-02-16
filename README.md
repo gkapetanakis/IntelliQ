@@ -6,6 +6,14 @@ SoftEng2022-01
 * el19005 - Δημήτριος Γεωργούσης
 * el19062 - Γεώργιος-Αλέξιος Καπετανάκης
 
+## Description
+The project consists of the following parts:
+* The intelliQ REST API definition and documentation. The definition is a YAML file which conforms to OpenAPI 3.1, while the documentation is a Postman file automatically generated from the definition.
+* A back-end service which implements the API written in JavaScript using Node.js and Express. It uses Mongoose to interact with a MongoDB database.
+* A front-end sercive written in JavaScript using Vite and Svelte. It interacts with the back-end service using the JavaScript fetch API.
+* The entire project's documentation, which is a docx document generated from Visual Paradigm. The Visual Paradigm source file is also included.
+* A Postman test collection for the API. It contains tests for all endpoints and is meant to be ran as a collection.
+
 ## Setup
 
 ### Software requirements
