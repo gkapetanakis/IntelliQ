@@ -38,10 +38,11 @@
                     break;
                 case StatusCodes.NOT_FOUND:
                     outputString = "There was something wrong with your request.\n"
-                                 + "Make sure the object you're looking exists."
+                                 + "Make sure the object you're looking for exists."
                     break;
                 default:
-                    outputString = "Some error occured... Can't help you more than that. Try again later."
+                    outputString = "Some error occured...\n"
+                                 + "Can't help you more than that. Try again later."
             }
         }
         else {
