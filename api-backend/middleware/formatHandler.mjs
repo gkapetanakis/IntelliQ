@@ -21,6 +21,8 @@ async function formatHandler(req, res, next) {
             next(err);
         }
     }
+    else
+        next();
 }
 
 export default formatHandler;
