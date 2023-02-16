@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "a7f4adf4-264c-4a12-b3ee-f126e81d8d57",
+		"_postman_id": "f21a083d-c5bd-4040-92df-714afe87a1a3",
 		"name": "intelliQ API Demo (Run requests in order)",
 		"description": "Create and answer questionnaires",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "24937825"
+		"_exporter_id": "25893231"
 	},
 	"item": [
 		{
@@ -3885,7 +3885,7 @@
 	"variable": [
 		{
 			"key": "baseUrl",
-			"value": "http://127.0.0.1:9103/intelliq_api",
+			"value": "http://localhost:9103/intelliq_api",
 			"type": "string"
 		}
 	]
