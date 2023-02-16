@@ -15,7 +15,7 @@ function fetchAnswerURL({
     optionID
 }) {
     return `${baseUrl}/doanswer/${questionnaireID}/${questionID}/${session}/${optionID}`;
-} // optionID could be "". Maybe edit this later, but for now it works fine
+} // optionID could be null, if no answer was submitted.
 
 export {
     fetchQuestionnaireURL,

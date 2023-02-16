@@ -8,7 +8,7 @@
 
     async function handleSubmit() {
         const questionnaireData = await searchQuestionnaire(inputText.trim());
-        if (!!questionnaireData) {
+        if (!!questionnaireData) { // in case of an error searchQuestionnaire returns nothing
             dispatch("foundQuestionnaire", questionnaireData);
         }
     }

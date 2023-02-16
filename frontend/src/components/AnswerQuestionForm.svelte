@@ -35,6 +35,11 @@
     }                           // user's answer
 
     const qtext = replaceRegex(sometext);
+
+    // to present the above data more properly: we do the following destructuring
+    // { questionnaireID, questionnaireTitle } from questionnaireInfo
+    // { qID, qtext, required, options } from nextQuestion
+    // and we format each object in the appropriate type for the rest of the program
     // ------------------------------------------------------------------------------ 
 
     async function submitAnswer() {
@@ -53,8 +58,8 @@
         else {
             optionID = "";
         }
-        session = await doAnswerAndStartSession(
-            questionnaireID,
+        session = await doAnswerAndStartSession( // if an error occurs
+            questionnaireID,                     // this returns nothing
             qID,
             session,
             optionID);
@@ -69,7 +74,7 @@
         // save the question
 
         $chosenOpt = null;
-        if (!!nextQuestion && !!session) {
+        if (!!session) {
             dispatch("answeredQuestion", {nextQuestionID, session});
         }
     }

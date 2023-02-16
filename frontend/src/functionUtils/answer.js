@@ -1,3 +1,4 @@
+import { StatusCodes } from "http-status-codes";
 import { fetchAnswerURL } from "../dataUtils/paths";
 import { errorInfo } from "../dataUtils/stores";
 
@@ -8,7 +9,7 @@ async function doAnswerAndStartSession(
     questionnaireID,
     questionID,
     session = null,
-    optionID,
+    optionID, // may be the empty string
     iterations = 0
 ) {
     if (!session) {
@@ -34,7 +35,8 @@ async function doAnswerAndStartSession(
             return session;
         } else {
             // retry to get a valid session
-            if (iterations < (maxIters - 1)) {
+            if (iterations < (maxIters - 1) &&
+                (response.status === StatusCodes.BAD_REQUEST || response.status === StatusCodes.NOT_FOUND)) {
                 return doAnswerAndStartSession(
                     questionnaireID,
                     questionID,
