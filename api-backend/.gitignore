@@ -2,3 +2,5 @@
 .env
 node_modules
 populator
+
+createEnvironment.ps1
