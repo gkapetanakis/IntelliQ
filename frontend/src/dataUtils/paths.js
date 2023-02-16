@@ -1,7 +1,4 @@
-const baseUrl = ""
-+ `http://${import.meta.env.VITE_APP_HOST}`
-+ `:${import.meta.env.VITE_APP_PORT}`
-+ `${import.meta.env.VITE_APP_BASE_URL}`;
+const baseUrl = import.meta.env.VITE_API_URL;
 
 function fetchQuestionnaireURL({questionnaireID}) {
     return `${baseUrl}/questionnaire/${questionnaireID}`;
