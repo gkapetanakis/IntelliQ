@@ -43,3 +43,17 @@ The project consists of the following parts:
 4. Start the app using `npm run dev` (__development__ environment) or execute `npm run build` and then run the app using `npm run preview` (__production__ environment).
    * __Note:__ Some ports (e.g. 443) require admin privileges to run (`sudo`).
 5. Application can now be accessed on `http(s)://VITE_APP_HOST:VITE_APP_PORT`
+
+## Testing Setup
+
+### Software Requirements
+* Postman
+* Back-end service to be running
+
+### Instructions
+1. Open Postman and go into collections.
+2. Import `/test/intelliQ API Testing.postman_collection.json`.
+3. Copy all files from `/test/questionnaire-samples` to a folder (e.g. `samples`).
+4. Click on the `Upload Questionnaire` request, click on `body`, remove the selected file and then re-add it from `samples` (it should be `valid-1.json`).
+5. Click on the collection and click `Run`, then click `Run intelliQ API Testing`.
+6. Wait for tests to finish.
