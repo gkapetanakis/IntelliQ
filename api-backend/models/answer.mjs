@@ -27,7 +27,7 @@ answerSchema.plugin(uniqueValidator);
 // if built-in validation is successful, perform custom validation
 answerSchema.post(/validate/, async function(doc, next) {
     const err = await answerCustomValidator(doc);
-    next(err);
+    next(err); // err is either an error or undefined
 });
 
 answerSchema.post(/save/, debugUtils.successfulSaveHook(docType)); // hook if save succeeds

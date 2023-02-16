@@ -22,6 +22,9 @@ async function getQuestion(req, res, next) {
     const questionnaireID = req.params.questionnaireID;
     const questionID = req.params.questionID;
 
+    // query filter
+    // projection
+
     res.locals.query = Questionnaire
         .findOne()
         .where({ "questionnaireID" : questionnaireID })

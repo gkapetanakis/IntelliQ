@@ -25,8 +25,8 @@ async function findQueryHandler(_req, res, next) {
             res.locals.responseObj = res.locals?.transform
                 ? res.locals.transform(doc)
                 : doc;
+            next();
         }
-        next();
     } catch (err) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR);
         next(err);

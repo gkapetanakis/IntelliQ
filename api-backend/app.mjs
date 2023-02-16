@@ -7,7 +7,7 @@ import adminRouter from "./routes/admin.mjs";
 import functionalityRouter from "./routes/functionality.mjs";
 import errorHandler from "./middleware/errorHandler.mjs";
 
-// load environmental variables from the .env file
+// load environment variables from the .env file
 // if not in a production environment
 if (process.env.NODE_ENV !== "production") {
     const dotenv = await import("dotenv");
@@ -15,18 +15,18 @@ if (process.env.NODE_ENV !== "production") {
     console.log("Loaded the .env variables")
 }
 
-// constants
+// declare constants
 const APP_HOST = process.env.APP_HOST;
 const APP_PORT = process.env.APP_PORT;
 const APP_BASE_URL = process.env.APP_BASE_URL;
 const DATABASE_URL = `mongodb://${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}/${process.env.DATABASE_NAME}`;
 
 // add event listeners to database connection
-mongoose.connection.on("error", (error) => console.error("Database connection error\n"));
+mongoose.connection.on("error", () => console.error("Database connection error"));
 mongoose.connection.on("connected", () => console.log("Connected to database"));
 mongoose.connection.on("disconnected", async () => {
     console.log("Disconnected from database");
-    await connectToDB();
+    await connectToDB(); // try to reconnect
 });
 
 // connect to the database
@@ -34,11 +34,11 @@ await connectToDB();
 
 // create and configure the express app
 const app = express();
-app.use(firstMiddleware);
+app.use(APP_BASE_URL, firstMiddleware);
 app.use(`${APP_BASE_URL}/admin`, adminRouter); // set up admin endpoints
 app.use(APP_BASE_URL, functionalityRouter); // set up functionality endpoints
-app.use(errorHandler); // set up error handling middleware
-app.use(lastMiddleware);
+app.use(APP_BASE_URL, errorHandler); // set up error handling middleware
+app.use(APP_BASE_URL, lastMiddleware);
 
 // start the express app
 app.listen(APP_PORT, APP_HOST, console.log("App is now listening on port", APP_PORT));
@@ -89,10 +89,10 @@ export {
 
 /*
     middleware order:
-        - first middleware (always runs, just logs something)
+        - first middleware (always runs, just for logging purposes)
         - route controller (always runs)
-        - query handler (if applicable)
-        - format handler (if applicable)
-        - error handler (if at any point an error occurs)
+        - query handler (runs if applicable)
+        - format handler (runs if applicable)
+        - error handler (runs if at any point an error occurs)
         - final middleware (always runs, just sends the response)
 */
