@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ElementBaseInitiationBlock>
+	
+	<!-- Basic -->
+	<Inline template="Basic (with anchor mark)"/>
+	
+	<!-- Stereotypes -->
+	<HasValueChecker property="stereotypes">
+		<Reference template="General/Stereotypes"/>
+	</HasValueChecker>
+	
+	<!-- Tagged Values -->
+	<HasValueChecker property="taggedValues">
+		<Reference template="Tagged Values"/>
+	</HasValueChecker>
+	
+	<!-- Properties -->
+	<Block>
+		<Text style="@heading+">Ιδιότητες</Text>
+		<TableBlock colWidths="20, 80" repeatTableHeader="false" tableStyle="Properties">
+			
+			<TableRow>
+				<TableCell>
+					<Text>Visibility</Text>
+				</TableCell>
+				<TableCell>
+					<HasValueChecker flag="true" property="visibility">
+						<Property property="visibility"/>
+					</HasValueChecker>
+					<HasValueChecker flag="false" property="visibility">
+						<Text>N/A</Text>
+					</HasValueChecker>
+				</TableCell>
+			</TableRow>
+			
+			<HasValueChecker property="ormDetail">
+				<ModelElementProperty property="ormDetail">
+					<HasValueChecker property="tableModel">
+						<TableRow>
+							<TableCell>
+								<Text>Mapped Table</Text>
+							</TableCell>
+							<TableCell>
+								<ModelElementProperty property="tableModel">
+									<Icon/>
+									<Property property="name"/>
+								</ModelElementProperty>
+							</TableCell>
+						</TableRow>
+					</HasValueChecker>
+				</ModelElementProperty>
+			</HasValueChecker>
+			
+			<TableRow>
+				<TableCell>
+					<Text>Abstract</Text>
+				</TableCell>
+				<TableCell>
+					<Property property="abstract"/>
+				</TableCell>
+			</TableRow>
+			
+			<TableRow>
+				<TableCell>
+					<Text>Leaf</Text>
+				</TableCell>
+				<TableCell>
+					<Property property="leaf"/>
+				</TableCell>
+			</TableRow>
+			
+			<TableRow>
+				<TableCell>
+					<Text>Root</Text>
+				</TableCell>
+				<TableCell>
+					<Property property="root"/>
+				</TableCell>
+			</TableRow>
+			
+			<TableRow>
+				<TableCell>
+					<Text>Active</Text>
+				</TableCell>
+				<TableCell>
+					<Property property="active"/>
+				</TableCell>
+			</TableRow>
+			
+		</TableBlock>
+	</Block>
+	
+	<!-- Summary - Template Parameters -->
+	<HasValueChecker property="templateParameters">
+		<Text style="@heading+">Template Parameters</Text>
+		<ParagraphBreak/>
+		
+		<TableBlock colWidths="33, 33, 33" tableStyle="Summaries">
+			<TableRow>
+				<TableCell>
+					<Text>Name</Text>
+				</TableCell>
+				<TableCell>
+					<Text>Type</Text>
+				</TableCell>
+				<TableCell>
+					<Text>Default Value</Text>
+				</TableCell>
+			</TableRow>
+			
+			<ForEach property="templateParameters">
+				<TableRow>
+					<TableCell>
+						<Property property="name"/>
+					</TableCell>
+					<TableCell>
+						<Property property="type"/>
+					</TableCell>
+					<TableCell>
+						<Property property="defaultValue"/>
+					</TableCell>
+				</TableRow>
+			</ForEach>
+		</TableBlock>
+	</HasValueChecker>
+	
+	<!-- Attributes (Summary) -->
+	<HasChildElementChecker modelType="Attribute">
+		<Text style="@heading+">Περίληψη Πεδίων</Text>
+		<ParagraphBreak/>
+		
+		<TableBlock colWidths="20, 80" tableStyle="Summaries">
+			<TableRow>
+				<TableCell>
+					<Text>Όνομα</Text>
+				</TableCell>
+				<TableCell>
+					<Text>Περιγραφή</Text>
+				</TableCell>
+			</TableRow>
+			
+			<IterationBlock modelType="Attribute">
+				<TableRow>
+					<TableCell>
+						<Icon/>
+						<Property property="name"/>
+					</TableCell>
+					<TableCell>
+						<Property property="description" style="Description"/>
+					</TableCell>
+				</TableRow>
+			</IterationBlock>
+		</TableBlock>
+	</HasChildElementChecker>
+	<!-- Enumeration Literals (Summary) -->
+	<HasChildElementChecker modelType="EnumerationLiteral">
+		<Text style="@heading+">Enumeration Literals Summary</Text>
+		<ParagraphBreak/>
+		
+		<TableBlock colWidths="20, 80" tableStyle="Summaries">
+			<TableRow>
+				<TableCell>
+					<Text>Name</Text>
+				</TableCell>
+				<TableCell>
+					<Text>Description</Text>
+				</TableCell>
+			</TableRow>
+			
+			<IterationBlock modelType="EnumerationLiteral">
+				<TableRow>
+					<TableCell>
+						<Icon/>
+						<Property property="name"/>
+					</TableCell>
+					<TableCell>
+						<Property property="description" style="Description"/>
+					</TableCell>
+				</TableRow>
+			</IterationBlock>
+		</TableBlock>
+	</HasChildElementChecker>
+	<!-- Operations (Summary) -->
+	<HasChildElementChecker modelType="Operation">
+		<Text style="@heading+">Operations Summary</Text>
+		<ParagraphBreak/>
+		
+		<TableBlock colWidths="20, 80" tableStyle="Summaries">
+			<TableRow>
+				<TableCell>
+					<Text>Name</Text>
+				</TableCell>
+				<TableCell>
+					<Text>Description</Text>
+				</TableCell>
+			</TableRow>
+			
+			<IterationBlock modelType="Operation">
+				<TableRow>
+					<TableCell>
+						<Icon/>
+						<Property property="name"/>
+					</TableCell>
+					<TableCell>
+						<Property property="description" style="Description"/>
+					</TableCell>
+				</TableRow>
+			</IterationBlock>
+		</TableBlock>
+	</HasChildElementChecker>
+	
+	<!-- Attributes (Detail) -->
+	<HasChildElementChecker modelType="Attribute">
+		<Text style="@heading+">Πεδία</Text>
+		<ParagraphBreak/>
+		
+		<IterationBlock modelType="Attribute">
+			
+			<Inline template="Basic"/>
+			
+			<TableBlock colWidths="20, 80" repeatTableHeader="false" tableStyle="Properties">
+				<TableRow>
+					<TableCell>
+						<Text>Visibility</Text>
+					</TableCell>
+					<TableCell>
+						<Property property="visibility"/>
+					</TableCell>
+				</TableRow>
+				<HasValueChecker property="type">
+					<TableRow>
+						<TableCell>
+							<Text>Type</Text>
+						</TableCell>
+						<TableCell>
+							<Property property="type"/>
+							<HasValueChecker property="typeModifier">
+								<Property property="typeModifier"/>
+							</HasValueChecker>
+						</TableCell>
+					</TableRow>
+				</HasValueChecker>
+				<HasValueChecker property="initialValue">
+					<TableRow>
+						<TableCell>
+							<Text>Initial Value</Text>
+						</TableCell>
+						<TableCell>
+							<Property property="initialValue"/>
+						</TableCell>
+					</TableRow>
+				</HasValueChecker>
+			</TableBlock>
+		
+		</IterationBlock>
+	</HasChildElementChecker>
+	<!-- Enumeration Literals (Detail) -->
+	<HasChildElementChecker modelType="EnumerationLiteral">
+		<Text style="@heading+">Enumeration Literals</Text>
+		<ParagraphBreak/>
+		
+		<IterationBlock modelType="EnumerationLiteral">
+			
+			<Inline template="Basic"/>
+			
+			<TableBlock colWidths="20, 80" repeatTableHeader="false" tableStyle="Properties">
+				<TableRow>
+					<TableCell>
+						<Text>Specification</Text>
+					</TableCell>
+					<TableCell>
+						<ModelElementProperty property="specification">
+							<Property property="value"/>
+						</ModelElementProperty>
+					</TableCell>
+				</TableRow>
+				<TableRow>
+					<TableCell>
+						<Text>Slots</Text>
+					</TableCell>
+					<TableCell>
+						<ForEach property="slots">
+							<Property property="feature"/>
+							<Text> = </Text>
+							
+							<ForEach ignoreLastSeparator="true" property="values">
+								<Property property="value"/>
+								<Text>, </Text>
+							</ForEach>
+							
+							<ParagraphBreak/>
+						</ForEach>
+					</TableCell>
+				</TableRow>
+			</TableBlock>
+		
+		</IterationBlock>
+	</HasChildElementChecker>
+	<!-- Operations (Detail) -->
+	<HasChildElementChecker modelType="Operation">
+		<Text style="@heading+">Operations</Text>
+		<ParagraphBreak/>
+		
+		<IterationBlock modelType="Operation">
+		
+			<Inline template="Basic"/>
+			
+			<TableBlock colWidths="20, 80" repeatTableHeader="false" tableStyle="Properties">
+				<TableRow>
+					<TableCell>
+						<Text>Visibility</Text>
+					</TableCell>
+					<TableCell>
+						<Property property="visibility"/>
+					</TableCell>
+				</TableRow>
+				<HasValueChecker property="returnType">
+					<TableRow>
+						<TableCell>
+							<Text>Return Type</Text>
+						</TableCell>
+						<TableCell>
+							<Property property="returnType"/>
+							<HasValueChecker property="typeModifier">
+								<Property property="typeModifier"/>
+							</HasValueChecker>
+						</TableCell>
+					</TableRow>
+				</HasValueChecker>
+				<HasValueChecker property="templateParameters">
+					<ForEach property="templateParameters">
+						<TableRow>
+							<TableCell>
+								<Text>Template Parameters</Text>
+							</TableCell>
+							<TableCell>
+								<Property property="name"/>
+								<HasValueChecker property="type">
+									<Text> : </Text>
+									<Property property="type"/>
+								</HasValueChecker>
+							</TableCell>
+						</TableRow>
+					</ForEach>
+				</HasValueChecker>
+			</TableBlock>
+		
+		</IterationBlock>
+	</HasChildElementChecker>
+	
+	<!-- Relationships -->
+	<HasRelationshipChecker>
+		
+		<Reference template="GeneralRelationships2"/>
+		
+	</HasRelationshipChecker>
+	
+	<!-- Sub Diagrams & References -->
+	<Reference template="General/Sub and Referenced Diagrams"/>
+	
+	<!-- Traceability -->
+	<HasValueChecker property="traceability">
+		<Reference template="Traceability"/>
+	</HasValueChecker>
+	
+	<!-- Chart Relations -->
+	<HasValueChecker property="chartRelations">
+		<Text style="@heading+">Chart Relations</Text>
+		<ParagraphBreak/>
+		
+		<TableBlock colWidths="20, 80" tableStyle="Summaries">
+			<TableRow>
+				<TableCell>
+					<Text>Code</Text>
+				</TableCell>
+				<TableCell>
+					<Text>Begin</Text>
+				</TableCell>
+				<TableCell>
+					<Text>End</Text>
+				</TableCell>
+			</TableRow>
+			
+			<ForEach property="chartRelations">
+				<TableRow>
+					<TableCell>
+						<ModelElementProperty property="code">
+							<Property property="code"/>
+						</ModelElementProperty>
+					</TableCell>
+					<TableCell>
+						<ModelElementProperty property="from">
+							<Icon/>
+							<Property property="name"/>
+						</ModelElementProperty>
+					</TableCell>
+					<TableCell>
+						<ModelElementProperty property="to">
+							<Icon/>
+							<Property property="name"/>
+						</ModelElementProperty>
+					</TableCell>
+				</TableRow>
+			</ForEach>
+			
+		</TableBlock>
+	</HasValueChecker>
+	
+</ElementBaseInitiationBlock>

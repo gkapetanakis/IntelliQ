@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AnyBaseInitiationBlock>
+	<Text style="@heading+">Σχέσεις</Text>
+	<ParagraphBreak/>
+	
+	<HasRelationshipChecker>
+		
+		<TableBlock colWidths="40, 30, 30" tableStyle="Summaries">
+			<TableRow>
+				<TableCell>
+					<Text>Σχέση</Text>
+				</TableCell>
+				<TableCell>
+					<Text>Από</Text>
+				</TableCell>
+				<TableCell>
+					<Text>Σε</Text>
+				</TableCell>
+			</TableRow>
+			
+			<ForEachRelationship>
+				<TableRow>
+					<TableCell>
+						<Icon/>
+						<Property property="name"/>
+					</TableCell>
+					<TableCell>
+						<FromElement>
+							<Icon/>
+							<Property property="name"/>
+						</FromElement>
+					</TableCell>
+					<TableCell>
+						<ToElement>
+							<Icon/>
+							<Property property="name"/>
+						</ToElement>
+					</TableCell>
+				</TableRow>
+			</ForEachRelationship>
+			
+		</TableBlock>
+		<ParagraphBreak/>
+		
+	</HasRelationshipChecker>
+</AnyBaseInitiationBlock>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AnyBaseInitiationBlock>
+	<Icon/>
+	<Property anchorMark="true" property="name" style="@heading+"/>
+	<ParagraphBreak/>
+	<HasValueChecker property="description">
+		<Property property="description" style="Description"/>
+		<ParagraphBreak/>
+	</HasValueChecker>
+</AnyBaseInitiationBlock>

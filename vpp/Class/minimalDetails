@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ElementBaseInitiationBlock>
+	
+	<!-- Basic -->
+	<Inline template="Basic (with anchor mark)"/>
+	
+	<!-- Attributes (Summary) -->
+	<HasChildElementChecker modelType="Attribute">
+		<Text style="@heading+">Περίληψη Πεδίων</Text>
+		<ParagraphBreak/>
+		
+		<TableBlock colWidths="20, 80" tableStyle="Summaries">
+			<TableRow>
+				<TableCell>
+					<Text>Όνομα</Text>
+				</TableCell>
+				<TableCell>
+					<Text>Περιγραφή</Text>
+				</TableCell>
+			</TableRow>
+			
+			<IterationBlock modelType="Attribute">
+				<TableRow>
+					<TableCell>
+						<Icon/>
+						<Property property="name"/>
+					</TableCell>
+					<TableCell>
+						<Property property="description" style="Description"/>
+					</TableCell>
+				</TableRow>
+			</IterationBlock>
+		</TableBlock>
+	</HasChildElementChecker>
+	<!-- Enumeration Literals (Summary) -->
+	<HasChildElementChecker modelType="EnumerationLiteral">
+		<Text style="@heading+">Enumeration Literals Summary</Text>
+		<ParagraphBreak/>
+		
+		<TableBlock colWidths="20, 80" tableStyle="Summaries">
+			<TableRow>
+				<TableCell>
+					<Text>Name</Text>
+				</TableCell>
+				<TableCell>
+					<Text>Description</Text>
+				</TableCell>
+			</TableRow>
+			
+			<IterationBlock modelType="EnumerationLiteral">
+				<TableRow>
+					<TableCell>
+						<Icon/>
+						<Property property="name"/>
+					</TableCell>
+					<TableCell>
+						<Property property="description" style="Description"/>
+					</TableCell>
+				</TableRow>
+			</IterationBlock>
+		</TableBlock>
+	</HasChildElementChecker>
+	<!-- Operations (Summary) -->
+	<HasChildElementChecker modelType="Operation">
+		<Text style="@heading+">Operations Summary</Text>
+		<ParagraphBreak/>
+		
+		<TableBlock colWidths="20, 80" tableStyle="Summaries">
+			<TableRow>
+				<TableCell>
+					<Text>Name</Text>
+				</TableCell>
+				<TableCell>
+					<Text>Description</Text>
+				</TableCell>
+			</TableRow>
+			
+			<IterationBlock modelType="Operation">
+				<TableRow>
+					<TableCell>
+						<Icon/>
+						<Property property="name"/>
+					</TableCell>
+					<TableCell>
+						<Property property="description" style="Description"/>
+					</TableCell>
+				</TableRow>
+			</IterationBlock>
+		</TableBlock>
+	</HasChildElementChecker>
+	
+</ElementBaseInitiationBlock>
