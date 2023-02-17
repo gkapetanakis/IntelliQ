@@ -22,24 +22,21 @@ recreate our SRS document in Visual Paradigm.
 * Each folder has been given a name to fit the type of element it refers to.
 * You'll need to place the appropriate XML template in the corresponding section of templates in
   Visual Paradigm. To do this, execute the following steps:
-1. go to Doc. Composer in Visual Paradigm and select the fill-in option and open our doc template (in __doc_template__ folder as a Doc Base).
-2. Go to `./Project` in GitHub repo and open some folder. e.g.The __Project__ folder.
-3. On the __Diagram Navigator__ or the __Model Explorer__ click on the corresponding element to the GitHub folder `Name` you opened. For our example it's the __Project__ Element (will be the root of all elements) this will show all templates that refer to __Project__.
-4. Execute the following steps
-   1. In Visual Paradigm create a new XML template (e.g. by
-   duplicating an existing and changing its name and content)
-   with the same name as one of the files in the GitHub folder and the
-   same content as the corresponding file.
+1. go to Doc. Composer in Visual Paradigm and select the fill-in option and open our doc template (in `doc_template` folder as a Doc Base).
+2. Go to `./Project` in GitHub repo and open some folder. e.g.The `Project` folder.
+3. On the `Diagram Navigator` or the `Model Explorer` click on the corresponding element to the GitHub folder `Name` you opened. For our example it's the `Project` Element (will be the root of all elements in `Diagram Navigator` screen) this will show all templates that refer to `Project`.
+4. Execute the following steps:
+   1. In Visual Paradigm create a new XML template (e.g. by duplicating an existing and changing its name and content)
+   with the same name as one of the files in the GitHub folder and the same content as the corresponding file.
    2. repeat for all files it the folder.
-5. Repeat for all folders  in the `/vpp` directory (excluding
-   __doc_template__).
+5. Repeat for all folders  in the `/vpp` directory (excluding `doc_template`).
 
-* For each of our folders you'll need to add the xml templates
-  as described above in the following elements in Visual Paradigm.
+* For each of our folders you'll need to add the xml templates as described above in the following elements in Visual Paradigm
+  (We explain how to find a Visual Paradigm element based on the Github folder name).
 
-* Folder: __Component__, Visual Paradigm: navigate to __Model Explorer__ then find a component. e.g. __User Device__ and then choose __Web Browser__.
-* Folder: __Use Case Diagram__, Visual Paradigm: navigate to __Use Case Diagram__ then find a Use Case Diagram e.g. __All Use Cases__.
-* Folder: __Actor__, Visual Paradigm: in __Model Explorer__ find an Actor e.g. __Χρήστες__ and then __Απαντών__.
-* Folder: __Interaction Diagram__, Visual Paradigm: __Diagram Navigator__ then find a Sequence Diagram e.g. __Answer Questionnaire Sequence__.
-* Folder: __Class__, Visual Paradigm: In __Model Explorer__ locate a class e.g. go to __Database Schema__ and then __Questionnaire__.
-* Folder: __Use Case__, Visual Paradigm: Find a Use Case e.g. __Model Explorer__ then __Answer Questionnaire__.
+* Folder: `Component`, Visual Paradigm: Find a component e.g. navigate to `Model Explorer/User Device/Web Browser`.
+* Folder: `Use Case Diagram`, Visual Paradigm: Find a Use Case Diagram e.g. navigate to `Diagram Navigator/Use Case Diagram/All Use Cases`.
+* Folder: `Actor`, Visual Paradigm: Find an Actor e.g. navigate to `Model Explorer/Χρήστες/Απαντών`.
+* Folder: `Interaction Diagram`, Visual Paradigm: Find a Sequence Diagram e.g. navigate to `Diagram Navigator/Answer Questionnaire Sequence`.
+* Folder: `Class`, Visual Paradigm: Find a Class e.g. navigate to `Model Explorer/Database Schema/Questionnaire`.
+* Folder: `Use Case`, Visual Paradigm: Find a Use Case e.g. navigate to `Model Explorer/Answer Questionnaire`.
