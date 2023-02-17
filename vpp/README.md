@@ -19,14 +19,10 @@ recreate our SRS document in Visual Paradigm.
 ### Instructions
 * Clone repository wherever you want (e.g. `/`).
 * Use only folders/files found in `/vpp`.
-* Each folder has been given a name to fit the type of
-  element it refers to.
-* You'll need to place the appropriate XML template in the
-  corresponding section of templates in Visual Paradigm. To
-  do this, execute the following steps:
-1. go to Doc. Composer in Visual Paradigm and either select
-   the fill-in option and open our doc template (in
-   __doc_template__ folder as a Doc Base).
+* Each folder has been given a name to fit the type of element it refers to.
+* You'll need to place the appropriate XML template in the corresponding section of templates in
+  Visual Paradigm. To do this, execute the following steps:
+1. go to Doc. Composer in Visual Paradigm and select the fill-in option and open our doc template (in __doc_template__ folder as a Doc Base).
 2. Go to `./Project` in GitHub repo and open some folder. e.g.The __Project__ folder.
 3. On the __Diagram Navigator__ or the __Model Explorer__ click on the corresponding element to the GitHub folder `Name` you opened. For our example it's the __Project__ Element (will be the root of all elements) this will show all templates that refer to __Project__.
 4. Execute the following steps
