@@ -47,3 +47,7 @@ recreate our SRS document in Visual Paradigm.
 * Folder: `Interaction Diagram`, Visual Paradigm: Find a Sequence Diagram e.g. navigate to `Diagram Navigator/Sequence Diagram/Answer Questionnaire Sequence`.
 * Folder: `Class`, Visual Paradigm: Find a Class e.g. navigate to `Model Explorer/Database Schema/Questionnaire`.
 * Folder: `Use Case`, Visual Paradigm: Find a Use Case e.g. navigate to `Model Explorer/Use Cases/Answer Questionnaire`.
+
+### Remarks
+Fields `Συγγραφείς` and `Περιγραφή` at the start of the document will not be completed appropriately, because the text in them is accessible only in team
+working environment and is removed when we export our vpp project.
