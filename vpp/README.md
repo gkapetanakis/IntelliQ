@@ -46,4 +46,4 @@ recreate our SRS document in Visual Paradigm.
 * Folder: `Actor`, Visual Paradigm: Find an Actor e.g. navigate to `Model Explorer/Χρήστες/Απαντών`.
 * Folder: `Interaction Diagram`, Visual Paradigm: Find a Sequence Diagram e.g. navigate to `Diagram Navigator/Sequence Diagram/Answer Questionnaire Sequence`.
 * Folder: `Class`, Visual Paradigm: Find a Class e.g. navigate to `Model Explorer/Database Schema/Questionnaire`.
-* Folder: `Use Case`, Visual Paradigm: Find a Use Case e.g. navigate to `Model Explorer/Answer Questionnaire`.
+* Folder: `Use Case`, Visual Paradigm: Find a Use Case e.g. navigate to `Model Explorer/Use Cases/Answer Questionnaire`.
