@@ -22,11 +22,14 @@ recreate our SRS document in Visual Paradigm.
 * Each folder has been given a name to fit the type of element it refers to.
 * You'll need to place the appropriate XML template in the corresponding section of templates in
   Visual Paradigm. To do this, execute the following steps:
-1. go to Doc. Composer in Visual Paradigm and select the fill-in option and open our doc template (in `doc_template` folder as a Doc Base).
+1. go to Doc. Composer in Visual Paradigm and try opening the `srs-softeng-01` file then use as a Doc Base our Doc Base which is in the `doc_template` folder.
+
+### If Visual Paradigm cannot create our document, it is because you do not have our XML templates. To install them follow he steps bellow
+
 2. in the GitHub repo open some folder. e.g. The `Project` folder.
 3. On the `Diagram Navigator` or the `Model Explorer` in Visual Paradigm click on the corresponding element to the GitHub folder `Name` you opened. For our example
    it's the `Project` Element (will be the root of all elements in `Diagram Navigator` screen) this will show all templates that refer to `Project`.
-5. Execute the following steps:
+4. Execute the following steps:
    1. In Visual Paradigm create a new XML template (e.g. by duplicating an existing and changing its name and content)
    with the same name as one of the files in the GitHub folder and the same content as the corresponding file.
    2. repeat for all files it the folder.
@@ -34,7 +37,8 @@ recreate our SRS document in Visual Paradigm.
 
 * For each of our folders you'll need to add the xml templates as described above in the following elements in Visual Paradigm
   (We explain how to find a Visual Paradigm element based on the Github folder name).
-
+  
+* Folder: `Project` was explained in the example
 * Folder: `Component`, Visual Paradigm: Find a component e.g. navigate to `Model Explorer/User Device/Web Browser`.
 * Folder: `Use Case Diagram`, Visual Paradigm: Find a Use Case Diagram e.g. navigate to `Diagram Navigator/Use Case Diagram/All Use Cases`.
 * Folder: `Actor`, Visual Paradigm: Find an Actor e.g. navigate to `Model Explorer/Χρήστες/Απαντών`.
