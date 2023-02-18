@@ -34,7 +34,8 @@ recreate our SRS document in Visual Paradigm.
    1. In Visual Paradigm create a new XML template (e.g. by duplicating an existing and changing its name and content)
    with the same name as one of the files in the GitHub folder and the same content as the corresponding file.
    2. repeat for all files it the folder.
-5. Repeat for all folders  in the `/vpp` directory (excluding `doc_template`).
+5. Refresh the Doc Composer to see if there are still [INVALID] templates. If yes, continue.
+6. Repeat for all folders  in the `/vpp` directory (excluding `doc_template`).
 
 * For each of our folders you'll need to add the xml templates as described above in the following elements in Visual Paradigm
   (We explain how to find a Visual Paradigm element based on the Github folder name).
