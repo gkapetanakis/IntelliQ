@@ -24,7 +24,7 @@ recreate our SRS document in Visual Paradigm.
   Visual Paradigm. To do this, execute the following steps:
 1. go to Doc. Composer in Visual Paradigm and try opening the `srs-softeng-01` file then use as a Doc Base our Doc Base which is in the `doc_template` folder.
 
-### If Visual Paradigm cannot create our document, it is because you do not have our XML templates. To install them follow he steps bellow
+### If Visual Paradigm cannot create our document, it is because you do not have our XML templates. To install them follow the steps bellow
 
 2. in the GitHub repo open some folder. e.g. The `Project` folder.
 3. On the `Diagram Navigator` or the `Model Explorer` in Visual Paradigm click on the corresponding element to the GitHub folder `Name` you opened. For our example
