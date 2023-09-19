@@ -1,10 +1,8 @@
-# Software Engineering Project 2022-2023
+# Software Engineering Project 2022-2023 (National Technical University of Athens)
 
-#### __Group__
-SoftEng2022-01
-#### __Members__
-* el19005 - Δημήτριος Γεωργούσης
-* el19062 - Γεώργιος-Αλέξιος Καπετανάκης
+#### __Project Contrubutors
+* ntua-el19005 - Dimitrios Georgousis
+* ntua-el19062 - Georgios-Alexios Kapetanakis (me)
 
 ## Description
 The project consists of the following parts:
