@@ -1,6 +1,6 @@
 # Software Engineering Project 2022-2023 (National Technical University of Athens)
 
-#### __Project Contrubutors
+#### __Project Contrubutors__
 * ntua-el19005 - Dimitrios Georgousis
 * ntua-el19062 - Georgios-Alexios Kapetanakis (me)
 
