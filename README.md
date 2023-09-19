@@ -1,5 +1,5 @@
 # intelliQ
-This project was created and completed as part of the Software Engineering class of the School of Electrical and Computer Engineering of the National Technical University of Athens for the academic year 2022-2023.
+This project was created and completed as part of the Software Engineering class of the School of Electrical and Computer Engineering of the National Technical University of Athens during the academic year 2022-2023.
 
 #### __Project Contributors__
 * `ntua-el19005` - Dimitrios Georgousis
