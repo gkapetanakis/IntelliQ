@@ -1,7 +1,3 @@
-# Svelte + Vite Frontend Application
-
-Frontend implemented using Svelte and Vite. We used the barebones
-Vite initialization for Svelte without any extra tools such as
-SvelteKit etc.
-This app implements the "Answer Questionnaire" use case of our
-project.
+## Info
+The frontend is implemented using Svelte and Vite. The barebones Vite initialization for Svelte without any extra tools (such as SvelteKit) was used. Currently, only the "Answer Questionnaire" use case of the
+project is implemented.

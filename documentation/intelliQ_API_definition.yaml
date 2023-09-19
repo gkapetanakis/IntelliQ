@@ -1,0 +1,462 @@
+openapi: 3.1.0
+
+info:
+	version: 1.0.0
+	title: intelliQ API
+	description: Create and answer questionnaires
+
+paths:
+	/admin/healthcheck:
+		description: Check database connection health
+		get:
+			responses:
+				"200":
+					description: The health and the URL of the database connection
+					content:
+						application/json:
+							schema:
+								type: object
+								required:
+									- status
+									- dbconnection
+								properties:
+									status:
+										type: string
+										enum:
+											- OK
+											- failed
+									dbconnection:
+										type: string
+						text/csv:
+							schema:
+								type: string
+
+	/admin/questionnaire_upd:
+		description: Upload a new questionnaire (multipart/form-data)
+		post:
+			requestBody:
+				description: A JSON file containing a Questionnaire object
+				content:
+					multipart/form-data:
+						schema:
+							type: object
+							properties:
+								file:
+									type: string
+									format: binary
+				required: true
+			responses:
+				204:
+					$ref: "#/components/responses/204response"
+				400:
+					$ref: "#/components/responses/400response"
+				500:
+					$ref: "#/components/responses/500response"
+
+	/admin/resetall:
+		description: Purge the database
+		post:
+			responses:
+				200:
+					description: OK
+					$ref: "#/components/responses/resetResponseSuccess"
+				500:
+					description: Internal Server Error
+					$ref: "#/components/responses/resetResponseFailure"
+
+	/admin/resetq/{questionnaireID}:
+		description: Purge all sessions of a specific questionnaire from the database
+		parameters:
+			- $ref: "#/components/parameters/questionnaireID"
+		post:
+			responses:
+				200:
+					description: OK
+					$ref: "#/components/responses/resetResponseSuccess"
+				400:
+					description: Bad Request
+					$ref: "#/components/responses/resetResponseFailure"
+				500:
+					description: Internal Server Error
+					$ref: "#/components/responses/resetResponseFailure"
+
+	/questionnaire/{questionnaireID}:
+		description: Retrieve the basic info of a questionnaire
+		parameters:
+			- $ref: "#/components/parameters/format"
+			- $ref: "#/components/parameters/questionnaireID"
+		get:
+			responses:
+				200:
+					description: OK
+					content:
+						application/json:
+							schema:
+								$ref: "#/components/schemas/QuestionnaireWithoutOptions"
+						text/csv:
+							schema:
+								type: string
+				400:
+					$ref: "#/components/responses/400response"
+				404:
+					$ref: "#/components/responses/404response"
+				500:
+					$ref: "#/components/responses/500response"
+
+	/question/{questionnaireID}/{questionID}:
+		description: Retrieve a question
+		parameters:
+			- $ref: "#/components/parameters/format"
+			- $ref: "#/components/parameters/questionnaireID"
+			- $ref: "#/components/parameters/questionID"
+		get:
+			responses:
+				200:
+					description: OK
+					content:
+						application/json:
+							schema:
+								allOf:
+									- $ref: "#/components/schemas/QuestionWithOptions"
+									- type: object
+									  required:
+										  - questionnaireID
+									  properties:
+										  questionnaireID:
+											  $ref: "#/components/schemas/QuestionnaireWithoutOptions/properties/questionnaireID"
+						text/csv:
+							schema:
+								type: string
+				400:
+					$ref: "#/components/responses/400response"
+				404:
+					$ref: "#/components/responses/404response"
+				500:
+					$ref: "#/components/responses/500response"
+
+	/doanswer/{questionnaireID}/{questionID}/{sessionID}/{optionID}:
+		description: Save a new answer to the database
+		parameters:
+			- $ref: "#/components/parameters/questionnaireID"
+			- $ref: "#/components/parameters/questionID"
+			- $ref: "#/components/parameters/sessionID"
+			- $ref: "#/components/parameters/optionID"
+		post:
+			responses:
+				204:
+					$ref: "#/components/responses/204response"
+				400:
+					$ref: "#/components/responses/400response"
+				500:
+					$ref: "#/components/responses/500response"
+
+	/getsessionanswers/{questionnaireID}/{sessionID}:
+		description: Retrieve all answers of a session
+		parameters:
+			- $ref: "#/components/parameters/format"
+			- $ref: "#/components/parameters/questionnaireID"
+			- $ref: "#/components/parameters/sessionID"
+		get:
+			responses:
+				200:
+					description: OK
+					content:
+						application/json:
+							schema:
+								$ref: "#/components/schemas/SessionAnswers"
+						text/csv:
+							schema:
+								type: string
+				400:
+					$ref: "#/components/responses/400response"
+				404:
+					$ref: "#/components/responses/404response"
+				500:
+					$ref: "#/components/responses/500response"
+
+	/getquestionanswers/{questionnaireID}/{questionID}:
+		description: Retrieve all answers to a question
+		parameters:
+			- $ref: "#/components/parameters/format"
+			- $ref: "#/components/parameters/questionnaireID"
+			- $ref: "#/components/parameters/questionID"
+		get:
+			responses:
+				200:
+					description: OK
+					content:
+						application/json:
+							schema:
+								$ref: "#/components/schemas/QuestionAnswers"
+						text/csv:
+							schema:
+								type: string
+				400:
+					$ref: "#/components/responses/400response"
+				404:
+					$ref: "#/components/responses/404response"
+				500:
+					$ref: "#/components/responses/500response"
+
+components:
+	schemas:
+		format:
+			description: Specifies the format of the response when applicable (JSON or CSV)
+			type:
+				enum:
+					- json
+					- csv
+
+		Option:
+			type: object
+			required:
+				- optID
+				- opttxt
+				- nextqID
+			properties:
+				optID:
+					description: The unique identifier of the option
+					type: string
+				opttxt:
+					description: The option text
+					type: string
+				nextqID:
+					description: The identifier of the following question
+					type: string
+
+		QuestionWithoutOptions:
+			type: object
+			required:
+				- qID
+				- qtext
+				- required
+				- type
+			properties:
+				qID:
+					description: The unique identifier of the question
+					type: string
+				qtext:
+					description: The question text
+					type: string
+				required:
+					description: Specifies whether the question is optional or not
+					type: string
+					enum:
+						- "true"
+						- "false"
+				type:
+					description: The type of the question ("question" or "profile")
+					type: string
+					enum:
+						- profile
+						- question
+
+		QuestionWithOptions:
+			allOf:
+				- "#/components/schemas/QuestionWithoutOptions"
+				- type: object
+				  required:
+					  - options
+				  properties:
+					  options:
+						  description: The question's possible answers
+						  type: array
+						  items:
+							  $ref: "#/components/schemas/Option"
+
+		QuestionnaireWithoutOptions:
+			type: object
+			required:
+				- questionnaireID
+				- questionnaireTitle
+				- keywords
+				- questions
+			properties:
+				questionnaireID:
+					description: The questionnaire's unique identifier
+					type: string
+				questionnaireTitle:
+					description: The questionnaire's title
+					type: string
+				keywords:
+					description: The questionnaire's keywords
+					type: array
+					items:
+						type: string
+				questions:
+					description: The questionnaire's questions
+					type: array
+					items:
+						$ref: "#/components/schemas/QuestionWithoutOptions"
+
+		QuestionnaireWithOptions:
+			allOf:
+				- $ref: "#/components/schemas/QuestionnaireWithoutOptions"
+				- type: object
+				  required:
+					  - questions
+				  properties:
+					  questions:
+						  description: The questionnaire's questions
+						  type: array
+						  items:
+							  $ref: "#/components/schemas/QuestionWithOptions"
+
+		Answer:
+			type: object
+			required:
+				- questionnaireID
+				- session
+				- qID
+				- ans
+			properties:
+				questionnaireID:
+					description: The belonging questionnaire's unique identifier
+					$ref: "#/components/schemas/QuestionnaireWithoutOptions/properties/questionnaireID"
+				session:
+					description: The belonging session's unique identifier
+					type: string
+				qID:
+					description: The answered question's unique identifier
+					$ref: "#/components/schemas/QuestionWithoutOptions/properties/qID"
+				ans:
+					description: The selected option's unique identifier
+					$ref: "#/components/schemas/Option/properties/optID"
+
+		SessionAnswers:
+			type: object
+			required:
+				- questionnaireID
+				- session
+				- answers
+			properties:
+				questionnaireID:
+					$ref: "#/components/schemas/Answer/properties/questionnaireID"
+				session:
+					$ref: "#/components/schemas/Answer/properties/session"
+				answers:
+					description: The answers to all the questions of the given questionnaire
+					type: array
+					items:
+						type: object
+						required:
+							- qID
+							- ans
+						properties:
+							qID:
+								$ref: "#/components/schemas/Answer/properties/qID"
+							ans:
+								$ref: "#/components/schemas/Answer/properties/ans"
+
+		QuestionAnswers:
+			type: object
+			required:
+				- questionnaireID
+				- questionID
+				- answers
+			properties:
+				questionnaireID:
+					$ref: "#/components/schemas/Answer/properties/questionnaireID"
+				questionID:
+					$ref: "#/components/schemas/Answer/properties/qID"
+				answers:
+					description: The answers of every session to the given question
+					type: array
+					items:
+						type: object
+						required:
+							- session
+							- ans
+						properties:
+							session:
+								$ref: "#/components/schemas/Answer/properties/session"
+							ans:
+								$ref: "#/components/schemas/Answer/properties/ans"
+
+	responses:
+		204response:
+			description: No Content
+
+		400response:
+			description: Bad Request
+
+		404response:
+			description: Not Found
+
+		500response:
+			description: Internal Server Error
+
+		resetResponseSuccess:
+			description: The status of the request and (if needed) the reason of its failure
+			content:
+				application/json:
+					schema:
+						type: object
+						required:
+							- status
+						properties:
+							status:
+								type: string
+								enum:
+									- OK
+									- failed
+				text/csv:
+					schema:
+						type: string
+
+		resetResponseFailure:
+			description: The status of the request and (if needed) the reason of its failure
+			content:
+				application/json:
+					schema:
+						type: object
+						required:
+							- status
+							- reason
+						properties:
+							status:
+								type: string
+								enum:
+									- OK
+									- failed
+							reason:
+								type: string
+				text/csv:
+					schema:
+						type: string
+
+	parameters:
+		format:
+			name: format
+			in: query
+			required: false
+			schema:
+				$ref: "#/components/schemas/format"
+
+		questionnaireID:
+			name: questionnaireID
+			in: path
+			required: true
+			schema:
+				$ref: "#/components/schemas/QuestionnaireWithoutOptions/properties/questionnaireID"
+
+		questionID:
+			name: questionID
+			in: path
+			required: true
+			schema:
+				$ref: "#/components/schemas/QuestionWithoutOptions/properties/qID"
+
+		optionID:
+			name: optionID
+			in: path
+			required: true
+			schema:
+				$ref: "#/components/schemas/Option/properties/optID"
+
+		sessionID:
+			name: sessionID
+			in: path
+			required: true
+			schema:
+				$ref: "#/components/schemas/Answer/properties/session"

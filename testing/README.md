@@ -1,0 +1,2 @@
+## Info
+A Postman collection which runs a few tests to ensure that the application is working correctly. The samples contained in `questionnaire_samples` are required for the tests to be ran correctly.
