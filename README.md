@@ -1,5 +1,5 @@
 # IntelliQ
-IntelliQ is a web application for questionnaire creation and answering, featuring a RESTful API. It was created as part of the Software Engineering class of the [School of Electrical and Computer Engineering](https://www.ece.ntua.gr/en) of the [National Technical University of Athens](https://ntua.gr/en/) during the academic year 2022-2023.
+IntelliQ is a web application for questionnaire creation and answering, featuring a RESTful API and extensive documentation. It was created as part of the Software Engineering class of the [School of Electrical and Computer Engineering](https://www.ece.ntua.gr/en) of the [National Technical University of Athens](https://ntua.gr/en/) during the academic year 2022-2023.
 
 #### Contributors
 * `dimjimitris` - Dimitris Georgousis
